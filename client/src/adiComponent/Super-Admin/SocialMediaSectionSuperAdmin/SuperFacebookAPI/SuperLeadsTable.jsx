@@ -6,6 +6,7 @@ import ReactPaginate from 'react-paginate';
 import SuperFormInput from './SuperFormInput';
 import SuperUpdateForm from './SuperUpdateForm';
 import SuperFormSelector from './SuperSelectForm';
+import { useSelector } from 'react-redux';
 
 const SuperLeadsTable = () => {
   const [leads, setLeads] = useState([]);
@@ -24,7 +25,7 @@ const SuperLeadsTable = () => {
   // Fetch leads based on selected form ID
   // const fetchLeadsByFormId = async (formId) => {
   //   try {
-  //     const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/Leads-data-fetch/${formId}`);
+  //     const response = await axios.get(`http://localhost:9000/api/Leads-data-fetch/${formId}`);
   //     setLeads(response.data);
   //   } catch (err) {
   //     console.error('Error fetching leads:', err);
@@ -42,6 +43,8 @@ const SuperLeadsTable = () => {
     employeephone: "",
     createdTime:"",
   });
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
@@ -50,7 +53,12 @@ const SuperLeadsTable = () => {
 
   const fetchLeadsByFormId = async () => {
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/Leads-data-fetch/${gotId}`);
+      const response = await axios.get(`http://localhost:9000/api/Leads-data-fetch-super-admin/${gotId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setLeads(response.data);
       setLoading(false);
     } catch (err) {
@@ -60,7 +68,12 @@ const SuperLeadsTable = () => {
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("http://localhost:9000/api/employee-super-admin",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -68,7 +81,12 @@ const SuperLeadsTable = () => {
   };
   const fetchLeadassigned = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads");
+      const response = await axios.get("http://localhost:9000/api/leads-super-admin",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setLeadsAssigned(response.data);
       // console.log(leadsAssigned);
     } catch (error) {
@@ -118,7 +136,7 @@ const SuperLeadsTable = () => {
     }
     try {
       setLoadingsave(true)
-      await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", {
+      await axios.post("http://localhost:9000/api/leads", {
         lead_no:  selectedLead.leadId,    
         assignedTo:currentLead.assignedTo,
         employeeId:currentLead.employeeId,
@@ -185,7 +203,7 @@ setLoadingsave(false)
   const saveIntoDB = async () => {
     try {
       // Fetch leads from Meta API via backend
-      const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/leads/fetch', {
+      const response = await axios.post('http://localhost:9000/api/leads/fetch', {
         formId: gotId,
       });
       setLoading(true);
@@ -233,7 +251,7 @@ setLoadingsave(false)
   // const saveIntoDB = async () => {
   //   try {
   //     // Fetch leads from Meta API via backend
-  //     const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/leads/fetch', {
+  //     const response = await axios.post('http://localhost:9000/api/leads/fetch', {
   //       formId: gotId,
   //     });
   //     setLoading(true);

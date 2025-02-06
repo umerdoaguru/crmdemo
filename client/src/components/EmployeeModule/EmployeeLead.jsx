@@ -38,7 +38,9 @@ function EmployeeLead() {
 
   const navigate = useNavigate();
 
-  const EmpId = useSelector((state) => state.auth.user.id);
+  const EmpId = useSelector((state) => state.auth.user);
+
+  const token = EmpId?.token;
 
   // Fetch leads from the API
   useEffect(() => {
@@ -48,7 +50,12 @@ function EmployeeLead() {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId}`
+        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       const data = response.data;
       console.log(data);
@@ -63,7 +70,7 @@ function EmployeeLead() {
     try {
       // Send updated data to the backend using Axios
       const response = await axios.put(
-        `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyLeadStatus/${lead.lead_id}`,
+        `http://localhost:9000/api/updateOnlyLeadStatus/${lead.lead_id}`,
         { lead_status: "active lead" }
       );
 

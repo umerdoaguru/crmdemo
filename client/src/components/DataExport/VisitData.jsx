@@ -30,7 +30,8 @@ const VisitData = () => {
 'visit_date',
 
 ]);
-
+const adminuser = useSelector((state) => state.auth.user);
+const token = adminuser.token;
 
   // Fetch leads from the API
   useEffect(() => {
@@ -41,7 +42,12 @@ const VisitData = () => {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-all-visit`
+        `http://localhost:9000/api/employe-all-visit`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       // Filter out leads where visit is "Pending"
       const nonPendingLeads = response.data.filter(
@@ -56,7 +62,7 @@ const VisitData = () => {
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("http://localhost:9000/api/employee");
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);

@@ -59,7 +59,7 @@ function AdminRoutes() {
       <Routes>
         {/* Admin routes */}
         <Route path="/" element={<Dashboard />} />
-        <Route path="/admincrmdoaguru" element={<Registration />} />
+        <Route path="/admincrmonerealty" element={<Registration />} />
 
         {/* <Route path="/" element={user? <Dashboard/> :<Landingpage/>} /> */}
         {/* <Route path="/admin-login" element={<AdminLogin/>} /> */}

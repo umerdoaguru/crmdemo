@@ -19,7 +19,9 @@ const EmployeeQuotationList = () => {
   const { id } = useParams();
 const navigate  = useNavigate();
   
+const EmpId = useSelector((state) => state.auth.user);
 
+const token = EmpId?.token;
   useEffect(() => {
     fetchQuotations();
   }, [id, render]);
@@ -27,7 +29,12 @@ const navigate  = useNavigate();
   const fetchQuotations = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/get-quotation-byLead/${id}`
+        `http://localhost:9000/api/get-quotation-byLead/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       setQuotations(response.data);
       console.log(response.data);
@@ -46,7 +53,7 @@ const navigate  = useNavigate();
   //   if (isConfirmed) {
   //     try {
   //       const response = await axios.delete(
-  //         `https://crmdemo.vimubds5.a2hosted.com/api/quotation/${id}`
+  //         `http://localhost:9000/api/quotation/${id}`
   //       );
   //       if (response.status === 200) {
   //         console.log("Quotation deleted successfully");
@@ -67,7 +74,7 @@ const navigate  = useNavigate();
       try {
         // Delete the quotation
         const response = await axios.delete(
-          `https://crmdemo.vimubds5.a2hosted.com/api/quotation/${quotation.id}`
+          `http://localhost:9000/api/quotation/${quotation.id}`
         );
         
         if (response.status === 200) {
@@ -76,7 +83,7 @@ const navigate  = useNavigate();
           // After deletion, update the leads table status
           try {
             const updateResponse = await axios.put(
-              `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyQuotationStatus/${quotation.lead_id}`,
+              `http://localhost:9000/api/updateOnlyQuotationStatus/${quotation.lead_id}`,
               { quotation: "not created" }
             );
   
@@ -103,7 +110,7 @@ const navigate  = useNavigate();
   const handleCopyQuotation = async (quotationId) => {
     try {
       const response = await axios.post(
-        `https://crmdemo.vimubds5.a2hosted.com/api/copy-quotation/${quotationId}`
+        `http://localhost:9000/api/copy-quotation/${quotationId}`
       );
       setRender(!render);
     } catch (error) {

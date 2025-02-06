@@ -8,6 +8,7 @@ import EmployeeeSider from "../EmployeeModule/EmployeeSider";
 import Sider from "../Sider";
 import cogoToast from "cogo-toast";
 import UpdateLeadField from "../EmployeeModule/updateLeadField";
+import { useSelector } from "react-redux";
 function Employee_Single_Lead_Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Employee_Single_Lead_Profile() {
       payment_mode:"",
       registry:"",
     reason: "",
-    status: "",
+  
 
 
     follow_up_status: "",
@@ -72,6 +73,9 @@ const [remark, setRemark] = useState({
   date: "",
 });
 
+const EmpId = useSelector((state) => state.auth.user);
+
+const token = EmpId?.token;
 
   const [quotationCreated, setQuotationCreated] = useState(false);
   const [visitCreated, setVisitCreated] = useState(false);
@@ -204,7 +208,7 @@ const [remark, setRemark] = useState({
   }, [id]);
   // const fetchLeads = async () => {
   //   try {
-  //     const response = await axios.get(https://crmdemo.vimubds5.a2hosted.com/api/leads/${id});
+  //     const response = await axios.get(http://localhost:9000/api/leads/${id});
   //     setLeads(response.data);
   //     console.log(response);
   //   } catch (error) {
@@ -214,7 +218,12 @@ const [remark, setRemark] = useState({
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads/${id}`);
+      const response = await axios.get(`http://localhost:9000/api/leads-employee/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       console.log(response.data);
       setLeads(response.data);
 
@@ -242,7 +251,12 @@ const [remark, setRemark] = useState({
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`
+        `http://localhost:9000/api/employe-visit/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setVisit(response.data);
@@ -260,7 +274,12 @@ const [remark, setRemark] = useState({
   const fetchFollowUp = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up/${id}`
+        `http://localhost:9000/api/employe-follow-up/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setFollow_Up(response.data);
@@ -273,7 +292,12 @@ const [remark, setRemark] = useState({
   const fetchRemark = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`
+        `http://localhost:9000/api/remarks/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setRemark(response.data[0]);
@@ -423,7 +447,7 @@ const [remark, setRemark] = useState({
       }
       // Send updated data to the backend using Axios
       const response = await axios.put(
-        `https://crmdemo.vimubds5.a2hosted.com/api/updateLeadStatus/${currentLead.lead_id}`,
+        `http://localhost:9000/api/updateLeadStatus/${currentLead.lead_id}`,
         leadData
       );
 
@@ -459,7 +483,7 @@ const [remark, setRemark] = useState({
     try {
       // First API call: Create a visit
       const response = await axios.post(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit`,
+        `http://localhost:9000/api/employe-visit`,
         {
           lead_id: leads[0].lead_id,
           name: leads[0].name,
@@ -476,11 +500,11 @@ const [remark, setRemark] = useState({
   
         // Second API call: Update visit status
         const updateResponse = await axios.put(
-          `https://crmdemo.vimubds5.a2hosted.com/api/updateVisitStatus/${leads[0].lead_id}`,
+          `http://localhost:9000/api/updateVisitStatus/${leads[0].lead_id}`,
           { visit: visitLead.visit }
         );
   
-        if (updateResponse.status === 200) {        
+        if (updateResponse.status === 200) {
           console.log("Visit status updated successfully:", updateResponse.data);
           cogoToast.success("Visit status updated successfully");
         } else {
@@ -491,7 +515,7 @@ const [remark, setRemark] = useState({
   
         // Third API call: Update lead status
         const updateLeadStatusResponse = await axios.put(
-          `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyLeadStatus/${leads[0].lead_id}`,
+          `http://localhost:9000/api/updateOnlyLeadStatus/${leads[0].lead_id}`,
           { lead_status: "site visit done" }
         );
   
@@ -552,7 +576,7 @@ const [remark, setRemark] = useState({
     try {
       // Send updated data to the backend using Axios
       const response = await axios.post(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up`,
+        `http://localhost:9000/api/employe-follow-up`,
         {
           lead_id: leads[0].lead_id,
           name: leads[0].name,
@@ -570,7 +594,7 @@ const [remark, setRemark] = useState({
   
         // Update the Follow Up status after saving the Follow Up
         const putResponse = await axios.put(
-          `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyFollowUpStatus/${leads[0].lead_id}`,
+          `http://localhost:9000/api/updateOnlyFollowUpStatus/${leads[0].lead_id}`,
           { follow_up_status: "in progress" }
         );
   
@@ -608,7 +632,7 @@ const [remark, setRemark] = useState({
   
     try {
 
-        const response = await axios.post(`https://crmdemo.vimubds5.a2hosted.com/api/remarks`,
+        const response = await axios.post(`http://localhost:9000/api/remarks`,
         {
           lead_id: leads[0].lead_id,
           name: leads[0].name,

@@ -8,6 +8,7 @@ import SuperAdminSider from "./SuperAdminSider";
 import Super_view_remarks from "./Super_view_remaks";
 import Super_view_followup from "./Super_view_followup";
 import Super_view_visit from "./Super_view_visit";
+import { useSelector } from "react-redux";
 
 function Super_Single_Lead_Profile({id,closeModalLead }) {
 
@@ -22,12 +23,18 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const [isModalOpenFollowUp, setIsModalOpenFollowUp] = useState(false);
   const [isModalOpenVisit, setIsModalOpenVisit] = useState(false);
 
-
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
    
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads/${id}`);
+      const response = await axios.get(`http://localhost:9000/api/leads-super-admin/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       console.log(response.data);
       setLeads(response.data);
 
@@ -46,7 +53,12 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const fetchFollowUp = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up/${id}`
+        `http://localhost:9000/api/employe-follow-up-super-admin/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
     
@@ -59,7 +71,12 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const fetchRemark = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`
+        `http://localhost:9000/api/remarks-super-admin/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setRemarksCreated(response.data[0]);
@@ -78,7 +95,12 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`
+        `http://localhost:9000/api/employe-visit-super-admin/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setVisit(response.data);

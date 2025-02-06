@@ -10,6 +10,7 @@ import MainHeader from "./../../components/MainHeader";
 import SuperAdminSider from "./SuperAdminSider";
 import cogoToast from "cogo-toast";
 import Super_Single_Lead_Profile from "./Super_Single_Lead_Profile";
+import { useSelector } from "react-redux";
 
 function SuperEmployeeLeads() {  
   const [leads, setLeads] = useState([]);
@@ -62,7 +63,8 @@ function SuperEmployeeLeads() {
   const [loading , setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [customLeadSource, setCustomLeadSource] = useState("");
-
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   
 
@@ -81,8 +83,14 @@ function SuperEmployeeLeads() {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        // `https://crmdemo.vimubds5.a2hosted.com/api/leads-visits/${id}`
-           `https://crmdemo.vimubds5.a2hosted.com/api/leads`
+
+          //  `http://localhost:9000/api/employe-leads/${id}`
+            "http://localhost:9000/api/leads-super-admin",
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }}
       );
       const data = response.data;
       console.log(data);
@@ -94,7 +102,12 @@ function SuperEmployeeLeads() {
  
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("http://localhost:9000/api/employee-super-admin",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -110,7 +123,7 @@ function SuperEmployeeLeads() {
 
   const updateAnswerRemark = async () => {
     try {
-      const response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyAnswerRemark`, modalData);
+      const response = await axios.put(`http://localhost:9000/api/updateOnlyAnswerRemark`, modalData);
       if (response.status === 200) {
         cogoToast.success("AnswerRemark updated successfully!");
        fetchLeads();
@@ -384,7 +397,7 @@ const saveChanges = async () => {
     
      
         // Create new lead
-        await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", leadData);
+        await axios.post("http://localhost:9000/api/leads", leadData);
 
         // Construct WhatsApp message link with encoded parameters
         const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Project:%20${currentLead.subject}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
