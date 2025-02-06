@@ -8,6 +8,7 @@ import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import ToDoList from "./../adiComponent/Todo";
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
+import { useSelector } from "react-redux";
 
 function Leads() {
   const navigate = useNavigate();
@@ -50,6 +51,8 @@ function Leads() {
   const [meetingStatusFilter, setMeetingStatusFilter] = useState("");
   const [monthFilter, setMonthFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("asc"); 
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
 
   // Fetch leads and employees from the API
   useEffect(() => {
@@ -61,7 +64,12 @@ function Leads() {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        "https://crmdemo.vimubds5.a2hosted.com/api/leads"
+        "https://crmdemo.vimubds5.a2hosted.com/api/leads",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       setLeads(response.data);
       console.log(leads);
@@ -72,7 +80,12 @@ function Leads() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -273,6 +286,7 @@ function Leads() {
             `https://crmdemo.vimubds5.a2hosted.com/api/leads/${currentLead.lead_id}`,
             leadData
           );
+          
           fetchLeads(); // Refresh the list
           closePopup();
         } else {
@@ -288,8 +302,7 @@ function Leads() {
           closePopup();
         }
         setLoading(false)
-      } 
-      catch (error) {
+      } catch (error) {
         setLoading(false)
         console.error("Error saving lead:", error);
       }
@@ -1091,11 +1104,10 @@ const toggleSortOrder = () => {
                 <div className="flex justify-end">
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-                    onClick={saveChanges}  disabled = {loading}
+                    onClick={saveChanges} disabled = {loading}
                   >
-                     {loading ? 'Save...' : 'Save'}
+                       {loading ? 'Save...' : 'Save'}
                   </button>
-
                   <button
                     className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
                     onClick={closePopup}

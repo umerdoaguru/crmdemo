@@ -646,8 +646,9 @@ const AdminReport = () =>  {
   const [quotation, setQuotation] = useState([]);
   const [invoice, setInvoice] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState("LeadData"); // Set 'LeadData' as default
-
-  const UserId = useSelector((state) => state.auth.user.id);
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
+ 
 
   useEffect(() => {
     fetchLeads();
@@ -659,7 +660,12 @@ const AdminReport = () =>  {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setLeads(response.data);
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -699,7 +705,12 @@ const AdminReport = () =>  {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-all-visit`
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-all-visit-admin`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setVisit(response.data);

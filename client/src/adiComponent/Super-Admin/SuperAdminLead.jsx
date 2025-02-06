@@ -277,7 +277,7 @@ function SuperAdminLead() {
                 >
                   <option value="">All Lead Sources</option>
                   <option value="Facebook Campaign">Facebook Campaign</option>
-                  <option value="Website"> Website</option>
+                  <option value="One Realty Website">One Realty Website</option>
                   <option value="Trade Shows">Trade Shows</option>
                   <option value="Cold Calling">Cold Calling</option>
                   <option value="Email Campaigns">Email Campaigns</option>
@@ -303,7 +303,7 @@ function SuperAdminLead() {
                 >
                   <option value="">All Status</option>
                   {/* <option value="Facebook Campaign">visited</option>
-                  <option value="Website">pending</option>
+                  <option value="One Realty Website">pending</option>
                   <option value="Trade Shows">confirm</option>
                   <option value="Cold Calling">Cold Calling</option> */}
                   <option default value="pending">Pending</option>

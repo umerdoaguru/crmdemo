@@ -126,7 +126,7 @@ const updateLeadStatus = async (req, res) => {
       registry,
 
       reason,
-    
+     
       follow_up_status,
 
       d_closeDate, // Add d_closeDate (Deal Close Date) to destructured body
@@ -142,7 +142,7 @@ const updateLeadStatus = async (req, res) => {
       payment_mode,
       registry,
       reason,
-   
+     
       follow_up_status,
 
       d_closeDate, // Log d_closeDate
@@ -159,7 +159,7 @@ const updateLeadStatus = async (req, res) => {
       payment_mode = ?,
       registry = ?,
                       reason = ?, 
-                   
+                     
                       follow_up_status = ?, 
                    
                       d_closeDate = ?      
@@ -178,7 +178,7 @@ const updateLeadStatus = async (req, res) => {
       payment_mode,
       registry,
           reason,
-         
+        
           follow_up_status,
 
           d_closeDate, // Pass d_closeDate to the query
@@ -228,7 +228,7 @@ const employeeProfile = async (req, res) => {
   try {
     const { id } = req.params;
     const sql =
-      "SELECT employeeId, name, email, phone,photo, position, createdTime FROM employee WHERE employeeId = ?";
+      "SELECT employeeId, name, email, phone, position, createdTime FROM employee WHERE employeeId = ?";
 
     const result = await new Promise((resolve, reject) => {
       db.query(sql, [id], (err, results) => {

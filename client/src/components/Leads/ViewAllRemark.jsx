@@ -20,14 +20,21 @@ const ViewAllRemark = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
   const navigate = useNavigate();
+  const EmpId = useSelector((state) => state.auth.user);
 
+  const token = EmpId?.token;
   useEffect(() => {
     fetchRemarks();
   }, [id, render]);
 
   const fetchRemarks = async () => {
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setRemarks(response.data);
       console.log(response);
     } catch (error) {

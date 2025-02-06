@@ -20,7 +20,9 @@ const MainQuoatationPage = () => {
   const [render, setRender] = useState(false);
   const { id } = useParams();
 
-  
+  const EmpId = useSelector((state) => state.auth.user);
+
+  const token = EmpId?.token;
 
   useEffect(() => {
     fetchQuotations();
@@ -29,7 +31,12 @@ const MainQuoatationPage = () => {
   const fetchQuotations = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`
+        `https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       setQuotations(response.data);
       console.log(response.data);

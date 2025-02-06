@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 function WebsiteLeads() {
@@ -23,13 +24,18 @@ function WebsiteLeads() {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const [leadsPerPage] = useState(10);
-  const [loadingbutton , setLoadingButton] = useState(false)
-
-
+  const [loading , setLoading] = useState(false)
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
   // Fetch leads
   const fetchLeads = async () => {
     try {
-      const response = await axios.get("https://one-realty.in/api/user-data");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/user-data-admin",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setWebsiteLeads(response.data);
     } catch (error) {
       console.error("Error fetching website leads:", error);
@@ -39,7 +45,12 @@ function WebsiteLeads() {
   // Fetch employees
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -49,7 +60,12 @@ function WebsiteLeads() {
   // Fetch lead assignments
   const fetchLeadassigned = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setwebsiteLeadsAssigned(response.data);
     } catch (error) {
       console.error("Error fetching assigned leads:", error);
@@ -97,7 +113,7 @@ function WebsiteLeads() {
     }
   
     try {
-      setLoadingButton(true)
+      setLoading(true)
       await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", {
         lead_no: selectedLead.leadId,
         assignedTo: currentLead.assignedTo,
@@ -139,10 +155,10 @@ const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${cur
 
 // Open WhatsApp link
 window.open(whatsappLink, "_blank");
-setLoadingButton(false)
+setLoading(false)
 
     } catch (error) {
-      setLoadingButton(false)
+      setLoading(false)
       console.error("Error adding lead:", error);
     }
   };
@@ -353,7 +369,7 @@ console.log("Assigned Leads:", websiteleadsAssigned);
                 className="w-full p-2 border rounded"
                 disabled
               >
-                <option value="Website Inquiries">Website</option>
+                <option value="Website Inquiries">One Realty Website</option>
               </select>
             </div>
             <div className="mb-4">
@@ -406,9 +422,9 @@ console.log("Assigned Leads:", websiteleadsAssigned);
             <div className="flex justify-end">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-                onClick={saveChanges} disabled = {loadingbutton}
+                onClick={saveChanges} disabled = {loading}
               >
-         {loadingbutton ? 'Save...' : 'Save'}
+                    {loading ? 'Save...' : 'Save'}
               </button>
               <button
                 className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"

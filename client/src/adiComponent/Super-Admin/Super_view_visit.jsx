@@ -30,11 +30,18 @@ const Super_view_visit = ({id,closeModalVisit}) => {
   useEffect(() => {
     fetchvisit();
   }, [id, render]);
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   const fetchvisit = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit-super-admin/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       setVisit(response.data);
       console.log(response);
@@ -43,62 +50,6 @@ const Super_view_visit = ({id,closeModalVisit}) => {
     }
   };
 
-  const handleDelete = async (id) => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this visit?"
-    );
-    if (isConfirmed) {
-      try {
-        const response = await axios.delete(
-          `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`
-        );
-        if (response.status === 200) {
-          console.log("visit deleted successfully");
-        }
-        console.log(response);
-        setRender(!render);
-      } catch (error) {
-        console.error("Error deleting visit:", error);
-      }
-    }
-  };
- // Function to send the PUT request to update the visit data
- const openModal = (data) => {
-    setModalData(data);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalData(null);
-  };
-
-  // Handle updating field values in modalData
-  const handleInputChange = (e) => {
-    setModalData({
-      ...modalData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Function to send the PUT request to update the visit data
-  const updateVisit = async () => {
-    try {
-      const response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/employe-visit`, modalData);
-      if (response.status === 200) {
-        cogoToast.success("Visit updated successfully!");
-        setRender(!render); // Refresh the list after updating
-        closeModal(); // Close the modal
-      }
-    } catch (error) {
-      console.error("Error updating visit:", error);
-    }
-  };
-
-
-  const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected);
-  };
 
 
 

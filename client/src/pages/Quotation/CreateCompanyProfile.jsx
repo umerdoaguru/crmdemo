@@ -24,12 +24,19 @@ function CreateCompanyProfile() {
   const [filterText, setFilterText] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const navigate = useNavigate()
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
 
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
         const response = await axios.get(
-          `https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`
+          `https://crmdemo.vimubds5.a2hosted.com/api/quotation-data-admin`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         setQuotations(response.data);
         console.log(quotations);
@@ -126,7 +133,7 @@ function CreateCompanyProfile() {
               placeholder="Filter by Quotation Name"
               value={filterText}
               onChange={handleFilterChange}
-              className="form-input border-gray-300 rounded-md p-2 border shadow-sm w-full max-w-md"
+              className="form-input border-gray-300 rounded-md shadow-sm w-full max-w-md"
             />
           </div>
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
+import { useSelector } from 'react-redux';
 
 
 function Accrs() {
@@ -20,13 +21,16 @@ function Accrs() {
     employeephone: "",
     createdTime:"",
   });
-  const [loadingbutton , setLoadingButton] = useState(false)
-
-console.log(responses, 'Line number 7 data check');
-
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
   const fetchResponses = async () => {
     try {
-      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/get-responses');
+      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/get-responses-admin',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       console.log('Response received from API:', response.data);
       setResponses(response.data);   
     } catch (error) {
@@ -35,7 +39,12 @@ console.log(responses, 'Line number 7 data check');
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -43,7 +52,12 @@ console.log(responses, 'Line number 7 data check');
   };
   const fetchLeadassigned = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setLeadsAssigned(response.data);
       // console.log(leadsAssigned);
     } catch (error) {
@@ -90,7 +104,7 @@ console.log(responses, 'Line number 7 data check');
       return; // Stop further execution if the field is empty
     }
     try {
-      setLoadingButton(true)
+      setLoading(true)
       await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", {
         lead_no:  selectedLead.leadId,    
         assignedTo:currentLead.assignedTo,
@@ -134,9 +148,9 @@ const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${cur
 // Open WhatsApp link
 window.open(whatsappLink, "_blank");
 
-setLoadingButton(false)
+setLoading(false)
     } catch (error) {
-      setLoadingButton(false)
+      setLoading(false)
       console.error("Error adding lead:", error);
     }
   };
@@ -384,9 +398,9 @@ setLoadingButton(false)
             <div className="flex justify-end">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-                onClick={saveChanges} disabled = {loadingbutton}
+                onClick={saveChanges} disabled = {loading}
               >
-                {loadingbutton ? 'Save...' : 'Save'}
+                    {loading ? 'Save...' : 'Save'}
               </button>
               <button
                 className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"

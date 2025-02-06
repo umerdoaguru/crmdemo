@@ -8,6 +8,7 @@ import EmployeeeSider from "../EmployeeModule/EmployeeSider";
 import Sider from "../Sider";
 import cogoToast from "cogo-toast";
 import UpdateLeadField from "../EmployeeModule/updateLeadField";
+import { useSelector } from "react-redux";
 function Employee_Single_Lead_Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Employee_Single_Lead_Profile() {
       payment_mode:"",
       registry:"",
     reason: "",
-    status: "",
+  
 
 
     follow_up_status: "",
@@ -72,6 +73,9 @@ const [remark, setRemark] = useState({
   date: "",
 });
 
+const EmpId = useSelector((state) => state.auth.user);
+
+const token = EmpId?.token;
 
   const [quotationCreated, setQuotationCreated] = useState(false);
   const [visitCreated, setVisitCreated] = useState(false);
@@ -214,7 +218,12 @@ const [remark, setRemark] = useState({
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads/${id}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads-employee/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       console.log(response.data);
       setLeads(response.data);
 
@@ -242,7 +251,12 @@ const [remark, setRemark] = useState({
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setVisit(response.data);
@@ -260,7 +274,12 @@ const [remark, setRemark] = useState({
   const fetchFollowUp = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setFollow_Up(response.data);
@@ -273,7 +292,12 @@ const [remark, setRemark] = useState({
   const fetchRemark = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response.data);
       setRemark(response.data[0]);
@@ -480,7 +504,7 @@ const [remark, setRemark] = useState({
           { visit: visitLead.visit }
         );
   
-        if (updateResponse.status === 200) {        
+        if (updateResponse.status === 200) {
           console.log("Visit status updated successfully:", updateResponse.data);
           cogoToast.success("Visit status updated successfully");
         } else {

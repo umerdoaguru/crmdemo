@@ -10,6 +10,7 @@ import MainHeader from "./../../components/MainHeader";
 import SuperAdminSider from "./SuperAdminSider";
 import cogoToast from "cogo-toast";
 import Super_Single_Lead_Profile from "./Super_Single_Lead_Profile";
+import { useSelector } from "react-redux";
 
 function SuperEmployeeLeads() {  
   const [leads, setLeads] = useState([]);
@@ -62,7 +63,8 @@ function SuperEmployeeLeads() {
   const [loading , setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [customLeadSource, setCustomLeadSource] = useState("");
-
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   
 
@@ -81,8 +83,14 @@ function SuperEmployeeLeads() {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        // `https://crmdemo.vimubds5.a2hosted.com/api/leads-visits/${id}`
-           `https://crmdemo.vimubds5.a2hosted.com/api/leads`
+
+          //  `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${id}`
+            "https://crmdemo.vimubds5.a2hosted.com/api/leads-super-admin",
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }}
       );
       const data = response.data;
       console.log(data);
@@ -94,7 +102,12 @@ function SuperEmployeeLeads() {
  
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee-super-admin",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
