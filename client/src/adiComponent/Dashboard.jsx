@@ -12,6 +12,7 @@ import axios from "axios";
 import LeadsGraph from "./LeadsGraph";
 import QuotationGraph from "./QuotationGraph";
 import AdminOverviewDash from "./AdminOverviewDash";
+import Projectshow from "../components/Project/projectshow";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -52,6 +53,7 @@ const Dashboard = () => {
             <QuotationGraph />
           </div>
           <LeadsReport />
+          <Projectshow/>
           {/* <ToDoList /> */}
         </div>
       </div>

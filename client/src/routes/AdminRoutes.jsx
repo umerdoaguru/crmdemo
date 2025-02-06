@@ -49,6 +49,8 @@ import Admin_QuotationView from "../components/Leads/Admin_QuotationView";
 import Admin_FollowUpView from "../components/Leads/Admin_FollowUpView";
 import AdminProfile from "../components/AdminProfile";
 import Admin_RemarksView from "../components/Leads/Admin_RemarksView";
+import RealEstateProjectForm from "../components/Project/RealEstateProjectForm";
+import Units from "../components/Project/units";
 
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -139,6 +141,8 @@ function AdminRoutes() {
         <Route path="/reporting" element={<Reporting />} />
         <Route path="/admin-report" element={<AdminReport />} />
         <Route path="/admin-profile" element={<AdminProfile />} />
+        <Route path="/admin-project" element={<RealEstateProjectForm/>} />
+        <Route path="/project-units" element={<Units/>} />
       </Routes>
     </>
   );

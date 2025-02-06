@@ -58,6 +58,15 @@ const Sider = () => {
               </Link>
             </li>
 
+            <li className={`xl:w-full ${getSidebarClass("/admin-project")}`}>
+              <Link to="/admin-project" className="flex flex-col items-center py-3">
+                <RiSecurePaymentLine className="text-white text-2xl md:text-3xl" />
+                <h3 className="text-xs max-md:pt-3 lg:inline text-white md:text-base">
+                  Project
+                </h3>
+              </Link>
+            </li>
+
             <hr className="w-full border-gray-400" />
 
             <li className={`xl:w-full ${getSidebarClass("/leads")}`}>

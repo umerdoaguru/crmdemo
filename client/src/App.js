@@ -56,6 +56,7 @@ function App() {
           ) : (
             <Route path="/" element={<Navigate to="/main_page_crm" />} />
           )}
+          
           {/* Catch-all route to redirect unauthorized users */}
           <Route path="*" element={<Navigate to="/" />} />
 

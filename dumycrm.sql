@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 22, 2025 at 09:38 PM
--- Server version: 10.5.26-MariaDB-cll-lve
--- PHP Version: 8.3.14
+-- Host: 127.0.0.1
+-- Generation Time: Feb 06, 2025 at 12:40 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `vimubdsa_crmonetime`
+-- Database: `dumycrm`
 --
 
 -- --------------------------------------------------------
@@ -743,6 +743,28 @@ INSERT INTO `payments` (`payment_id`, `month`, `received_amount`, `due_amount`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `projects`
+--
+
+CREATE TABLE `projects` (
+  `main_project_id` int(55) NOT NULL,
+  `project_name` varchar(255) DEFAULT NULL,
+  `project_id` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `total_area` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`main_project_id`, `project_name`, `project_id`, `location`, `total_area`) VALUES
+(21, 'nirvana homes exotica', 'nh_01_04', 'JABALPUR', 500000.00),
+(22, 'SS construction', 'Ss_01_01', 'JABALPUR', 600000.00);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quotations_data`
 --
 
@@ -1002,6 +1024,25 @@ INSERT INTO `todo_items` (`id`, `title`, `time`, `date`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `units`
+--
+
+CREATE TABLE `units` (
+  `unit_id` int(55) NOT NULL,
+  `main_project_id` int(11) NOT NULL COMMENT 'Refers to the main project associated with the unit',
+  `unit_type` enum('1BHK','2BHK','3BHK','Bungalow','Commercial','Plot') DEFAULT NULL COMMENT 'Type of the unit',
+  `unit_size` decimal(10,2) DEFAULT NULL COMMENT 'Size of the unit',
+  `total_units` int(11) DEFAULT NULL COMMENT 'Total number of units',
+  `units_sold` int(11) NOT NULL DEFAULT 0 COMMENT 'Number of units sold',
+  `units_remaining` int(11) DEFAULT NULL COMMENT 'Remaining units calculated automatically',
+  `base_price` decimal(10,2) DEFAULT NULL,
+  `additional_costs` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `amenities` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_data`
 --
 
@@ -1201,6 +1242,13 @@ ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`);
 
 --
+-- Indexes for table `projects`
+--
+ALTER TABLE `projects`
+  ADD PRIMARY KEY (`main_project_id`),
+  ADD UNIQUE KEY `crm_project_id_index` (`project_id`);
+
+--
 -- Indexes for table `quotations_data`
 --
 ALTER TABLE `quotations_data`
@@ -1248,6 +1296,13 @@ ALTER TABLE `services_data`
 --
 ALTER TABLE `todo_items`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `units`
+--
+ALTER TABLE `units`
+  ADD PRIMARY KEY (`unit_id`),
+  ADD KEY `Foreign Key` (`main_project_id`) USING BTREE;
 
 --
 -- Indexes for table `user_data`
@@ -1387,6 +1442,12 @@ ALTER TABLE `payments`
   MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `projects`
+--
+ALTER TABLE `projects`
+  MODIFY `main_project_id` int(55) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
 -- AUTO_INCREMENT for table `quotations_data`
 --
 ALTER TABLE `quotations_data`
@@ -1435,6 +1496,12 @@ ALTER TABLE `todo_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `units`
+--
+ALTER TABLE `units`
+  MODIFY `unit_id` int(55) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user_data`
 --
 ALTER TABLE `user_data`
@@ -1473,6 +1540,12 @@ ALTER TABLE `invoice_notes`
 --
 ALTER TABLE `leadstable`
   ADD CONSTRAINT `leadstable_ibfk_1` FOREIGN KEY (`form_id`) REFERENCES `formtable` (`form_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `units`
+--
+ALTER TABLE `units`
+  ADD CONSTRAINT ` fk_main_project_id` FOREIGN KEY (`main_project_id`) REFERENCES `projects` (`main_project_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

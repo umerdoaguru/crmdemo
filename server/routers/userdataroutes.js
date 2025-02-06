@@ -36,6 +36,17 @@ const {
   getLeadsVisit,
   getLeadsByIdVisit,
   quotationInformationForm,
+  addProject,
+  getAllProjects,
+  deleteProject,
+  editProject,
+  addUnit,
+  getUnits,
+  getUnitById,
+  getUnitsByProject,
+  deleteUnit,
+  updateUnit,
+  updateUnitmanualy,
 } = require("../controllers/UserController");
 const upload = require("../controllers/fileUploadController");
 const upload1 = require("../config/multerConfig"); // Import multer configuration
@@ -248,5 +259,19 @@ router.post("/admin-login", adminLogin);
 
 router.post("/employee-login", employeelogin);
 router.post("/admin-login", adminLogin);
+
+// Product Related routes
+router.post("/project-add", addProject);
+router.get("/all-project", getAllProjects);
+router.delete("/delete-project/:id", deleteProject);
+router.put("/edit-project/:id", editProject);
+
+router.post("/add-unit", addUnit);
+router.get('/units', getUnits);
+router.get('/units/unit', getUnitById);
+router.get('/units/project', getUnitsByProject);
+router.delete("/delete-unit/:id", deleteUnit);
+router.put("/edit-unit/:id", updateUnit);
+router.put('/updateUnitmanualy/:unit_id', updateUnitmanualy);
 
 module.exports = router;

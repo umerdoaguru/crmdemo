@@ -20,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
-app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.json({ limit: "10mb" })); 
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use("/api", Router3);
 app.use("/api", Router2);
@@ -186,6 +186,7 @@ const convertXMLToJSON = (xml) => {
 // fetchDataAndSave();
 // // Fetch data every 10 minutes
 // setInterval(fetchDataAndSave, 10 * 60 * 1000); // 10 <minutes></minutes>
+
 const fetchDataAndSave = async () => {
   try {
     const url =
