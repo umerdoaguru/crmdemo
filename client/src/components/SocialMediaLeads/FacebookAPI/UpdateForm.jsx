@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 import ReactPaginate from "react-paginate";
 
-const UpdateForm = ({setShowUpdateForm}) => {
+const UpdateForm = ({setShowUpdateForm,id}) => {
   const [form, setForm] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(4); // Number of items per page
   const [filterText, setFilterText] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [render, setRender] = useState(false);
-  const { id } = useParams();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const UpdateForm = ({setShowUpdateForm}) => {
   const fetchFormData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/forms`
+        `http://localhost:9000/api/forms/${id}`
       );
       setForm(response.data.reverse());
       console.log(response);

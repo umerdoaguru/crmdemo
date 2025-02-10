@@ -79,9 +79,9 @@ const Sider = () => {
             </li>
 
             <hr className="w-full border-gray-400" />
-              <li className={`xl:w-full ${getSidebarClass("/social-media-leads")}`}>
+              <li className={`xl:w-full ${getSidebarClass("/main-social-media-leads")}`}>
                 <Link
-                  to="/social-media-leads"
+                  to="/main-social-media-leads"
                   className="flex flex-col items-center py-3"
                 >
                   <FaHistory className="text-white text-2xl md:text-3xl" />
@@ -116,7 +116,7 @@ const Sider = () => {
               </Link>
             </li>
 
-            <hr className="w-full border-gray-400" />
+            {/* <hr className="w-full border-gray-400" />
 
             <li className={`xl:w-full ${getSidebarClass("/quotation-section")}`}>
               <Link
@@ -128,7 +128,7 @@ const Sider = () => {
                   Quotation 
                 </h3>
               </Link>
-            </li>
+            </li> */}
 
             <hr className="w-full border-gray-400" />
 

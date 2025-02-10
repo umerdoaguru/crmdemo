@@ -312,8 +312,7 @@ fetchFollowUp();
       <th className="px-6 py-3 border-b-2 border-gray-300">Employee ID</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Follow-Up Status</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Payment Mode</th>
-      <th className="px-6 py-3 border-b-2 border-gray-300">Quotation</th>
-      <th className="px-6 py-3 border-b-2 border-gray-300">Quotation Status</th>
+
       <th className="px-6 py-3 border-b-2 border-gray-300">Reason</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Registry</th>
     
@@ -344,8 +343,7 @@ fetchFollowUp();
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.employeeId}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.follow_up_status}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.payment_mode}</td>
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.quotation}</td>
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.quotation_status}</td>
+ 
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.reason}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.registry}</td>
 

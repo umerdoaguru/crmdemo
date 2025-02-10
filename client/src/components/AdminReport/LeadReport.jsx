@@ -31,8 +31,6 @@ function LeadReport() {
         "employeeId",
         "follow_up_status",
         "payment_mode",
-        "quotation",
-        "quotation_status",
         "reason",
         "registry",
       
@@ -143,8 +141,7 @@ function LeadReport() {
             employeeId: "Employee ID",
             follow_up_status: "Follow-up Status",
             payment_mode: "Payment Mode",
-            quotation: "Quotation",
-            quotation_status: "Quotation Status",
+           
             reason: "Reason",
             registry: "Registry",
            

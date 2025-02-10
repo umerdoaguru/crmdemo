@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const 
-
-
-
-FormInput = ({ setShowForm,onFormSubmit }) => {
+const FormInput = ({ setShowForm,onFormSubmit,id }) => {
   const [formId, setFormId] = useState('');
   const [formName, setFormName] = useState('');
   const [success, setSuccess] = useState('');
@@ -19,7 +15,7 @@ FormInput = ({ setShowForm,onFormSubmit }) => {
       // Make POST request to save form ID and form name
       const response = await axios.post('http://localhost:9000/api/forms', {
         formId,
-        formName
+        formName,project_id:id
       });
 
       if (response.status === 200) {

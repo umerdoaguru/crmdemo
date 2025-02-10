@@ -231,7 +231,7 @@ function Single_Lead_Profile() {
         <div className="">
               {/* Conditionally render the View Quotation button */}
               <div className="flex">
-                {quotationCreated ? (
+                {/* {quotationCreated ? (
                   <button
                     onClick={() => handleViewQuotation(leads[0])}
                     className="bg-blue-500 text-white px-4 py-2 mx-1 rounded"
@@ -242,7 +242,7 @@ function Single_Lead_Profile() {
                   <p className="text-white bg-red-400 text-center px-4 py-2 mx-1 rounded">
                     Quotation not yet created
                   </p>
-                )}
+                )} */}
 
                 {/* Conditionally render the View Quotation button */}
                 {visitCreated ? (
@@ -309,8 +309,7 @@ function Single_Lead_Profile() {
       <th className="px-6 py-3 border-b-2 border-gray-300">Employee ID</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Follow-Up Status</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Payment Mode</th>
-      <th className="px-6 py-3 border-b-2 border-gray-300">Quotation</th>
-      <th className="px-6 py-3 border-b-2 border-gray-300">Quotation Status</th>
+
       <th className="px-6 py-3 border-b-2 border-gray-300">Reason</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Registry</th>
     
@@ -341,8 +340,7 @@ function Single_Lead_Profile() {
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.employeeId}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.follow_up_status}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.payment_mode}</td>
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.quotation}</td>
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.quotation_status}</td>
+
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.reason}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.registry}</td>
 

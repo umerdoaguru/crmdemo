@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const FormSelector = ({  setLoading, setMe, setError, onFormSelect  }) => {
+const FormSelector = ({  setLoading, setMe, setError,id, onFormSelect  }) => {
   const [forms, setForms] = useState([]);
   const [selectedFormId, setSelectedFormId] = useState('');
   const [selectedFormName, setSelectedFormName] = useState('');
@@ -9,7 +9,7 @@ const FormSelector = ({  setLoading, setMe, setError, onFormSelect  }) => {
   // Fetch forms from backend
   const fetchForms = async () => {
     try {
-      const response = await axios.get('http://localhost:9000/api/forms');
+      const response = await axios.get(`http://localhost:9000/api/forms/${id}`);
       setForms(response.data.reverse());
     } catch (err) {
       console.error('Error fetching forms:', err);

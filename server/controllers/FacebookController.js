@@ -3,15 +3,15 @@ const { db } = require("../db");
 const axios = require('axios');
 // Save form data to the database
 const saveForm = (req, res) => {
-  const { formId, formName } = req.body;
+  const { formId, formName,project_id } = req.body;
 
   if (!formId || !formName) {
     return res.status(400).json({ error: 'Form ID and Form Name are required' });
   }
 
   db.query(
-    'INSERT INTO formtable (form_id, form_name) VALUES (?, ?)',
-    [formId, formName],
+    'INSERT INTO formtable (form_id, form_name,project_id) VALUES (?, ?,?)',
+    [formId, formName,project_id],
     (err, result) => {
       if (err) {
         console.error('Error inserting form data:', err);
@@ -86,6 +86,17 @@ const deleteForm = (req, res) => {
 // Fetch all forms from the database
 const getAllForms = (req, res) => {
   db.query('SELECT * FROM formtable', (err, results) => {
+    if (err) {
+      console.error('Error fetching forms:', err);
+      return res.status(500).json({ error: 'Failed to fetch forms' });
+    }
+    res.status(200).json(results);
+  });
+};
+const getByProjectIdForms = (req, res) => {
+  const { id } = req.params;
+
+  db.query('SELECT * FROM formtable WHERE project_id = ?', [id], (err, results) => {
     if (err) {
       console.error('Error fetching forms:', err);
       return res.status(500).json({ error: 'Failed to fetch forms' });
@@ -176,4 +187,4 @@ const extractFieldValue = (fieldData, fieldName) => {
   return field ? field.values[0] : '';
 };
 
-module.exports = { saveForm,updateForm,deleteForm, getAllForms, fetchLeads, getLeadsByFormId };
+module.exports = { saveForm,updateForm,deleteForm, getAllForms, fetchLeads, getLeadsByFormId,getByProjectIdForms };

@@ -109,7 +109,7 @@ const SuperAdminSider = () => {
               </Link>
             </li>
 
-            <hr className="w-full border-gray-400" /> 
+            {/* <hr className="w-full border-gray-400" /> 
 
             <li className={`xl:w-full ${getSidebarClass("/super-admin-quotationlist")}`}>
               <Link
@@ -121,7 +121,7 @@ const SuperAdminSider = () => {
                   All Quotations
                 </h3>
               </Link>
-            </li>
+            </li> */}
 
             <hr className="w-full border-gray-400" />
 

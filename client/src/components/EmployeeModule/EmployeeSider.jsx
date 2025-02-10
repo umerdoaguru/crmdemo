@@ -86,7 +86,7 @@ const EmployeeeSider = () => {
               </Link>
             </li>
 
-            <hr className="w-full border-gray-400" />
+            {/* <hr className="w-full border-gray-400" />
 
             <li className={`xl:w-full ${getSidebarClass("/employee-all-quotation")}`}>
               <Link to="/employee-all-quotation" className="flex flex-col items-center py-1">
@@ -95,7 +95,7 @@ const EmployeeeSider = () => {
                   Quotation 
                 </h3>
               </Link>
-            </li>
+            </li> */}
 
             <hr className="w-full border-gray-400" />
 

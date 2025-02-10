@@ -51,6 +51,8 @@ import AdminProfile from "../components/AdminProfile";
 import Admin_RemarksView from "../components/Leads/Admin_RemarksView";
 import RealEstateProjectForm from "../components/Project/RealEstateProjectForm";
 import Units from "../components/Project/units";
+import MainSocialMediaByProject from "../components/AdminSocialMediaByProject/MainSocialMediaByProject";
+import SocialMediaLeads from "../components/AdminSocialMediaByProject/SocialMediaLeads";
 
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -73,7 +75,9 @@ function AdminRoutes() {
         <Route path="/admin-total-visit" element={<TotalVisit />} />
 
         <Route path="/leads" element={<Leads />} />
-        <Route path="/social-media-leads" element={<MainSocialLeads />} />
+        {/* <Route path="/social-media-leads" element={<MainSocialLeads />} /> */}
+        <Route path="/main-social-media-leads" element={<MainSocialMediaByProject />} />
+        <Route path="/social-media-leads/:id" element={<SocialMediaLeads />} />
         <Route path="/quotation-form" element={<QuotationForm1 />} />
         <Route path="/quotation-section" element={<CreateCompanyProfile />} />
         <Route path="/data-export" element={<DataExport />} />
