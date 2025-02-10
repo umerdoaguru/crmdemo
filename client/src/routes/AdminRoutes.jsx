@@ -51,6 +51,7 @@ import AdminProfile from "../components/AdminProfile";
 import Admin_RemarksView from "../components/Leads/Admin_RemarksView";
 import RealEstateProjectForm from "../components/Project/RealEstateProjectForm";
 import Units from "../components/Project/units";
+import ProjectDashBoard from "../components/Project/ProjectDashboard";
 
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -138,6 +139,7 @@ function AdminRoutes() {
           path="/singleOrganization/:id"
           element={<SingleOrganization />}
         />
+        <Route path="/Project-Dash" element={<ProjectDashBoard />} />
         <Route path="/reporting" element={<Reporting />} />
         <Route path="/admin-report" element={<AdminReport />} />
         <Route path="/admin-profile" element={<AdminProfile />} />

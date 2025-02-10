@@ -1367,7 +1367,7 @@ const addProject = (req, res) => {
 };
 
 const getAllProjects = (req, res) => {
-  const query = "SELECT * FROM projects";
+  const query = "SELECT * FROM projects"; 
 
   db.query(query, (err, results) => {
     if (err) {
@@ -1422,46 +1422,36 @@ const deleteProject = (req, res) => {
 };
 
 const addUnit = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+  const { main_project_id, unit_type, unit_size, total_units, base_price } = req.body;
+
+  console.log(main_project_id, unit_type, unit_size, total_units, base_price );
+  
+  if (!main_project_id || !unit_type || !unit_size || !total_units) {
+    return res.status(400).json({ message: "Missing required fields" });
   }
 
-  const { main_project_id, unit_type, unit_size, total_units, base_price, additional_costs, amenities } = req.body;
-
-  const query = `INSERT INTO units (main_project_id, unit_type, unit_size, total_units, base_price, additional_costs, amenities)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  const query = `INSERT INTO units (main_project_id, unit_type, unit_size, total_units, base_price) 
+                 VALUES (?, ?, ?, ?, ?)`;
 
   try {
-      const result = await new Promise((resolve, reject) => {
-          db.query(query, [main_project_id, unit_type, unit_size, total_units, base_price, additional_costs, amenities], (err, result) => {
-              if (err) {
-                  reject(err);
-              } else {
-                  resolve(result);
-              }
-          });
+    const result = await new Promise((resolve, reject) => {
+      db.query(query, [main_project_id, unit_type, unit_size, total_units, base_price], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
       });
+    });
 
-      res.status(200).json({
-          message: 'Unit added successfully',
-          unit_id: result.insertId,
-          data: {
-              main_project_id,
-              unit_type,
-              unit_size,
-              total_units,
-              base_price,
-              additional_costs,
-              amenities
-          }
-      });
+    res.status(200).json({
+      message: "Unit added successfully",
+      unit_id: result.insertId,
+      data: { main_project_id, unit_type, unit_size, total_units, base_price }
+    });
   } catch (err) {
-      console.error('Error inserting unit:', err);
-      res.status(500).json({
-          message: 'Failed to add unit',
-          error: err.message || 'Unknown error'
-      });
+    console.error("Error inserting unit:", err);
+    res.status(500).json({ message: "Failed to add unit", error: err.message || "Unknown error" });
   }
 };
 
@@ -1545,7 +1535,7 @@ const deleteUnit = async (req, res) => {
 const getUnits = async (req, res) => {
   const { main_project_id, unit_type } = req.query;
 
-  let query = 'SELECT * FROM units';
+  let query = 'SELECT * FROM units ORDER BY unit_id DESC;';
   let queryParams = [];
 
   // Apply filters if provided in the query
