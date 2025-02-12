@@ -7,6 +7,7 @@ import SuperFormInput from './SuperFormInput';
 import SuperUpdateForm from './SuperUpdateForm';
 import SuperFormSelector from './SuperSelectForm';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const SuperLeadsTable = () => {
   const [leads, setLeads] = useState([]);
@@ -20,7 +21,7 @@ const SuperLeadsTable = () => {
   
   const [leadsAssigned, setLeadsAssigned] = useState([]);
   const [refreshLeads, setRefreshLeads] = useState(false);  // State to trigger refresh
-
+ const {id} = useParams();
 
   // Fetch leads based on selected form ID
   // const fetchLeadsByFormId = async (formId) => {
@@ -300,7 +301,7 @@ setLoadingsave(false)
 
       {/* Conditional rendering for forms */}
       {showForm && <SuperFormInput setShowForm={setShowForm} onFormSubmit={handleRefreshLeads} />}
-      {showUpdateForm && <SuperUpdateForm setShowUpdateForm={setShowUpdateForm} />}
+      {showUpdateForm && <SuperUpdateForm setShowUpdateForm={setShowUpdateForm}  id = {id}/>}
     </div>
       
       <h1 className="text-2xl font-bold mb-4">Select Form to Fetch Leads</h1>
@@ -308,7 +309,7 @@ setLoadingsave(false)
       {/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
 
       {/* <FormSelector setLoading={setLoading} setMe={setGotId} setError={setError} onFormSelect={handleFormSelect} /> */}
-      <SuperFormSelector setLoading={setLoading} setMe={setGotId} setError={setError} onFormSelect={(formId, formName) => handleFormSelect(formId, formName)} />
+      <SuperFormSelector setLoading={setLoading} setMe={setGotId} setError={setError} id={id} onFormSelect={(formId, formName) => handleFormSelect(formId, formName)} />
 
 
       {loading && <p>Loading...</p>}

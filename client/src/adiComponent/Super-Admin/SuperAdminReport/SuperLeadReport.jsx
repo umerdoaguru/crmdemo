@@ -30,12 +30,11 @@ function SuperLeadReport() {
         "employeeId",
         "follow_up_status",
         "payment_mode",
-        "quotation",
-        "quotation_status",
+      
         "reason",
         "registry",
       
-        "subject",
+        "project_name",
         "visit",
         "d_closeDate",
         "createdTime",
@@ -142,12 +141,11 @@ function SuperLeadReport() {
             employeeId: "Employee ID",
             follow_up_status: "Follow-up Status",
             payment_mode: "Payment Mode",
-            quotation: "Quotation",
-            quotation_status: "Quotation Status",
+          
             reason: "Reason",
             registry: "Registry",
            
-            subject: "Project",
+            project_name: "Project",
             visit: "Visit",
             d_closeDate: "Close Date",
             createdTime: "Assigned Date",

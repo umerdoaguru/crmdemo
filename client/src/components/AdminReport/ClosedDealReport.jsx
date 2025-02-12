@@ -34,12 +34,11 @@ const ClosedDealReport = () => {
     "employeeId",
     "follow_up_status",
     "payment_mode",
-    "quotation",
-    "quotation_status",
+
     "reason",
     "registry",
    
-    "subject",
+    "project_name",
     "visit",
     "d_closeDate",
     "createdTime",
@@ -148,12 +147,11 @@ const ClosedDealReport = () => {
       employeeId: "Employee ID",
       follow_up_status: "Follow-up Status",
       payment_mode: "Payment Mode",
-      quotation: "Quotation",
-      quotation_status: "Quotation Status",
+      
       reason: "Reason",
       registry: "Registry",
       
-      subject: "Project",
+      project_name: "Project Name",
       visit: "Visit",
       d_closeDate: "Close Date",
       createdTime: "Assigned Date",
@@ -272,9 +270,7 @@ const ClosedDealReport = () => {
                 <th className="px-6 py-3 border-b-2 border-gray-300">
                   FollowUp Status
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300">
-                  Project
-                </th>
+               
                 <th className="px-6 py-3 border-b-2 border-gray-300">
                   Deal Status
                 </th>
@@ -324,9 +320,7 @@ const ClosedDealReport = () => {
                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                       {lead.follow_up_status}
                     </td>
-                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                      {lead.subject}
-                    </td>
+                 
                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                       {lead.deal_status}
                     </td>

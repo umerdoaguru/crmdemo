@@ -824,12 +824,12 @@ const createLead = (req, res) => {
     assignedTo,
     leadSource,
     employeeId,
-    subject,address,
+    project_name,address,
     createdTime,
     actual_date,
     assignedBy,
   } = req.body;
-  const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,subject,address,createdTime,actual_date,assignedBy) VALUES (?,?,?,?,?,?, ?, ?, ?, ?,?)`;
+  const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,project_name,address,createdTime,actual_date,assignedBy) VALUES (?,?,?,?,?,?, ?, ?, ?, ?,?)`;
   db.query(
     sql,
     [
@@ -839,7 +839,7 @@ const createLead = (req, res) => {
       assignedTo,
       leadSource,
       employeeId,
-      subject,address,
+      project_name,address,
       createdTime,
       actual_date,
       assignedBy
@@ -926,13 +926,13 @@ const updateLead = async (req, res) => {
       employeeId,
       createdTime,
       actual_date,
-      subject,
+      project_name,
       address,
     } = req.body;
 
     // Construct SQL query to update the lead
     const sql = `UPDATE leads 
-                 SET lead_no = ?, name = ?, phone = ?, assignedTo = ?, employeeId = ?, leadSource = ?, createdTime = ?, actual_date = ?, subject = ?, address = ? 
+                 SET lead_no = ?, name = ?, phone = ?, assignedTo = ?, employeeId = ?, leadSource = ?, createdTime = ?, actual_date = ?, project_name = ?, address = ? 
                  WHERE lead_id = ?`;
 
     // Execute the update query asynchronously
@@ -948,7 +948,7 @@ const updateLead = async (req, res) => {
           leadSource,
           createdTime,
           actual_date,
-          subject,
+          project_name,
           address, // added to the SQL query
           leadId,
         ],

@@ -3,17 +3,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Leads from "../pages/Leads";
-
-import CreateCompanyProfile from "../pages/Quotation/CreateCompanyProfile";
-
-import EmployeeManagement from "../adiComponent/EmployManagement";
-
-import Reporting from "../adiComponent/Reporting";
-
-import QuotationList from "../pages/Quotation/QuotationList";
-import AdminQuotationVIew from "../pages/Quotation/AdminQuotationVIew";
-
 import SuperDash from "../adiComponent/SuperDash";
 // import AdminManagement from "../adiComponent/AdminManagement";
 import SuperAdminLead from "../adiComponent/Super-Admin/SuperAdminLead";
@@ -41,6 +30,10 @@ import Super_view_followup from "../adiComponent/Super-Admin/Super_view_followup
 import SuperMainSocialLeads from "../adiComponent/Super-Admin/SocialMediaSectionSuperAdmin/SuperMainSocialLeads";
 import Super_view_remarks from "../adiComponent/Super-Admin/Super_view_remaks";
 import SuperEmployeedatabyid from "../adiComponent/Super-Admin/SuperEmployeedatabyid";
+import SuperMainSocialMediaByProject from './../adiComponent/Super-Admin/SuperSocialMedia/SuperMainSocialMediaByProject';
+import SuperSocialMediaLeads from './../adiComponent/Super-Admin/SuperSocialMedia/SuperSocialMediaLeads';
+import SuperProjectDashBoard from './../adiComponent/Super-Admin/SuperAdminProject/SuperProjectDashboard';
+import Superunits from './../adiComponent/Super-Admin/SuperAdminProject/Superunits';
 
 function SuperAdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -112,8 +105,12 @@ function SuperAdminRoutes() {
           path="/super-admin-data-export"
           element={<SuperDataExport />}
         />
-        <Route path="/social-media-super-admin-leads" element={<SuperMainSocialLeads />} />
- 
+        <Route path="/main-social-media-super-admin-leads" element={<SuperMainSocialMediaByProject />} />
+        <Route path="/social-media-superleads/:id" element={<SuperSocialMediaLeads />} />
+
+        <Route path="/super-admin-project-dash" element={<SuperProjectDashBoard />} />
+        <Route path="/super-admin-project-units" element={<Superunits/>} />
+
       </Routes>
     </>
   );

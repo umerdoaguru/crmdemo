@@ -23,7 +23,7 @@ function Leads() {
     name: "",
     phone: "",
     leadSource: "",
-    subject: "",
+    project_name: "",
     address: "",
     actual_date: "",
   });
@@ -51,6 +51,7 @@ function Leads() {
   const [meetingStatusFilter, setMeetingStatusFilter] = useState("");
   const [monthFilter, setMonthFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("asc"); 
+  const [projects, setProjects] = useState([]);
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
 
@@ -58,7 +59,7 @@ function Leads() {
   useEffect(() => {
     fetchLeads();
     fetchEmployees();
-    // fetchVisit();
+    fetchProjects();
   }, []);
 
   const fetchLeads = async () => {
@@ -91,18 +92,15 @@ function Leads() {
       console.error("Error fetching employees:", error);
     }
   };
-  // const fetchVisit = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:9000/api/employe-all-visit`
-  //     );
-  //     console.log(response.data);
-  //     setVisit(response.data);
-  //     // Ensure proper comparison with 'Created', trim any spaces and normalize the case
-  //   } catch (error) {
-  //     console.error("Error fetching quotations:", error);
-  //   }
-  // };
+  const fetchProjects = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:9000/api/all-project");
+      setProjects(data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+     
+    }
+  };
 
   const validateForm = () => {
     let formErrors = {};
@@ -139,8 +137,8 @@ function Leads() {
       formErrors.leadSource = "Lead Source is required";
       isValid = false;
     }
-    if (!currentLead.subject) {
-      formErrors.subject = "Subject is required";
+    if (!currentLead.project_name) {
+      formErrors.project_name = "project is required";
       isValid = false;
     }
     if (!currentLead.address) {
@@ -191,7 +189,7 @@ function Leads() {
       phone: "",
       leadSource: "",
       createdTime: "", // Clear out createdTime for new lead
-      subject: "",
+      project_name: "",
       address: "",
       actual_date: "",
     });
@@ -223,48 +221,6 @@ function Leads() {
   };
 
 
-  // const saveChanges = async () => {
-  //   if (validateForm()) {
-  //     // Use custom lead source if "Other" is selected
-  //     const leadData = {
-  //       ...currentLead,
-  //       leadSource:
-  //         currentLead.leadSource === "Other"
-  //           ? customLeadSource
-  //           : currentLead.leadSource,
-  //     };
-
-  //     try {
-  //       if (isEditing) {
-  //         await axios.put(
-  //           `http://localhost:9000/api/leads/${currentLead.lead_id}`,
-  //           leadData
-  //         );
-  //         fetchLeads(); // Refresh the list
-  //         closePopup();
-  //       } catch (error) {
-  //         console.error("Error updating lead:", error);
-  //       }
-  //     }
-
-  //        else {
-  //         try {
-
-  //         await axios.post("http://localhost:9000/api/leads", leadData);
-  //         const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Subject:%20${currentLead.subject}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
-
-  //         // Open WhatsApp link
-  //         window.open(whatsappLink, "_blank");
-  //         fetchLeads(); // Refresh the list
-  //         closePopup();
-        
-  
-
-  //     } catch (error) {
-  //       console.error("Error saving lead:", error);
-  //     }
-  //   }
-  // };
 
   const saveChanges = async () => {
     if (validateForm()) {
@@ -294,7 +250,7 @@ function Leads() {
           await axios.post("http://localhost:9000/api/leads", leadData);
   
           // Construct WhatsApp message link with encoded parameters
-          const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Subject:%20${currentLead.subject}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
+          const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Project Name:%20${currentLead.project_name}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
   
           // Open WhatsApp link in a new tab
           window.open(whatsappLink, "_blank");
@@ -458,15 +414,7 @@ function Leads() {
     setErrors({});
   };
 
-  // const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
-  // const currentLeads = filteredLeads.slice(
-  //   currentPage * leadsPerPage,
-  //   (currentPage + 1) * leadsPerPage
-  // );
 
-  // const handlePageClick = (data) => {
-  //   setCurrentPage(data.selected);
-  // };
 
   // Calculate total number of pages
 const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
@@ -976,6 +924,7 @@ const toggleSortOrder = () => {
                   )}
                 </div>
 
+
                 {/* Hidden employeeId field */}
                 <input
                   type="hidden"
@@ -1071,18 +1020,25 @@ const toggleSortOrder = () => {
                   )}
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Project</label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={currentLead.subject}
+                  <label className="block text-gray-700">Project Name</label>
+                  <select
+                    name="project_name"
+                    id="project_name"
+                    value={currentLead.project_name}
                     onChange={handleInputChange}
                     className={`w-full px-3 py-2 border ${
-                      errors.subject ? "border-red-500" : "border-gray-300"
+                      errors.project_name ? "border-red-500" : "border-gray-300"
                     } rounded`}
-                  />
-                  {errors.subject && (
-                    <span className="text-red-500">{errors.subject}</span>
+                  >
+                    <option value="">Select Project Name</option>
+                    {projects.map((project) => (
+                      <option key={project.project_id} value={project.project_name}>
+                        {project.project_name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.project_name && (
+                    <span className="text-red-500">{errors.project_name}</span>
                   )}
                 </div>
                 <div className="mb-4">

@@ -43,8 +43,7 @@ function SuperEmployeeLeads() {
 
   
 
-
-  const [currentLead, setCurrentLead] = useState({
+ const [currentLead, setCurrentLead] = useState({
     lead_no: "",
     assignedTo: "",
     employeeId: "",
@@ -53,10 +52,9 @@ function SuperEmployeeLeads() {
     name: "",
     phone: "",
     leadSource: "",
-    subject: "",
+    project_name: "",
     address: "",
     actual_date: "",
-   
   });
 
   const [showPopup, setShowPopup] = useState(false);
@@ -65,7 +63,7 @@ function SuperEmployeeLeads() {
   const [customLeadSource, setCustomLeadSource] = useState("");
   const superadminuser = useSelector((state) => state.auth.user);
   const token = superadminuser.token;
-
+  const [projects, setProjects] = useState([]);
   
 
 
@@ -78,6 +76,7 @@ function SuperEmployeeLeads() {
     fetchLeads();
     fetchEmployees();
     // fetchVisit();
+    fetchProjects();
   }, []);
 
   const fetchLeads = async () => {
@@ -111,6 +110,15 @@ function SuperEmployeeLeads() {
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
+    }
+  };
+  const fetchProjects = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:9000/api/all-project");
+      setProjects(data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+     
     }
   };
 
@@ -315,8 +323,8 @@ const validateForm = () => {
     formErrors.leadSource = "Lead Source is required";
     isValid = false;
   }
-  if (!currentLead.subject) {
-    formErrors.subject = "Subject is required";
+  if (!currentLead.project_name) {
+    formErrors.project_name = "project is required";
     isValid = false;
   }
   if (!currentLead.address) {
@@ -357,7 +365,7 @@ const handleInputChangelead = (e) => {
 };
 
 const handleCreateClick = () => {
-  
+ 
   setCurrentLead({
     lead_no: "",
     assignedTo: "",
@@ -367,10 +375,9 @@ const handleCreateClick = () => {
     phone: "",
     leadSource: "",
     createdTime: "", // Clear out createdTime for new lead
-    subject: "",
+    project_name: "",
     address: "",
     actual_date: "",
-   
   });
   setShowPopup(true);
 };
@@ -400,7 +407,7 @@ const saveChanges = async () => {
         await axios.post("http://localhost:9000/api/leads", leadData);
 
         // Construct WhatsApp message link with encoded parameters
-        const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Project:%20${currentLead.subject}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
+        const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Project:%20${currentLead.project_name}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
 
         // Open WhatsApp link in a new tab
         window.open(whatsappLink, "_blank");
@@ -993,6 +1000,7 @@ const closeModalLead = () => {
                     <span className="text-red-500">{errors.assignedTo}</span>
                   )}
                 </div>
+                
 
                 {/* Hidden employeeId field */}
                 <input
@@ -1089,18 +1097,24 @@ const closeModalLead = () => {
                   )}
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700">Project</label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={currentLead.subject}
+                  <label className="block text-gray-700">Project Name</label>
+                  <select
+                    name="project_name"
+                    value={currentLead.project_name}
                     onChange={handleInputChangelead}
                     className={`w-full px-3 py-2 border ${
-                      errors.subject ? "border-red-500" : "border-gray-300"
+                      errors.project_name ? "border-red-500" : "border-gray-300"
                     } rounded`}
-                  />
-                  {errors.subject && (
-                    <span className="text-red-500">{errors.subject}</span>
+                  >
+                    <option value="">Select Project Name </option>
+                    {projects.map((project) => (
+                      <option key={project.project_id} value={project.project_name}>
+                        {project.project_name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.project_name && (
+                    <span className="text-red-500">{errors.project_name}</span>
                   )}
                 </div>
                 <div className="mb-4">

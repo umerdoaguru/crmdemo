@@ -8,6 +8,7 @@ import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import UpdateForm from './UpdateForm';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const LeadsTable = () => {
   const [leads, setLeads] = useState([]);
@@ -16,23 +17,10 @@ const LeadsTable = () => {
   const [error, setError] = useState('');
   const [gotId, setGotId] = useState("");
   const [selectedFormId, setSelectedFormId] = useState(''); // Store selected form ID
-  const [showForm, setShowForm] = useState(false);  
+  const [showForm, setShowForm,] = useState(false);  
   const [showUpdateForm, setShowUpdateForm] = useState(false);  
-  
   const [leadsAssigned, setLeadsAssigned] = useState([]);
   const [refreshLeads, setRefreshLeads] = useState(false);  // State to trigger refresh
-
-
-  // Fetch leads based on selected form ID
-  // const fetchLeadsByFormId = async (formId) => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:9000/api/Leads-data-fetch/${formId}`);
-  //     setLeads(response.data);
-  //   } catch (err) {
-  //     console.error('Error fetching leads:', err);
-  //     setError('Failed to fetch leads');
-  //   }
-  // };
   const [showPopup, setShowPopup] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [employees, setEmployees] = useState([]);
@@ -50,6 +38,7 @@ const LeadsTable = () => {
   const [leadsPerPage] = useState(10);
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
+  const {id} = useParams();
 
   const fetchLeadsByFormId = async () => {
     try {
@@ -301,8 +290,8 @@ setLoadingsave(false)
       </div>
 
       {/* Conditional rendering for forms */}
-      {showForm && <FormInput setShowForm={setShowForm} onFormSubmit={handleRefreshLeads} />}
-      {showUpdateForm && <UpdateForm setShowUpdateForm={setShowUpdateForm} />}
+      {showForm && <FormInput setShowForm={setShowForm} onFormSubmit={handleRefreshLeads} id = {id}  />}
+      {showUpdateForm && <UpdateForm setShowUpdateForm={setShowUpdateForm} id={id} />}
     </div>
       
       <h1 className="text-2xl font-bold mb-4">Select Form to Fetch Leads</h1>
@@ -310,7 +299,7 @@ setLoadingsave(false)
       {/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
 
       {/* <FormSelector setLoading={setLoading} setMe={setGotId} setError={setError} onFormSelect={handleFormSelect} /> */}
-      <FormSelector setLoading={setLoading} setMe={setGotId} setError={setError} onFormSelect={(formId, formName) => handleFormSelect(formId, formName)} />
+      <FormSelector setLoading={setLoading} setMe={setGotId} setError={setError} id={id} onFormSelect={(formId, formName) => handleFormSelect(formId, formName)} />
 
 
       {loading && <p>Loading...</p>}
