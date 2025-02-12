@@ -72,9 +72,9 @@ const SuperAdminSider = () => {
 
 
               <hr className="w-full border-gray-400" />
-              <li className={`xl:w-full ${getSidebarClass("/social-media-leads")}`}>
+              <li className={`xl:w-full ${getSidebarClass("/main-social-media-super-admin-leads")}`}>
                 <Link
-                  to="/social-media-super-admin-leads"
+                  to="/main-social-media-super-admin-leads"
                   className="flex flex-col items-center py-3"
                 >
                   <FaHistory className="text-white text-2xl md:text-3xl" />
@@ -122,6 +122,18 @@ const SuperAdminSider = () => {
                 </h3>
               </Link>
             </li> */}
+             <hr className="w-full border-gray-400" />
+            <li className={`xl:w-full ${getSidebarClass("/super-admin-project-dash")}`}>
+              <Link
+                to="/super-admin-project-dash"
+                className="flex flex-col items-center py-3"
+              >
+                <MdOutlineManageAccounts className="text-white text-2xl md:text-3xl" />
+                <h3 className="text-xs text-center max-md:pt-3 lg:inline text-white md:text-base">
+                  Project
+                </h3>
+              </Link>
+            </li>
 
             <hr className="w-full border-gray-400" />
 
@@ -137,6 +149,7 @@ const SuperAdminSider = () => {
               </Link>
             </li>
 
+           
             <hr className="w-full border-gray-400" />
             <li className={`xl:w-full ${getSidebarClass("/super-admin-AdminManagement")}`}>
               <Link

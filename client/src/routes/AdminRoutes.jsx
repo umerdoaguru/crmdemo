@@ -53,7 +53,7 @@ import RealEstateProjectForm from "../components/Project/RealEstateProjectForm";
 import Units from "../components/Project/units";
 import MainSocialMediaByProject from "../components/AdminSocialMediaByProject/MainSocialMediaByProject";
 import SocialMediaLeads from "../components/AdminSocialMediaByProject/SocialMediaLeads";
-
+import ProjectDashBoard from './../components/Project/ProjectDashboard';
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
   return (
@@ -142,6 +142,7 @@ function AdminRoutes() {
           path="/singleOrganization/:id"
           element={<SingleOrganization />}
         />
+        <Route path="/Project-Dash" element={<ProjectDashBoard />} />
         <Route path="/reporting" element={<Reporting />} />
         <Route path="/admin-report" element={<AdminReport />} />
         <Route path="/admin-profile" element={<AdminProfile />} />

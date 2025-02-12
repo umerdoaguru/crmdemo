@@ -4,7 +4,7 @@ import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import cogoToast from "cogo-toast";
 
-const Projectshow = () => {
+const Superprojectshow = () => {
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [projectsPerPage] = useState(7);
@@ -182,7 +182,7 @@ const Projectshow = () => {
                   </td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                   <button
-  onClick={() => (window.location.href = "/project-units")}
+  onClick={() => (window.location.href = "/super-admin-project-units")}
   className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
 >
 Profile
@@ -368,4 +368,4 @@ Profile
   );
 };
 
-export default Projectshow;
+export default Superprojectshow;

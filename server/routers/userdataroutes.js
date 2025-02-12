@@ -290,7 +290,7 @@ router.get("/leads-super-admin/:id",authenticateSuperAdmin, getleadbyid);
 router.get("/employe-visit-super-admin/:id",authenticateSuperAdmin, getEmployeeVisit);
 router.get("/get-quotation-byLead-super-admin/:id",authenticateSuperAdmin, getLeadQuotation);
 
-// Product Related routes
+// Project Related routes
 router.post("/project-add", addProject);
 router.get("/all-project", getAllProjects);
 router.delete("/delete-project/:id", deleteProject);

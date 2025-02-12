@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import cogoToast from "cogo-toast"; 
 
-const RealEstateProjectForm = () => {
+const SuperRealEstateProjectForm = () => {
   const [formData, setFormData] = useState({
     projectName: "",
     projectId: "",
@@ -114,4 +114,4 @@ const RealEstateProjectForm = () => {
   );
 };
 
-export default RealEstateProjectForm;
+export default SuperRealEstateProjectForm;

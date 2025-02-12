@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import cogoToast from "cogo-toast";
 import axios from 'axios';
 
-const Units = () => {
+const Superunits = () => {
   const [unitData, setUnitData] = useState({
     main_project_id: '',
     unit_type: '',
@@ -135,4 +135,4 @@ const Units = () => {
   );
 };
 
-export default Units;
+export default Superunits;

@@ -1,41 +1,31 @@
 import React, { useState } from 'react'
-import MainHeader from './../MainHeader';
-import Sider from '../Sider';
-
 
 import { GiFiles } from 'react-icons/gi';
 import { SiMoneygram } from 'react-icons/si';
 
 
-import WebsiteLeads from './../SocialMediaLeads/WebsiteApi/WebsiteLeads';
-import Accrs from './../SocialMediaLeads/AccrsLeads';
-import LeadsTable from './../SocialMediaLeads/FacebookAPI/LeadsTable';
-import { useNavigate } from 'react-router-dom';
+import SuperWebsiteLeads from './../SocialMediaSectionSuperAdmin/SuperWebsiteLeads';
+import SuperAccrs from './../SocialMediaSectionSuperAdmin/SuperAccrsLeads';
+import MainHeader from './../../../components/MainHeader';
+import SuperAdminSider from './../SuperAdminSider';
+import SuperLeadsTable from './../SocialMediaSectionSuperAdmin/SuperFacebookAPI/SuperLeadsTable';
 
 
 
 
-function SocialMediaLeads() {
+function SuperSocialMediaLeads() {
     const [selectedComponent, setSelectedComponent] = useState('FacebookData');  // Set 'FacebookData' as default
-  const navigate = useNavigate();
+
   return (
    <>
    <MainHeader/>
-   <Sider/>
+   <SuperAdminSider/>
 
-   <div className="container 2xl:w-[93%] 2xl:ml-32 ">   
-    <div className="mt-[7rem] mx-4 ">
-      <button
-            onClick={() => navigate(-1)}
-            className="bg-blue-500 text-white px-3 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Back
-          </button>
-          </div>
-      <h1 className="text-2xl text-center  font-medium">Social Media Leads</h1>
+   <div className="container 2xl:w-[93%] 2xl:ml-32 ">
+      <h1 className="text-2xl text-center mt-[5rem] font-medium">Social Media Leads</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
-        <div className="flex flex-wrap justify-around mt-3">
+        <div className="flex flex-wrap justify-around mt-5">
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
@@ -54,8 +44,8 @@ function SocialMediaLeads() {
               </div>
             </div>
           </div>
-
-          {/* <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+{/* 
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
                 selectedComponent === 'WebsiteData' ? 'bg-blue-500 text-white' : ''
@@ -99,9 +89,9 @@ function SocialMediaLeads() {
         {/* Conditionally render the selected component */}
         <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
           {/* {selectedComponent === 'FacebookData' && <FacebookLeads />} */}
-          {selectedComponent === 'FacebookData' && <LeadsTable />}
-          {selectedComponent === 'WebsiteData' && < WebsiteLeads/>}
-          {selectedComponent === '99AcresData' && < Accrs/>}
+          {selectedComponent === 'FacebookData' && <SuperLeadsTable />}
+          {selectedComponent === 'WebsiteData' && < SuperWebsiteLeads/>}
+          {selectedComponent === '99AcresData' && < SuperAccrs/>}
        
         </div>
       </div>
@@ -111,4 +101,4 @@ function SocialMediaLeads() {
   )
 }
 
-export default SocialMediaLeads
+export default SuperSocialMediaLeads;

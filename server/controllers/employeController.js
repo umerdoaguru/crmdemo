@@ -116,7 +116,7 @@ const updateLeadStatus = async (req, res) => {
     const { id } = req.params;
     const {
       lead_status,
-      quotation_status,
+      
 
       deal_status,
       meeting_status,
@@ -134,7 +134,7 @@ const updateLeadStatus = async (req, res) => {
 
     console.log(
       lead_status,
-      quotation_status,
+      
 
       deal_status,
       meeting_status,
@@ -151,7 +151,7 @@ const updateLeadStatus = async (req, res) => {
 
     const sql = `UPDATE leads SET 
                       lead_status = ?, 
-                      quotation_status = ?, 
+                      
                       
                       deal_status = ?, 
                       meeting_status=?,
@@ -170,7 +170,7 @@ const updateLeadStatus = async (req, res) => {
         sql,
         [
           lead_status,
-          quotation_status,
+          
 
           deal_status,
           meeting_status,

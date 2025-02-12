@@ -907,7 +907,7 @@ console.log(totalVisit);
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.reason}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.registry}</td>
 
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.subject}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.project_name}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.visit}</td>
     <td className="px-6 py-4 border-b border-gray-200 font-semibold text-gray-800">
       {lead.d_closeDate === "pending"
