@@ -35,6 +35,12 @@ const Projectshow = () => {
         cogoToast.success("Project added successfully!", { position: "top-right" });
         setAddProject(false);
         fetchProjects();
+        setFormData({
+          projectName: "",
+          projectId: "",
+          location: "",
+          total_area: "",
+        });
       } else {
         cogoToast.error("Failed to add project.", { position: "top-right" });
       }
@@ -156,6 +162,7 @@ const handlePageClick = ({ selected }) => {
               </tr>
             )}
           </tbody>
+         
         </table>
       </div>
       
@@ -197,6 +204,7 @@ const handlePageClick = ({ selected }) => {
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter project name"
+                    required
                   />
                 </div>
                 <div>
@@ -208,6 +216,7 @@ const handlePageClick = ({ selected }) => {
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter unique project ID"
+                    required
                   />
                 </div>
               </div>
@@ -223,6 +232,7 @@ const handlePageClick = ({ selected }) => {
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter project location"
+                    required
                   />
                 </div>
                 <div>
@@ -233,7 +243,8 @@ const handlePageClick = ({ selected }) => {
                     value={formData.total_area}
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., 1BHK, 2BHK"
+                    placeholder="e.g., 5000sqft, 40000sqft"
+                    required
                   />
                 </div>
               </div>

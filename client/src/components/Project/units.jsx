@@ -65,7 +65,7 @@ const Units = () => {
 
       cogoToast.success("Unit added successfully!", { position: "top-center" });
       fetchUnits();
-
+      setaddunit();
       setUnitData({
         main_project_id: id  || "", 
         unit_type: "",
@@ -82,7 +82,8 @@ const Units = () => {
   };
 
  const handleaddunit = () =>{
-  setaddunit((prev) => !prev); 
+  setaddunit((prev) => !prev);
+
  }
 
   const handleEdit = (unit) => {
