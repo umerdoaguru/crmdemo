@@ -1421,6 +1421,33 @@ const deleteProject = (req, res) => {
   });
 };
 
+const updateUnit = async (req, res) => {
+  const unit_id = req.params.id;
+  const { unit_type, unit_size, total_units, units_sold, base_price } = req.body;
+
+  const sql = `UPDATE units 
+               SET unit_type = ?, 
+                   unit_size = ?, 
+                   total_units = ?, 
+                   units_sold = ?, 
+                   base_price = ? 
+               WHERE unit_id = ?`; 
+
+  db.query(sql, [unit_type, unit_size, total_units, units_sold, base_price, unit_id], (err, result) => {
+    if (err) {
+      console.error("Error updating Unit:", err);
+      return res.status(500).json({ message: "Server error", error: err });
+    }
+
+    if (result.affectedRows > 0) {
+      res.status(200).json({ message: "Unit updated successfully" });
+    } else {
+      res.status(404).json({ message: "Unit not found" });
+    }
+  });
+};
+
+
 const addUnit = async (req, res) => {
   const { main_project_id, unit_type, unit_size, total_units, base_price } = req.body;
 
@@ -1455,81 +1482,24 @@ const addUnit = async (req, res) => {
   }
 };
 
-const updateUnit = async (req, res) => {
-  const unit_id = req.params.unit_id;
-  const { unit_type, unit_size, total_units, units_sold, base_price, additional_costs, amenities } = req.body;
 
-  const query = `UPDATE units SET unit_type = ?, unit_size = ?, total_units = ?, units_sold = ?, base_price = ?, additional_costs = ?, amenities = ?
-                  WHERE unit_id = ?`;
-
-  try {
-      const result = await new Promise((resolve, reject) => {
-          db.query(query, [unit_type, unit_size, total_units, units_sold, base_price, additional_costs, amenities, unit_id], (err, result) => {
-              if (err) {
-                  reject(err);
-              } else {
-                  resolve(result);
-              }
-          });
-      });
-
-      if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Unit not found for update' });
-      }
-
-      res.status(200).json({
-          message: 'Unit updated successfully',
-          data: {
-              unit_id,
-              unit_type,
-              unit_size,
-              total_units,
-              units_sold,
-              base_price,
-              additional_costs,
-              amenities
-          }
-      });
-  } catch (err) {
-      console.error('Error updating unit:', err);
-      res.status(500).json({
-          message: 'Failed to update unit',
-          error: err.message || 'Unknown error'
-      });
-  }
-};
 
 const deleteUnit = async (req, res) => {
-  const unit_id = req.params.unit_id;
+  const unit_id = req.params.id;
 
-  const query = `DELETE FROM units WHERE unit_id = ?`;
+  const sql = `DELETE FROM units WHERE unit_id = ?`;
+  db.query(sql, [unit_id], (err, result) => {
+    if (err) {
+      console.error("Error deleting unit:", err);
+      return res.status(500).json({ message: "Server error", error: err });
+    }
 
-  try {
-      const result = await new Promise((resolve, reject) => {
-          db.query(query, [unit_id], (err, result) => {
-              if (err) {
-                  reject(err);
-              } else {
-                  resolve(result);
-              }
-          });
-      });
-
-      if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Unit not found for deletion' });
-      }
-
-      res.status(200).json({
-          message: 'Unit deleted successfully',
-          unit_id
-      });
-  } catch (err) {
-      console.error('Error deleting unit:', err);
-      res.status(500).json({
-          message: 'Failed to delete unit',
-          error: err.message || 'Unknown error'
-      });
-  }
+    if (result.affectedRows > 0) {
+      res.status(200).json({ message: "Unit deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Unit not found" });
+    }
+  });
 };
 
 const getUnits = async (req, res) => {
@@ -1583,17 +1553,17 @@ const getUnits = async (req, res) => {
 };
 
 const getUnitById = async (req, res) => {
-  const unit_id = req.query.unit_id;
+  const project_id = req.params.id; 
 
-  if (!unit_id) {
-      return res.status(400).json({ message: 'unit_id is required as a query parameter' });
+  if (!project_id) {
+      return res.status(400).json({ message: 'project_id is required in the URL' });
   }
 
-  const query = 'SELECT * FROM units WHERE unit_id = ?';
+  const query = 'SELECT * FROM projects WHERE main_project_id = ?'; // `main_project_id` primary key hai
 
   try {
       const result = await new Promise((resolve, reject) => {
-          db.query(query, [unit_id], (err, result) => {
+          db.query(query, [project_id], (err, result) => {
               if (err) {
                   reject(err);
               } else {
@@ -1603,20 +1573,42 @@ const getUnitById = async (req, res) => {
       });
 
       if (result.length === 0) {
-          return res.status(404).json({ message: 'Unit not found' });
+          return res.status(404).json({ message: 'Project not found' });
       }
 
       res.status(200).json({
-          message: 'Unit retrieved successfully',
+          message: 'Project retrieved successfully',
           data: result[0]
       });
   } catch (err) {
-      console.error('Error fetching unit:', err);
+      console.error('Error fetching project:', err);
       res.status(500).json({
-          message: 'Failed to fetch unit',
+          message: 'Failed to fetch project',
           error: err.message || 'Unknown error'
       });
   }
+};
+
+const getUnitsdistributeById = (req, res) => {
+  const { id } = req.params; // This 'id' will be used as 'main_project_id'
+
+  if (!id) {
+      return res.status(400).json({ message: "main_project_id is required" });
+  }
+
+  const query = "SELECT * FROM units WHERE main_project_id = ?";
+
+  db.query(query, [id], (err, results) => {
+      if (err) {
+          return res.status(500).json({ message: "Database error", error: err.message });
+      }
+
+      if (results.length === 0) {
+          return res.status(404).json({ message: "No units found for this project" });
+      }
+
+      return res.status(200).json({data: results});
+  });
 };
 
 const getUnitsByProject = async (req, res) => {
@@ -1752,4 +1744,5 @@ module.exports = {
   getUnitById,
   getUnitsByProject,
   updateUnitmanualy,
+  getUnitsdistributeById,
 };

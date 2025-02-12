@@ -49,11 +49,13 @@ import Admin_QuotationView from "../components/Leads/Admin_QuotationView";
 import Admin_FollowUpView from "../components/Leads/Admin_FollowUpView";
 import AdminProfile from "../components/AdminProfile";
 import Admin_RemarksView from "../components/Leads/Admin_RemarksView";
-import RealEstateProjectForm from "../components/Project/RealEstateProjectForm";
+// import RealEstateProjectForm from "../components/Project/RealEstateProjectForm";
 import Units from "../components/Project/units";
 import MainSocialMediaByProject from "../components/AdminSocialMediaByProject/MainSocialMediaByProject";
 import SocialMediaLeads from "../components/AdminSocialMediaByProject/SocialMediaLeads";
 import ProjectDashBoard from './../components/Project/ProjectDashboard';
+import DashProject from "../components/Project/DashProject";
+
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
   return (
@@ -146,8 +148,9 @@ function AdminRoutes() {
         <Route path="/reporting" element={<Reporting />} />
         <Route path="/admin-report" element={<AdminReport />} />
         <Route path="/admin-profile" element={<AdminProfile />} />
-        <Route path="/admin-project" element={<RealEstateProjectForm/>} />
-        <Route path="/project-units" element={<Units/>} />
+        {/* <Route path="/project-units" element={<Units/>} /> */}
+        <Route path="/project-units/:id" element={<Units />} />
+        <Route path="/admin-project" element={<DashProject/>} />
       </Routes>
     </>
   );
