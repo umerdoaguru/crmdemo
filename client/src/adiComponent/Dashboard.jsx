@@ -54,7 +54,6 @@ const Dashboard = () => {
             <DealClosedGraph/>
           </div>
           <LeadsReport />
-          <Projectshow/>
           {/* <ToDoList /> */}
         </div>
       </div>

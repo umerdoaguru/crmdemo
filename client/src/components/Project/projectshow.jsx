@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import cogoToast from "cogo-toast";
+import { Link } from "react-router-dom";
 
 const Projectshow = () => {
   const [projects, setProjects] = useState([]);
@@ -12,47 +13,6 @@ const Projectshow = () => {
   const [editProject, setEditProject] = useState({});
   const [addProject, setAddProject] = useState();
 
-  const [addunits, setUnits] = useState(false);
-
-  // const [unitData, setUnitData] = useState({
-  //   main_project_id: '',
-  //   unit_type: '',
-  //   unit_size: '',
-  //   total_units: '',
-  //   base_price: '',
-  //   additional_costs: '',
-  //   amenities: '',
-  // });
-  
-  // const handleUnitChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setUnitData((prevData) => ({ ...prevData, [name]: value }));
-  // };
-  
-  // const handleUnitSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:9000/api/project-add", unitData);
-  
-  //     if (response.status === 200) {
-  //       cogoToast.success("Unit added successfully!", { position: "top-right" });
-  //       setUnits(false); // Modal ko band karne ke liye
-  //     } else {
-  //       cogoToast.error("Failed to add unit.", { position: "top-right" });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submitting the form:", error);
-  //     cogoToast.error("An error occurred while submitting the form.", { position: "top-right" });
-  //   }
-  // };
-
-  // const handleAddUnits = () => {
-  //   setUnits(true);
-  // };
-
-  // const handleCloseUnits = () => {
-  //   setUnits(false);
-  // };
 
   const [formData, setFormData] = useState({
     projectName: "",
@@ -133,13 +93,14 @@ const Projectshow = () => {
     }
   };
 
-  const indexOfLastProject = (currentPage + 1) * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
+  const itemsPerPage = 4;
+  const offset = currentPage * itemsPerPage;
+  const currentItems = projects.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(projects.length / itemsPerPage);
 
-  const handlePageClick = (data) => {
-    setCurrentPage(data.selected);
-  };
+const handlePageClick = ({ selected }) => {
+  setCurrentPage(selected);
+};
 
   return (
     <div className="p-4 mt-6 bg-white rounded-lg shadow-lg mx-7 mb-2">
@@ -151,8 +112,8 @@ const Projectshow = () => {
       >
         Add Project
       </button>
-
     </div>
+
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white border">
           <thead>
@@ -167,28 +128,26 @@ const Projectshow = () => {
             </tr>
           </thead>
           <tbody>
-            {currentProjects.length > 0 ? (
-              currentProjects.map((project, index) => (
+            {currentItems.length > 0 ? (
+              currentItems.map((project, index) => (
                 <tr key={project.main_project_id} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{currentPage * projectsPerPage + index + 1}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_name}</td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_id}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.main_project_id }</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.location}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.total_area}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                     <button onClick={() => handleEdit(project)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
                     <button onClick={() => handleDelete(project.main_project_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
-                    {/* <button onClick={handleAddUnits} className="ml-2 text-green-600 hover:text-green-800"><FaBoxOpen /></button> */}
                   </td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                  <button
-  onClick={() => (window.location.href = "/project-units")}
-  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
->
-Profile
-</button>
+                    
+                  <Link to={`/project-units/${project.main_project_id}`} className="inline-block">
+                  <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                   Profile
+                  </button>
+                  </Link>
                   </td>
-                  
                 </tr>
               ))
             ) : (
@@ -199,22 +158,32 @@ Profile
           </tbody>
         </table>
       </div>
+      
       <div className="mt-4 flex justify-center">
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          breakLabel={"..."}
-          pageCount={Math.ceil(projects.length / projectsPerPage)}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={3}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-        />
+      <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        breakLabel={"..."}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        nextClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        nextLinkClassName={"page-link"}
+        breakClassName={"page-item"}
+        breakLinkClassName={"page-link"}
+
+      />
       </div>
 
       {addProject && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
           <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Add Real Estate Project</h1>
             <form onSubmit={handleSubmit}>
@@ -290,49 +259,6 @@ Profile
         </div>
       )}
 
-      {addunits && (
-        <div> </div>
-        // <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        //   <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
-        //     <h1 className="text-2xl font-bold text-gray-800 mb-4">Add Real Estate Unit</h1>
-        //     <form onSubmit={handleUnitSubmit} className="bg-white p-6 shadow-lg rounded-lg">
-        //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        //         <input type="number" name="main_project_id" value={unitData.main_project_id} onChange={handleUnitChange} placeholder="Project ID" className="p-3 border rounded-lg w-full" required />
-        //         <select name="unit_type" value={unitData.unit_type} onChange={handleUnitChange} className="p-3 border rounded-lg w-full" required>
-        //           <option value="">Select Unit Type</option>
-        //           <option value="1BHK">1BHK</option>
-        //           <option value="2BHK">2BHK</option>
-        //           <option value="3BHK">3BHK</option>
-        //           <option value="Bungalow">Bungalow</option>
-        //           <option value="Commercial">Commercial</option>
-        //           <option value="Plot">Plot</option>
-        //         </select>
-        //       </div>
-
-        //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-        //         <input type="number" name="unit_size" value={unitData.unit_size} onChange={handleUnitChange} placeholder="Unit Size" className="p-3 border rounded-lg w-full" required />
-        //         <input type="number" name="total_units" value={unitData.total_units} onChange={handleUnitChange} placeholder="Total Units" className="p-3 border rounded-lg w-full" required />
-        //       </div>
-
-        //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-        //         <input type="number" name="base_price" value={unitData.base_price} onChange={handleUnitChange} placeholder="Base Price" className="p-3 border rounded-lg w-full" required />
-        //         <input type="number" name="additional_costs" value={unitData.additional_costs} onChange={handleUnitChange} placeholder="Additional Costs" className="p-3 border rounded-lg w-full" />
-        //       </div>
-
-        //       <textarea name="amenities" value={unitData.amenities} onChange={handleUnitChange} placeholder="Amenities" className="w-full p-3 mt-4 border rounded-lg" rows="3" />
-              
-        //       <div className="flex justify-center items-center gap-4 mt-4">
-        //       <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"> Add Unit </button>
-        //       <button type="button" onClick={handleCloseUnits} className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition">Close Unit</button>
-        //       </div>
-        //     </form>
-
-        //     {/* Close Button */}
-            
-        //   </div>
-        // </div>
-      )}
-
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg">
@@ -364,6 +290,8 @@ Profile
           </div>
         </div>
       )}
+
+       
     </div>
   );
 };

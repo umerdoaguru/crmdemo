@@ -9,9 +9,11 @@ import axios from "axios";
 // import Sider from '../components/Sider';
 import { SiMoneygram } from "react-icons/si";
 import { MdOutlineNextWeek } from "react-icons/md";
-import { GiFiles, GiMoneyStack } from "react-icons/gi";
+import { GiFiles } from "react-icons/gi";
+import { AiOutlineProject } from "react-icons/ai";
+// import { FaProjectDiagram } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaProjectDiagram } from "react-icons/fa";
 import { logoutUser } from "../store/UserSlice";
 import cogoToast from "cogo-toast";
 
@@ -26,6 +28,7 @@ const AdminOverviewDash = () =>  {
   const [employee, setEmployee] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState("LeadData"); // Set 'LeadData' as default
   const [visit , setVisit] = useState([]);
+  const [project , setProjects] = useState([]);
 
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
@@ -65,6 +68,7 @@ const AdminOverviewDash = () =>  {
       console.error("Error fetching employee data:", error);
     }
   };
+
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
@@ -83,6 +87,26 @@ const AdminOverviewDash = () =>  {
       console.error("Error fetching quotations:", error);
     }
   };
+
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/all-project`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setProjects(response.data);
+
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+
 
   // const fetchQuotation = async () => {
   //   try {
@@ -105,6 +129,7 @@ const AdminOverviewDash = () =>  {
 
   
   useEffect(() => {
+    fetchProjects();
     fetchLeads();
     fetchEmployee();
   fetchVisit();
@@ -115,13 +140,37 @@ const AdminOverviewDash = () =>  {
   const closedCount = leads.filter(
     (lead) => lead.deal_status === "close"
   ).length; 
-  
   const visitCount = visit.length;
+  const projectCount = project.length
 
   return (
     <>
       <div className="flex flex-wrap justify-around mt-5">
-        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
+
+        {/* All Project data */}
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3 ">
+          <Link to="/admin-project">
+            <div
+              className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600 border-1"
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div className=" text-3xl text-gray-700">
+                  <AiOutlineProject />
+                </div>
+                <div className="mt-2">
+                  <h5 className="text-gray-800 text-xl font-semibold ">
+                    Total Projects
+                  </h5>
+                  <p className="text-gray-800 text-xl font-semibold ">
+                    {projectCount}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3 ">
           <Link to="/admin-total-leads">
             <div
               className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600 border-1" // Change background color if active
@@ -144,7 +193,7 @@ const AdminOverviewDash = () =>  {
           </Link>
         </div>
 
-        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/admin-total-visit">
             <div className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600">
               <div className="p-4 flex flex-col items-center text-center">
@@ -164,7 +213,7 @@ const AdminOverviewDash = () =>  {
           </Link>
         </div>
 
-        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/admin-total-employees">
             <div
               className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600" // Change background color if active
@@ -186,8 +235,9 @@ const AdminOverviewDash = () =>  {
             </div>
           </Link>
         </div>
+
          {/* Card for Closed Data */}
-         <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+         <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/admin-total-closed">
             <div
               className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
@@ -231,7 +281,7 @@ const AdminOverviewDash = () =>  {
             </div>
           </Link>
         </div>
-        
+
       </div>
     </>
   );
