@@ -131,7 +131,7 @@ const DashProject = () => {
                     <Link to={`/project-units/${project.main_project_id}`} className="inline-block">
                     {project.project_name}
                     </Link></td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_id}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.main_project_id}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.location}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.total_area}</td>
                 </tr>

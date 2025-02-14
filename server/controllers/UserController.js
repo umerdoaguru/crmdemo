@@ -1339,21 +1339,22 @@ const getLeadsVisit = (req, res) => {
 // Project Related apis
 const addProject = (req, res) => {
   const {
-    projectName, projectId, location, total_area,
+    projectName, location, total_area,
   } = req.body;
-
-  if (!projectName || !projectId || !location) {
+  console.log(projectName, location, total_area,);
+  
+  if (!projectName ||!location || !total_area ) {
     return res.status(400).json({ error: "Required fields are missing." });
   }
 
   const query = `
     INSERT INTO projects (
-      project_name, project_id, location, total_area 
-    ) VALUES (?, ?, ?, ?)
+      project_name, location, total_area 
+    ) VALUES (?, ?, ?)
   `;
 
   const values = [
-    projectName, projectId, location, total_area,
+    projectName, location, total_area,
   ];
 
   db.query(query, values, (err, result) => {
@@ -1381,15 +1382,15 @@ const getAllProjects = (req, res) => {
 
 const editProject = (req, res) => {
   const { id } = req.params;
-  const { project_name, project_id, location, total_area } = req.body;
+  const { project_name, location, total_area } = req.body;
 
   const sql = `
     UPDATE projects
-    SET project_name = ?, project_id = ?, location = ?, total_area = ?
+    SET project_name = ?, location = ?, total_area = ?
     WHERE main_project_id = ?
   `;
 
-  db.query(sql, [project_name, project_id, location, total_area, id], (err, result) => {
+  db.query(sql, [project_name, location, total_area, id], (err, result) => {
     if (err) {
       console.error("Error updating project:", err);
       return res.status(500).json({ message: "Server error", error: err });
@@ -1423,17 +1424,16 @@ const deleteProject = (req, res) => {
 
 const updateUnit = async (req, res) => {
   const unit_id = req.params.id;
-  const { unit_type, unit_size, total_units, units_sold, base_price } = req.body;
+  const { unit_type, unit_size, total_units, base_price } = req.body;
 
   const sql = `UPDATE units 
                SET unit_type = ?, 
                    unit_size = ?, 
                    total_units = ?, 
-                   units_sold = ?, 
                    base_price = ? 
                WHERE unit_id = ?`; 
 
-  db.query(sql, [unit_type, unit_size, total_units, units_sold, base_price, unit_id], (err, result) => {
+  db.query(sql, [unit_type, unit_size, total_units, base_price, unit_id], (err, result) => {
     if (err) {
       console.error("Error updating Unit:", err);
       return res.status(500).json({ message: "Server error", error: err });
@@ -1446,7 +1446,6 @@ const updateUnit = async (req, res) => {
     }
   });
 };
-
 
 const addUnit = async (req, res) => {
   const { main_project_id, unit_type, unit_size, total_units, base_price } = req.body;
@@ -1481,8 +1480,6 @@ const addUnit = async (req, res) => {
     res.status(500).json({ message: "Failed to add unit", error: err.message || "Unknown error" });
   }
 };
-
-
 
 const deleteUnit = async (req, res) => {
   const unit_id = req.params.id;
