@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import cogoToast from "cogo-toast";
+import { Link } from "react-router-dom";
 
 const Superprojectshow = () => {
   const [projects, setProjects] = useState([]);
@@ -181,12 +182,11 @@ const Superprojectshow = () => {
                     {/* <button onClick={handleAddUnits} className="ml-2 text-green-600 hover:text-green-800"><FaBoxOpen /></button> */}
                   </td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                  <button
-  onClick={() => (window.location.href = "/super-admin-project-units")}
-  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
->
-Profile
-</button>
+                  <Link to={`/super-admin-project-units/${project.main_project_id}`} className="inline-block">
+                  <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                   Profile
+                  </button>
+                  </Link>
                   </td>
                   
                 </tr>

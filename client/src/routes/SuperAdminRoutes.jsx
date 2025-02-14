@@ -109,7 +109,7 @@ function SuperAdminRoutes() {
         <Route path="/social-media-superleads/:id" element={<SuperSocialMediaLeads />} />
 
         <Route path="/super-admin-project-dash" element={<SuperProjectDashBoard />} />
-        <Route path="/super-admin-project-units" element={<Superunits/>} />
+        <Route path="/super-admin-project-units/:id" element={<Superunits/>} />
 
       </Routes>
     </>

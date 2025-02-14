@@ -1006,6 +1006,16 @@ console.log(totalVisit);
                 <div className="mb-4">
                   <label className="block text-gray-700">Lead Number</label>
                   <input
+                    type="text"
+                    name="lead_no"
+                    value={leads[0].project_name}
+                    onChange={handleInputChangeVisit}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Lead Number</label>
+                  <input
                     type="number"
                     name="lead_no"
                     value={leads[0].lead_no}
