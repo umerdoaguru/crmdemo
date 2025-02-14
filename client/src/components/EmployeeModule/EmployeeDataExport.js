@@ -245,6 +245,7 @@ import MainHeader from "../MainHeader";
 import EmployeeSider from "./EmployeeSider";
 import EmployeeVisitData from "./EmployeeDataExport/EmployeeVisitData";
 import EmployeeCloseData from "./EmployeeDataExport/EmployeeCloseData";
+import Employee_Single_Lead_Profile from "../Leads/Employee_Single_Lead_Profile";
 
 function DataExport() {
   const [leads, setLeads] = useState([]);
@@ -359,6 +360,7 @@ function DataExport() {
         <center className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></center>
 
         <div className="flex flex-wrap justify-around mt-5">
+          
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
             <div
               className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
@@ -577,6 +579,7 @@ function DataExport() {
 
         {/* Conditionally render the selected component */}
         <div className="w-full mb-20">
+          {/* {selectedComponent === "ProjectName" && <Employee_Single_Lead_Profile />} */}
           {selectedComponent === "LeadData" && <EmployeeLeadData />}
           {selectedComponent === "QuotationData" && <EmployeeQuotationData />}
           {selectedComponent === "InvoiceData" && <EmployeeInvoiceData />}

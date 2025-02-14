@@ -18,6 +18,7 @@ const EmpClosedDealReport = () => {
   const [duration, setDuration] = useState("all"); // Default is "all"
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedColumns, setSelectedColumns] = useState([
+    "project_name",
     "lead_no",
     "assignedTo",
     "name",
@@ -117,6 +118,7 @@ const EmpClosedDealReport = () => {
   const downloadExcel = () => {
     // Map to rename keys for export
     const columnMapping = {
+      project_name:"Project Name",
         lead_no: "Lead Number",
         assignedTo: "Assigned To",
         name: "Name",
@@ -157,6 +159,8 @@ const EmpClosedDealReport = () => {
             (col === "actual_date" || col === "createdTime") && lead[col]
               ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
               : lead[col]; // Format dates or copy value
+              console.log(selectedColumns);
+              
         });
   
         // Ensure renamed dates are included, even if not in selectedColumns
@@ -226,6 +230,9 @@ const EmpClosedDealReport = () => {
               <tr>
                 <th className="px-6 py-3 border-b-2 border-gray-300">S.no</th>
                 <th className="px-6 py-3 border-b-2 border-gray-300">
+                  Project Name
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300">
                   Lead Number
                 </th>
                 <th className="px-6 py-3 border-b-2 border-gray-300">
@@ -270,6 +277,9 @@ const EmpClosedDealReport = () => {
                   >
                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                       {index + 1 + currentPage * leadsPerPage}
+                    </td>
+                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
+                      {lead.project_name}
                     </td>
                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                       {lead.lead_no}

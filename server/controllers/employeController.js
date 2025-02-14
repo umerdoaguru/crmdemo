@@ -326,8 +326,10 @@ const getEmployeeVisit = async (req, res) => {
     res.status(500).json({ message: "Internal Server Erro, error: errr" });
   }
 };
+
 const createVisit = (req, res) => {
   const {
+    project_name,
     lead_id,
     name,
     employeeId,
@@ -338,6 +340,7 @@ const createVisit = (req, res) => {
   } = req.body;
 
   const sql = `INSERT INTO visit (
+    project_name,
     lead_id,
     name,
     employeeId,
@@ -345,11 +348,11 @@ const createVisit = (req, res) => {
     visit,
     visit_date
    
-  ) VALUES (?,?,?,?,?,?)`;
+  ) VALUES (?,?,?,?,?,?,?)`;
 
   db.query(
     sql,
-    [lead_id, name, employeeId, employee_name, visit, visit_date],
+    [project_name, lead_id, name, employeeId, employee_name, visit, visit_date],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: "Error inserting data" });
@@ -362,9 +365,11 @@ const createVisit = (req, res) => {
     }
   );
 };
+
 const updateVisit = (req, res) => {
   const {
     id, // Unique identifier for the visit
+    project_name,
     lead_id,
     name,
     employeeId,
@@ -375,13 +380,14 @@ const updateVisit = (req, res) => {
   } = req.body;
 
   // Basic validation
-  if (!id || !visit || !visit_date || !report) {
+  if (!id || !project_name || !visit || !visit_date || !report) {
     return res
       .status(400)
       .json({ error: "Please provide all required fields." });
   }
 
   const sql = `UPDATE visit SET 
+    project_name = ?,
     lead_id = ?, 
     name = ?, 
     employeeId = ?, 
@@ -393,7 +399,7 @@ const updateVisit = (req, res) => {
 
   db.query(
     sql,
-    [lead_id, name, employeeId, employee_name, visit, visit_date, report, id],
+    [project_name, lead_id, name, employeeId, employee_name, visit, visit_date, report, id],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: "Error updating visit data" });
@@ -457,6 +463,7 @@ const getEmployeeFollow_Up= async (req, res) => {
 
 const createFollow_Up = (req, res) => {
   const {
+    project_name,
     lead_id,
     name,
     employeeId,
@@ -468,7 +475,8 @@ const createFollow_Up = (req, res) => {
   } = req.body;
 
   const sql = `INSERT INTO follow_up_leads (
-    lead_id,
+    project_name,
+  lead_id,
     name,
     employeeId,
     employee_name,
@@ -476,11 +484,11 @@ const createFollow_Up = (req, res) => {
     follow_up_date,
     report
    
-  ) VALUES (?,?,?,?,?,?,?)`;
+  ) VALUES (?,?,?,?,?,?,?,?)`;
 
   db.query(
     sql,
-    [lead_id, name, employeeId, employee_name,  follow_up_type,follow_up_date,report],
+    [project_name, lead_id, name, employeeId, employee_name,  follow_up_type,follow_up_date,report],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: "Error inserting data" });
@@ -493,9 +501,11 @@ const createFollow_Up = (req, res) => {
     }
   );
 };
+
 const updateFollow_Up = (req, res) => {
   const {
     id, // Unique identifier for the Follow Up
+    project_name,
     lead_id,
     name,
     employeeId,
@@ -506,13 +516,14 @@ const updateFollow_Up = (req, res) => {
   } = req.body;
 
   // Basic validation
-  if (!id || !follow_up_type || !follow_up_date || !report) {
+  if (!id || !project_name || !follow_up_type || !follow_up_date || !report) {
     return res
       .status(400)
       .json({ error: "Please provide all required fields." });
   }
 
   const sql = `UPDATE follow_up_leads SET 
+    project_name = ?,
     lead_id = ?, 
     name = ?, 
     employeeId = ?, 
@@ -524,7 +535,7 @@ const updateFollow_Up = (req, res) => {
 
   db.query(
     sql,
-    [lead_id, name, employeeId, employee_name,  follow_up_type,follow_up_date, report, id],
+    [project_name, lead_id, name, employeeId, employee_name,  follow_up_type,follow_up_date, report, id],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: "Error updating Follow Up data" });
@@ -669,7 +680,7 @@ const updateOnlyFollowUpStatus = async (req, res) => {
 
 const createRemark = async (req, res) => {
   try {
-    const { lead_id, name, employee_name, employeeId, remark_status, date } = req.body;
+    const {project_name, lead_id, name, employee_name, employeeId, remark_status, date } = req.body;
     
 
     if (!lead_id || !remark_status || !date) {
@@ -681,13 +692,13 @@ const createRemark = async (req, res) => {
     // Insert remark
     const sqlRemark = `
       INSERT INTO remark (
-        lead_id, name, employee_name, employeeId, remark_status, date
-      ) VALUES (?, ?, ?, ?, ?, ?)`;
+        project_name, lead_id, name, employee_name, employeeId, remark_status, date
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     const resultRemark = await new Promise((resolve, reject) => {
       db.query(
         sqlRemark,
-        [lead_id, name, employee_name, employeeId, remark_status, date],
+        [project_name, lead_id, name, employee_name, employeeId, remark_status, date],
         (err, result) => {
           if (err) {
             reject(err);
@@ -733,12 +744,12 @@ const createRemark = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 
-
 };
 
 const updateRemark = (req, res) => {
   const {
     id, // Unique identifier for the remark
+    project_name,
     lead_id,
     name,
     employee_name,
@@ -749,6 +760,7 @@ const updateRemark = (req, res) => {
   } = req.body;
   console.log( id, // Unique identifier for the remark
     lead_id,
+    project_name,
     name,
     employee_name,
     employeeId,
@@ -760,6 +772,7 @@ const updateRemark = (req, res) => {
 
 
   const sql = `UPDATE remark SET 
+    project_name = ?,
     lead_id = ?, 
     name = ?, 
     employee_name = ?, 
@@ -771,7 +784,7 @@ const updateRemark = (req, res) => {
 
   db.query(
     sql,
-    [lead_id, name, employee_name, employeeId, remark_status, date, id], // Include answer_remark here
+    [project_name, lead_id, name, employee_name, employeeId, remark_status, date, id], // Include answer_remark here
     (err, results) => {
       if (err) {
         return res.status(500).json({ error: "Error updating remark data" });

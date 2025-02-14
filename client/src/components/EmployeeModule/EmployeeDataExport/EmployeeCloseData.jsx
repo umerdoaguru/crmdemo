@@ -15,7 +15,8 @@ const EmployeeCloseData = () => {
   const leadsPerPage = 7; // Number of leads to display per page
   const EmpId = useSelector((state) => state.auth.user);
   const [selectedColumns, setSelectedColumns] = useState([
-    "lead_no",
+       "project_name",
+        "lead_no",
         "assignedTo",
         "name",
         "phone",
@@ -89,6 +90,7 @@ const EmployeeCloseData = () => {
   
   const downloadExcel = () => {
     const columnMapping = {
+      project_name: "Project Name",
       lead_no: "Lead Number",
       assignedTo: "Assigned To",
       name: "Name",
@@ -115,6 +117,7 @@ const EmployeeCloseData = () => {
       createdTime: "Assigned Date",
       actual_date: "Actual Date",
     };
+    
   
     // Filter and format data for the Excel report
     const completedLeads = filteredLeads
@@ -130,6 +133,7 @@ const EmployeeCloseData = () => {
               (col === "actual_date" || col === "createdTime") && lead[col]
                 ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
                 : lead[col]; // Format dates or copy value
+                
           });
         }
   
@@ -222,6 +226,9 @@ const EmployeeCloseData = () => {
               <tr>
                 <th className="px-6 py-3 border-b-2 border-gray-300">S.no</th>
                 <th className="px-6 py-3 border-b-2 border-gray-300">
+                  Project Name
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300">
                   Lead Number
                 </th>
                 <th className="px-6 py-3 border-b-2 border-gray-300">
@@ -265,6 +272,9 @@ const EmployeeCloseData = () => {
                   >
                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                       {index + 1 + currentPage * leadsPerPage}
+                    </td>
+                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
+                      {lead.project_name}
                     </td>
                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                       {lead.lead_no}

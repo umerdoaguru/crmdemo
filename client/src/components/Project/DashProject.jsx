@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MainHeader from "../MainHeader";
 import Sider from "../Sider";
@@ -94,7 +94,7 @@ const DashProject = () => {
         <div className="flex justify-between mb-3" >
           <input
             type="text"
-            placeholder="Search by Name, ID, or Location"
+            placeholder="Search by Project Name, ID, or Location"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border rounded-2xl p-2 w-1/4 mb-3"
@@ -105,7 +105,7 @@ const DashProject = () => {
           
           >
             <option value={5}>Number of rows: 5</option>
-            <option value={2}>2</option>
+            <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value="All">All</option>
@@ -127,7 +127,10 @@ const DashProject = () => {
                 <tr key={project.main_project_id}
                 className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{index + 1 + currentPage * projectsPerPage}</td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_name}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
+                    <Link to={`/project-units/${project.main_project_id}`} className="inline-block">
+                    {project.project_name}
+                    </Link></td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_id}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.location}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.total_area}</td>

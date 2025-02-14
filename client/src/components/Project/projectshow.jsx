@@ -3,7 +3,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import cogoToast from "cogo-toast";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const Projectshow = () => {
   const [projects, setProjects] = useState([]);
@@ -12,6 +12,7 @@ const Projectshow = () => {
   const [showModal, setShowModal] = useState(false);
   const [editProject, setEditProject] = useState({});
   const [addProject, setAddProject] = useState();
+  
 
 
   const [formData, setFormData] = useState({
@@ -35,6 +36,12 @@ const Projectshow = () => {
         cogoToast.success("Project added successfully!", { position: "top-right" });
         setAddProject(false);
         fetchProjects();
+        setFormData({
+          projectName: "",
+          projectId: "",
+          location: "",
+          total_area: "",
+        });
       } else {
         cogoToast.error("Failed to add project.", { position: "top-right" });
       }
@@ -156,6 +163,7 @@ const handlePageClick = ({ selected }) => {
               </tr>
             )}
           </tbody>
+         
         </table>
       </div>
       
@@ -197,6 +205,7 @@ const handlePageClick = ({ selected }) => {
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter project name"
+                    required
                   />
                 </div>
                 <div>
@@ -208,6 +217,7 @@ const handlePageClick = ({ selected }) => {
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter unique project ID"
+                    required
                   />
                 </div>
               </div>
@@ -223,6 +233,7 @@ const handlePageClick = ({ selected }) => {
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                     placeholder="Enter project location"
+                    required
                   />
                 </div>
                 <div>
@@ -233,7 +244,8 @@ const handlePageClick = ({ selected }) => {
                     value={formData.total_area}
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., 1BHK, 2BHK"
+                    placeholder="e.g., 5000sqft, 40000sqft"
+                    required
                   />
                 </div>
               </div>

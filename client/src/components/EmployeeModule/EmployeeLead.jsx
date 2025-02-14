@@ -105,7 +105,7 @@ function EmployeeLead() {
  if (searchTerm) {
   const trimmedSearchTerm = searchTerm.toLowerCase().trim();
   filtered = filtered.filter((lead) =>
-    ["name", "leadSource", "phone","assignedTo"].some((key) =>
+    ["project_name", "name", "leadSource", "phone","assignedTo"].some((key) =>
       lead[key]?.toLowerCase().trim().includes(trimmedSearchTerm)
     )
   );
@@ -248,7 +248,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                 <label htmlFor="">Search</label>
                 <input
                   type="text"
-                    placeholder=" Name,Lead Source,Assigned To,Phone No"
+                    placeholder="Project Name,Name,Lead Source,Assigned To,Phone No"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="border rounded-2xl p-2 w-full"
@@ -435,6 +435,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
 
             
             </div>
+            
           <div className="flex gap-10 text-xl font-semibold my-3 mt-5">
   {/* Total Lead Count */}
   <div>
@@ -479,6 +480,9 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                 <tr>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     S.no
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Project Name
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Lead Id
@@ -543,6 +547,9 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
       >
         <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
         {leadsPerPage === Infinity ? index + 1 : index + 1 + currentPage * leadsPerPage}
+        </td>
+        <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold text-wrap">
+            {lead.project_name}
         </td>
         <td className="px-6 py-4 border-b border-gray-200 underline font-semibold text-[blue]">
           <Link to={`/employee-lead-single-data/${lead.lead_id}`}>
