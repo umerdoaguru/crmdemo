@@ -6,7 +6,7 @@ import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import MainHeader from './../../../components/MainHeader';
 import SuperAdminSider from './../SuperAdminSider';
-
+import { useNavigate} from "react-router-dom";
 
 const Superunits = () => {
   const { id  } = useParams();
@@ -16,7 +16,8 @@ const Superunits = () => {
   const [showModal, setShowModal] = useState(false);
   const [editProject, setEditProject] = useState({});
   const [addform, setaddunit] = useState(false);
-    const [units, setUnits] = useState([]);
+  const [units, setUnits] = useState([]);
+  const navigate = useNavigate();
 
   const [unitData, setUnitData] = useState({
     main_project_id: id  || "", 
@@ -152,7 +153,15 @@ const Superunits = () => {
     <>
       <MainHeader />
       <SuperAdminSider />
-      <h1 className="text-2xl text-center mt-[5rem]">Units Management</h1>
+      <div className="mt-[7rem] 2xl:ml-40">
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Back
+          </button>
+        </div>
+      <h1 className="text-2xl text-center mt-[2rem]">Units Management</h1>
 
       <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
       <div className="flex min-h-screen overflow-hidden ">
@@ -183,6 +192,7 @@ const Superunits = () => {
         <th className="px-6 py-3 border-b border-gray-300 text-left">Total Units</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Units Sold</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Available</th>
+        <th className="px-6 py-3 border-b border-gray-300 text-left">Base Price</th>
         <th className="px-6 py-3 border-b-2 border-gray-300">Action</th>
       </tr>
     </thead>
@@ -197,6 +207,7 @@ const Superunits = () => {
             <td className="px-6 py-4">{unit.total_units}</td>
             <td className="px-6 py-4">{unit.units_sold}</td>
             <td className="px-6 py-4 font-semibold"> {unit.total_units - unit.units_sold}</td>
+            <td className="px-6 py-4 font-semibold"> {unit.base_price}</td>
             <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
             <button onClick={() => handleEdit(unit)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
             <button onClick={() => handleDelete(unit.unit_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>

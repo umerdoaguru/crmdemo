@@ -264,7 +264,7 @@ const Superprojectshow = () => {
                     value={formData.total_area}
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., 1BHK, 2BHK"
+                    placeholder="e.g., 5000sqft, 40000sqft"
                   />
                 </div>
               </div>
