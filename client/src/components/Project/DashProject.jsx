@@ -94,7 +94,7 @@ const DashProject = () => {
         <div className="flex justify-between mb-3" >
           <input
             type="text"
-            placeholder="Search by Name, ID, or Location"
+            placeholder="Search by Project Name, ID, or Location"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border rounded-2xl p-2 w-1/4 mb-3"
@@ -105,7 +105,7 @@ const DashProject = () => {
           
           >
             <option value={5}>Number of rows: 5</option>
-            <option value={2}>2</option>
+            <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value="All">All</option>

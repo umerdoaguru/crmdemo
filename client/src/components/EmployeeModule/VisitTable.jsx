@@ -48,7 +48,7 @@ const VisitTable = () => {
     if (searchTerm) {
       const trimmedSearchTerm = searchTerm.toLowerCase().trim();
       filtered = filtered.filter((lead) =>
-        ["name", "employee_name", "visit"].some((key) =>
+        ["project_name", "name", "employee_name", "visit"].some((key) =>
           lead[key]?.toLowerCase().trim().includes(trimmedSearchTerm)
         )
       );
@@ -102,7 +102,7 @@ const VisitTable = () => {
                
                <input
                  type="text"
-                 placeholder=" Name,Visit Type,Assigned To"
+                 placeholder="PRoject Name, Name,Visit Type,Assigned To"
                  value={searchTerm}
                  onChange={(e) => setSearchTerm(e.target.value)}
                  className="border rounded-2xl p-2 w-25"
@@ -125,6 +125,9 @@ const VisitTable = () => {
               <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       S.no
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                     Project Name 
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                      Lead Id 
@@ -154,6 +157,9 @@ const VisitTable = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                     {leadsPerPage === Infinity ? index + 1 : index + 1 + currentPage * leadsPerPage}
 
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {visit.project_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {visit.lead_id}

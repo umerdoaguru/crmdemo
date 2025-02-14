@@ -20,6 +20,7 @@ const EmpVisitReport = () => {
   const [duration, setDuration] = useState("all"); // Default is "all"
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedColumns, setSelectedColumns] = useState([
+    'project_name',
       'lead_id',
 'name',
 'employee_name',
@@ -104,6 +105,7 @@ const EmpVisitReport = () => {
   const downloadExcel = () => {
     // Map to rename keys for export
     const columnMapping = {
+        project_name: "Project Name",
         lead_id: "Lead ID",          
         name: "Name",                
         employee_name: "Employee Name", 
@@ -126,6 +128,8 @@ const EmpVisitReport = () => {
             (col === "visit_date") && lead[col]
               ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
               : lead[col]; // Format dates or copy value
+              console.log(selectedColumns);
+              
         });
   
       
@@ -193,6 +197,9 @@ const EmpVisitReport = () => {
                       S.no
                     </th>
                     <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+                     Project Name 
+                    </th>
+                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
                      Lead Id 
                     </th>
                     <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
@@ -229,7 +236,9 @@ const EmpVisitReport = () => {
         <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
           {currentPage * leadsPerPage + index + 1}
         </td>
-       
+        <td className="px-6 py-4 whitespace-nowrap">
+                      {visit.project_name}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {visit.lead_id}
                     </td>

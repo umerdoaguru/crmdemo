@@ -77,7 +77,7 @@ function EmployeeRoutes() {
   const user = useSelector((state) => state.auth.user);
 
   return (
-    <>
+    <> 
       <div style={{ overflow: "hidden" }}>
         <Routes>
           {/* Admin routes */}
@@ -211,10 +211,7 @@ function EmployeeRoutes() {
             path="/employee-data-export"
             element={<EmployeeDataExport />}
           />
-          <Route
-            path="/employee-all-quotation"
-            element={<MainQuotation />}
-          />
+          <Route path="/employee-all-quotation" element={<MainQuotation />}/>
           <Route path="/employee-profile" element={<EmployeeProfile />} />
           <Route path="/quotation-by-lead/:id" element={<QuotationByLeads />} />
           <Route

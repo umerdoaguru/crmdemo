@@ -41,7 +41,7 @@ function Employee_Single_Lead_Profile() {
   });
 
   const [visitLead, setVisitLead] = useState({
-    
+    project_name: "",
     lead_id: "",
     name: "",
     employeeId: "",
@@ -50,6 +50,7 @@ function Employee_Single_Lead_Profile() {
     visit_date: "", 
 
   });
+
   const [follow_up, setFollow_Up] = useState({
     
     lead_id: "",
@@ -206,6 +207,7 @@ const token = EmpId?.token;
     fetchFollowUp();
     fetchRemark();
   }, [id]);
+
   // const fetchLeads = async () => {
   //   try {
   //     const response = await axios.get(http://localhost:9000/api/leads/${id});
@@ -271,6 +273,7 @@ const token = EmpId?.token;
       console.error("Error fetching quotations:", error);
     }
   };
+
   const fetchFollowUp = async () => {
     try {
       const response = await axios.get(
@@ -281,7 +284,7 @@ const token = EmpId?.token;
             'Authorization': `Bearer ${token}`
         }}
       );
-      console.log(response.data);
+
       setFollow_Up(response.data);
       // Ensure proper comparison with 'Created', trim any spaces and normalize the case
       setFollowCreated(response.data[0]);
@@ -289,6 +292,7 @@ const token = EmpId?.token;
       console.error("Error fetching quotations:", error);
     }
   };
+  
   const fetchRemark = async () => {
     try {
       const response = await axios.get(
@@ -308,10 +312,10 @@ const token = EmpId?.token;
   };
   
 
-
   const handleBackClick = () => {
     navigate(-1); // -1 navigates to the previous page in history
   };
+
   const handleQuotation = async (lead) => {
     const name = lead.name;
     navigate(`/quotation-by-lead/${lead.lead_id}`, { state: { name } });
@@ -337,6 +341,7 @@ const token = EmpId?.token;
       }
     }
   };
+
   const handleInputChangeVisit = (e) => {
     const { name, value } = e.target;
     setVisitLead((prevLead) => ({
@@ -344,6 +349,7 @@ const token = EmpId?.token;
       [name]: value,
     }));
   };
+
   const handleInputChangeFollowUp = (e) => {
     const { name, value } = e.target;
     setFollow_Up((prevLead) => ({
@@ -360,7 +366,6 @@ const token = EmpId?.token;
     }));
   };
   
-
   const handleUpdate = (lead) => {
     setIsEditing(true);
     setCurrentLead(lead);
@@ -371,17 +376,17 @@ const token = EmpId?.token;
 
   const handleCreateClick = () => {
     setVisitLead({
+      project_name: "",
       lead_id: "",
       name: "",
       employeeId: "",
       employee_name: "",
       visit: "",
       visit_date: "",
-    
-
     });
     setShowPopupVisit(true);
   };
+
   const handleCreateClickFollowUp = () => {
     setFollow_Up({
       lead_id: "",
@@ -395,6 +400,7 @@ const token = EmpId?.token;
     });
     setShowPopupFollowUp(true);
   };
+
   const handleCreateClickRemark = () => {
     setRemark({
       lead_id: "",
@@ -408,14 +414,16 @@ const token = EmpId?.token;
     setShowPopupRemark(true); // Open the popup for creating a remark
   };
   
-
-
   const handleViewVisit = () => {
     navigate(`/view_visit/${leads[0].lead_id}`);
+    console.log(leads[0].lead_id);
+    
   };
+
   const handleViewFollowUp = () => {
     navigate(`/view_follow_up/${leads[0].lead_id}`);
   };
+  
   const handleViewRemark = () => {
     navigate(`/view_remark/${leads[0].lead_id}`);
   };
@@ -424,9 +432,8 @@ const token = EmpId?.token;
     console.log(currentLead);
    
 
-
+   
     
-
     const leadData = {
       ...currentLead,
       reason: isOtherReason  ? currentLead.customReason || leads[0]?.reason 
@@ -485,6 +492,7 @@ const token = EmpId?.token;
       const response = await axios.post(
         `http://localhost:9000/api/employe-visit`,
         {
+          project_name: leads[0].project_name,
           lead_id: leads[0].lead_id,
           name: leads[0].name,
           employeeId: leads[0].employeeId,
@@ -578,6 +586,7 @@ const token = EmpId?.token;
       const response = await axios.post(
         `http://localhost:9000/api/employe-follow-up`,
         {
+          project_name: leads[0].project_name,
           lead_id: leads[0].lead_id,
           name: leads[0].name,
           employeeId: leads[0].employeeId,
@@ -634,6 +643,7 @@ const token = EmpId?.token;
 
         const response = await axios.post(`http://localhost:9000/api/remarks`,
         {
+          project_name: leads[0].project_name,
           lead_id: leads[0].lead_id,
           name: leads[0].name,
           employee_name: leads[0].assignedTo,
@@ -657,23 +667,23 @@ const token = EmpId?.token;
     }
   };
   
-  
-
-
   const closePopup = () => {
     setShowPopup(false);
   };
+
   const closePopupVisit = () => {
     setShowPopupVisit(false);
   };
+
   const closePopupFollowUp = () => {
     setShowPopupFollowUp(false);
   };
+
   const closePopupRemark = () => {
-    setShowPopupRemark(false); // Close the popup
+    setShowPopupRemark(false); 
    
   };
-  
+  // console.log(leads[0].project_name);
   
   const totalVisit = visit.length;
 console.log(totalVisit);
@@ -736,9 +746,9 @@ console.log(totalVisit);
                     </div>
                   </div>
                   <div>
-                    <label className="text-info">Project</label>
+                    <label className="text-info">Project Name</label>
                     <div className="p-2 bg-gray-100 rounded">
-                      <p className="m-0">{lead.subject}</p>
+                      <p className="m-0">{lead.project_name}</p>
                     </div>
                   </div>
                   <div>
@@ -808,6 +818,7 @@ console.log(totalVisit);
     )} */}
 
     {/* Visit */}
+
     {visitCreated ? (
       <button
         onClick={handleViewVisit}
@@ -876,7 +887,7 @@ console.log(totalVisit);
       <th className="px-6 py-3 border-b-2 border-gray-300">Reason</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Registry</th>
     
-      <th className="px-6 py-3 border-b-2 border-gray-300">Project</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Project Name</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Close Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Assigned Date</th>
@@ -974,12 +985,7 @@ console.log(totalVisit);
                   ))}
                   
                   
-              
-                
-               
-
-
-              
+        
                 {/* Save and Cancel Buttons */}
                 <div className="flex justify-end">
                   <button
@@ -1003,6 +1009,16 @@ console.log(totalVisit);
             <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
                 <h2 className="text-xl mb-4">{"Add Site Visit"}</h2>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Project Name</label>
+                  <input
+                    type="text"
+                    name="project_name"
+                    value={leads[0].project_name}
+                    onChange={handleInputChangeVisit}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Lead Number</label>
                   <input
@@ -1070,10 +1086,21 @@ console.log(totalVisit);
               </div>
             </div>
           )}
+          
           {showPopupFollowUp && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
                 <h2 className="text-xl mb-4">{"Add Follow Up"}</h2>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Project Name</label>
+                  <input
+                    type="text"
+                    name="project_name"
+                    value={leads[0].project_name}
+                    onChange={handleInputChangeFollowUp}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Lead Number</label>
                   <input
@@ -1156,7 +1183,17 @@ console.log(totalVisit);
   <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
     <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
       <h2 className="text-xl mb-4">{"Add Remark"}</h2>
-
+       
+      <div className="mb-4">
+        <label className="block text-gray-700">Project Name</label>
+        <input
+          type="text"
+          name="project_name"
+          value={leads[0].project_name}
+          onChange={handleInputChangeRemark}
+          className={`w-full px-3 py-2 border  rounded`}
+        />
+      </div>
       <div className="mb-4">
         <label className="block text-gray-700">Lead ID</label>
         <input
