@@ -57,7 +57,7 @@ const Superprojectshow = () => {
 
   const [formData, setFormData] = useState({
     projectName: "",
-    projectId: "",
+    // projectId: "",
     location: "",
     total_area: "",
   });
@@ -67,6 +67,23 @@ const Superprojectshow = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post("http://localhost:9000/api/project-add", formData);
+
+  //     if (response.status === 200) {
+  //       cogoToast.success("Project added successfully!", { position: "top-right" });
+  //       setAddProject(false);
+  //       fetchProjects();
+  //     } else {
+  //       cogoToast.error("Failed to add project.", { position: "top-right" });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting the form:", error);
+  //     cogoToast.error("An error occurred while submitting the form.", { position: "top-right" });
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -76,6 +93,11 @@ const Superprojectshow = () => {
         cogoToast.success("Project added successfully!", { position: "top-right" });
         setAddProject(false);
         fetchProjects();
+        setFormData({
+          projectName: "",
+          location: "",
+          total_area: "",
+        });
       } else {
         cogoToast.error("Failed to add project.", { position: "top-right" });
       }
@@ -159,8 +181,8 @@ const Superprojectshow = () => {
           <thead>
             <tr>
               <th className="px-6 py-3 border-b-2 border-gray-300">S.no</th>
-              <th className="px-6 py-3 border-b-2 border-gray-300">Project Name</th>
               <th className="px-6 py-3 border-b-2 border-gray-300">Project ID</th>
+              <th className="px-6 py-3 border-b-2 border-gray-300">Project Name</th>   
               <th className="px-6 py-3 border-b-2 border-gray-300">Location</th>
               <th className="px-6 py-3 border-b-2 border-gray-300">Total Area</th>
               <th className="px-6 py-3 border-b-2 border-gray-300">Action</th>
@@ -173,7 +195,7 @@ const Superprojectshow = () => {
                 <tr key={project.main_project_id} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{currentPage * projectsPerPage + index + 1}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_name}</td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_id}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.main_project_id}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.location}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.total_area}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
@@ -214,80 +236,65 @@ const Superprojectshow = () => {
       </div>
 
       {addProject && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Add Real Estate Project</h1>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-gray-600 mb-1">Project Name</label>
-                  <input
-                    type="text"
-                    name="projectName"
-                    value={formData.projectName}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter project name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 mb-1">Project ID</label>
-                  <input
-                    type="text"
-                    name="projectId"
-                    value={formData.projectId}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter unique project ID"
-                  />
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-gray-600 mb-1">Location</label>
-                  <input
-                    type="text"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter project location"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 mb-1">Total Area</label>
-                  <input
-                    type="text"
-                    name="total_area"
-                    value={formData.total_area}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., 1BHK, 2BHK"
-                  />
-                </div>
-              </div>
-
-              {/* Submission Buttons */}
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setAddProject(false)}
-                  className="bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
-                >
-                  Add Project
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
+       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl p-8 transition-all transform scale-95 hover:scale-100">
+         <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Add Real Estate Project</h1>
+         <form onSubmit={handleSubmit} className="space-y-6">
+           <div>
+             <label className="block text-gray-700 font-semibold mb-2">Project Name</label>
+             <input
+               type="text"
+               name="projectName"
+               value={formData.projectName}
+               onChange={handleChange}
+               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+               placeholder="Enter project name"
+             />
+           </div>
+     
+           <div>
+             <label className="block text-gray-700 font-semibold mb-2">Location</label>
+             <input
+               type="text"
+               name="location"
+               value={formData.location}
+               onChange={handleChange}
+               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+               placeholder="Enter project location"
+             />
+           </div>
+     
+           <div>
+             <label className="block text-gray-700 font-semibold mb-2">Total Area</label>
+             <input
+               type="text"
+               name="total_area"
+               value={formData.total_area}
+               onChange={handleChange}
+               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+               placeholder="e.g., 5000sqft, 40000sqft"
+             />
+           </div>
+     
+           <div className="flex justify-end space-x-4">
+             <button
+               type="button"
+               onClick={() => setAddProject(false)}
+               className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-all shadow-md"
+             >
+               Cancel
+             </button>
+             <button
+               type="submit"
+               className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-md"
+             >
+               Add Project
+             </button>
+           </div>
+         </form>
+       </div>
+     </div>
+           
       )}
 
       {addunits && (
@@ -339,17 +346,17 @@ const Superprojectshow = () => {
             <h2 className="text-xl mb-4">Edit Project</h2>
             
             <div> 
-            <label className="block text-gray-600 mb-1">Total Area</label>
+            <label className="block text-gray-600 mb-1">Projct Name</label>
             <input type="text" value={editProject.project_name} onChange={(e) => setEditProject({ ...editProject, project_name: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project Name" />
             </div>
 
-            <div> 
+            {/* <div> 
             <label className="block text-gray-600 mb-1">Total Area</label>
             <input type="text" value={editProject.project_id} onChange={(e) => setEditProject({ ...editProject, project_id: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project ID" />
-            </div>
+            </div> */}
 
             <div>
-            <label className="block text-gray-600 mb-1">Total Area</label>
+            <label className="block text-gray-600 mb-1">Location</label>
             <input type="text" value={editProject.location} onChange={(e) => setEditProject({ ...editProject, location: e.target.value })} className="border p-2 w-full mb-2" placeholder="Location" />
             </div>
             <div>             

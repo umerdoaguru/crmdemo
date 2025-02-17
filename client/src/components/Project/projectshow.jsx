@@ -17,7 +17,6 @@ const Projectshow = () => {
 
   const [formData, setFormData] = useState({
     projectName: "",
-    projectId: "",
     location: "",
     total_area: "",
   });
@@ -38,7 +37,6 @@ const Projectshow = () => {
         fetchProjects();
         setFormData({
           projectName: "",
-          projectId: "",
           location: "",
           total_area: "",
         });
@@ -191,116 +189,91 @@ const handlePageClick = ({ selected }) => {
       </div>
 
       {addProject && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
-          <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Add Real Estate Project</h1>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-gray-600 mb-1">Project Name</label>
-                  <input
-                    type="text"
-                    name="projectName"
-                    value={formData.projectName}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter project name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 mb-1">Project ID</label>
-                  <input
-                    type="text"
-                    name="projectId"
-                    value={formData.projectId}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter unique project ID"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-gray-600 mb-1">Location</label>
-                  <input
-                    type="text"
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="Enter project location"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-600 mb-1">Total Area</label>
-                  <input
-                    type="text"
-                    name="total_area"
-                    value={formData.total_area}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                    placeholder="e.g., 5000sqft, 40000sqft"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Submission Buttons */}
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setAddProject(false)}
-                  className="bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
-                >
-                  Add Project
-                </button>
-              </div>
-            </form>
-          </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-[9999]">
+        <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl p-8 transition-all transform scale-95 hover:scale-100">
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Add Real Estate Project</h1>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Project Name</label>
+              <input
+                type="text"
+                name="projectName"
+                value={formData.projectName}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+                placeholder="Enter project name"
+              />
+            </div>
+      
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+                placeholder="Enter project location"
+              />
+            </div>
+      
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Total Area</label>
+              <input
+                type="text"
+                name="total_area"
+                value={formData.total_area}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+                placeholder="e.g., 5000sqft, 40000sqft"
+              />
+            </div>
+      
+            <div className="flex justify-end space-x-4">
+              <button
+                type="button"
+                onClick={() => setAddProject(false)}
+                className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-all shadow-md"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-md"
+              >
+                Add Project
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
       )}
 
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-xl mb-4">Edit Project</h2>
-            
-            <div> 
-            <label className="block text-gray-600 mb-1">Total Area</label>
-            <input type="text" value={editProject.project_name} onChange={(e) => setEditProject({ ...editProject, project_name: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project Name" />
-            </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
+        <div className="bg-white p-6 rounded-lg">
+          <h2 className="text-xl mb-4">Edit Project</h2>
+          
+          <div> 
+          <label className="block text-gray-600 mb-1">Projct Name</label>
+          <input type="text" value={editProject.project_name} onChange={(e) => setEditProject({ ...editProject, project_name: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project Name" />
+          </div>
 
-            <div> 
-            <label className="block text-gray-600 mb-1">Total Area</label>
-            <input type="text" value={editProject.project_id} onChange={(e) => setEditProject({ ...editProject, project_id: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project ID" />
-            </div>
+          <div>
+          <label className="block text-gray-600 mb-1">Location</label>
+          <input type="text" value={editProject.location} onChange={(e) => setEditProject({ ...editProject, location: e.target.value })} className="border p-2 w-full mb-2" placeholder="Location" />
+          </div>
+          <div>             
+          <label className="block text-gray-600 mb-1">Total Area</label>
+          <input type="text" value={editProject.total_area} onChange={(e) => setEditProject({ ...editProject, total_area: e.target.value })} className="border p-2 w-full mb-2" placeholder="Total Area" />
+          </div>
 
-            <div>
-            <label className="block text-gray-600 mb-1">Total Area</label>
-            <input type="text" value={editProject.location} onChange={(e) => setEditProject({ ...editProject, location: e.target.value })} className="border p-2 w-full mb-2" placeholder="Location" />
-            </div>
-            <div>             
-            <label className="block text-gray-600 mb-1">Total Area</label>
-            <input type="text" value={editProject.total_area} onChange={(e) => setEditProject({ ...editProject, total_area: e.target.value })} className="border p-2 w-full mb-2" placeholder="Total Area" />
-            </div>
-
-            <div className="flex justify-end">
-              <button onClick={() => setShowModal(false)} className="mr-2 bg-gray-300 px-4 py-2 rounded">Cancel</button>
-              <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
-            </div>
+          <div className="flex justify-end">
+            <button onClick={() => setShowModal(false)} className="mr-2 bg-gray-300 px-4 py-2 rounded">Cancel</button>
+            <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
           </div>
         </div>
+      </div>
       )}
 
        

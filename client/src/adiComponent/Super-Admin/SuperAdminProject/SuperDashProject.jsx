@@ -2,11 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import MainHeader from "../MainHeader";
-import Sider from "../Sider";
 import ReactPaginate from "react-paginate";
+import MainHeader from "../../../components/MainHeader";
+import SuperAdminSider from "../SuperAdminSider";
 
-const DashProject = () => {
+const SuperDashProject = () => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,7 +77,7 @@ const DashProject = () => {
   return (
     <>
       <MainHeader />
-      <Sider />
+      <SuperAdminSider />
       <div className="container">
         <div className="mt-[7rem] 2xl:ml-40">
           <button
@@ -128,7 +128,7 @@ const DashProject = () => {
                 className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{index + 1 + currentPage * projectsPerPage}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                    <Link to={`/project-units/${project.main_project_id}`} className="inline-block">
+                    <Link to={`/super-admin-project-units/${project.main_project_id}`} className="inline-block">
                     {project.project_name}
                     </Link></td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.main_project_id}</td>
@@ -167,4 +167,4 @@ const DashProject = () => {
   );
 };
 
-export default DashProject;
+export default SuperDashProject;
