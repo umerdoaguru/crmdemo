@@ -106,6 +106,7 @@ function Leads() {
      
     }
   };
+  
   const fetchProjectsUnit = async (main_project_id) => {
     try {
         if (!main_project_id) {
@@ -780,6 +781,9 @@ const toggleSortOrder = () => {
                     S.no
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Project Name 
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Lead Id
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
@@ -792,9 +796,11 @@ const toggleSortOrder = () => {
                     Lead Source
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Unit Type
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Assigned To
                   </th>
-               
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Lead Status
                   </th>
@@ -826,9 +832,7 @@ const toggleSortOrder = () => {
 </th>
                     <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Action
-                  </th>
-                
-               
+                  </th>              
                 </tr>
               </thead>
               <tbody>
@@ -853,6 +857,9 @@ const toggleSortOrder = () => {
                       <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
                       {leadsPerPage === Infinity ? index + 1 : index + 1 + currentPage * leadsPerPage}
                       </td>
+                      <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold text-wrap">
+                        {lead.project_name}
+                      </td>
                       <td className="px-6 py-4 border-b border-gray-200 underline text-[blue] font-semibold">
                         <Link to={`/lead-single-data/${lead.lead_id}`}>
                 {lead.lead_id}
@@ -867,11 +874,12 @@ const toggleSortOrder = () => {
                       <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
                         {lead.leadSource}
                       </td>
+                      <td className="px-6 py-4 border-b border-gray-200 font-semibold">
+                          {lead.unit_type}
+                        </td>
                       <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
                         {lead.assignedTo}
                       </td>
-                    
-                    
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.lead_status}
                         </td>
@@ -1082,6 +1090,7 @@ const toggleSortOrder = () => {
                     <p className="text-red-500 text-xs">{errors.leadSource}</p>
                   )}
                 </div>
+                
                 <div className="mb-4">
                   <label className="block text-gray-700">Project Name</label>
                   <select
@@ -1133,6 +1142,7 @@ const toggleSortOrder = () => {
         <p className="text-red-500 text-sm">Unit not set for this project.</p>
     )
 )}
+
 {/* Hidden unit_id field */}
 <input
                   type="hidden"

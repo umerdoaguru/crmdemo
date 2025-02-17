@@ -66,7 +66,7 @@ const Superunits = () => {
 
       cogoToast.success("Unit added successfully!", { position: "top-center" });
       fetchUnits();
-
+      setaddunit(false);
       setUnitData({
         main_project_id: id  || "", 
         unit_type: "",
@@ -186,7 +186,7 @@ const Superunits = () => {
     <thead>
       <tr className="bg-gray-100 text-gray-700 uppercase text-sm leading-normal">
         <th className="px-6 py-3 border-b border-gray-300 text-left">S.No</th>
-        {/* <th className="px-6 py-3 border-b border-gray-300 text-left">Project ID</th> */}
+        <th className="px-6 py-3 border-b border-gray-300 text-left">Unit ID</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Unit Type</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Unit Area</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Total Units</th>
@@ -194,6 +194,7 @@ const Superunits = () => {
         {/* <th className="px-6 py-3 border-b border-gray-300 text-left">Available</th> */}
         <th className="px-6 py-3 border-b border-gray-300 text-left">Base Price</th>
         <th className="px-6 py-3 border-b-2 border-gray-300">Action</th>
+        <th className="px-6 py-3 border-b-2 border-gray-300">Unit Detail</th>
       </tr>
     </thead>
     <tbody>
@@ -201,7 +202,7 @@ const Superunits = () => {
         currentItems.map((unit, index) => (
           <tr key={index} className="border-b border-gray-200 hover:bg-gray-50 text-gray-900">
             <td className="px-6 py-4">{currentPage * projectsPerPage + index + 1}</td>
-            {/* <td className="px-6 py-4">{unit.main_project_id}</td> */}
+            <td className="px-6 py-4">{unit.unit_id}</td>
             <td className="px-6 py-4">{unit.unit_type}</td>
             <td className="px-6 py-4">{unit.unit_size} sqft</td>
             <td className="px-6 py-4">{unit.total_units}</td>
@@ -211,6 +212,13 @@ const Superunits = () => {
             <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
             <button onClick={() => handleEdit(unit)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
             <button onClick={() => handleDelete(unit.unit_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
+            </td>
+            <td>
+              <Link to={`/Super-admin-unit-Detail-Dash/${unit.unit_id}`} className="inline-block">
+                                <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                                 Detail
+                                </button>
+                                </Link>
             </td>
           </tr>
         ))

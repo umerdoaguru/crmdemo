@@ -194,8 +194,8 @@ const Superprojectshow = () => {
               currentProjects.map((project, index) => (
                 <tr key={project.main_project_id} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{currentPage * projectsPerPage + index + 1}</td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_name}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.main_project_id}</td>
+                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.project_name}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.location}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{project.total_area}</td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">

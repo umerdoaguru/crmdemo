@@ -64,6 +64,7 @@ function SuperEmployeeLeads() {
   const superadminuser = useSelector((state) => state.auth.user);
   const token = superadminuser.token;
   const [projects, setProjects] = useState([]);
+  const [projectunit, setProjectUnit] = useState([]);
   
 
 
@@ -77,6 +78,7 @@ function SuperEmployeeLeads() {
     fetchEmployees();
     // fetchVisit();
     fetchProjects();
+    fetchProjectsUnit();
   }, []);
 
   const fetchLeads = async () => {
@@ -121,6 +123,27 @@ function SuperEmployeeLeads() {
      
     }
   };
+
+  const fetchProjectsUnit = async (main_project_id) => {
+    try {
+        if (!main_project_id) {
+            setProjectUnit([]);  // Reset if no project is selected
+            return;
+        }
+
+        const response = await axios.get(`http://localhost:9000/api/project-unit/${main_project_id}`);
+
+        if (response.data.length > 0) {
+            setProjectUnit(response.data);  // Store fetched unit types
+        } else {
+            setProjectUnit([]);  // Reset if no units found
+        }
+
+    } catch (error) {
+        console.error("Error fetching units:", error);
+        setProjectUnit([]);  // Reset in case of error
+    }
+};
 
   const handleInputChange = (e) => {
     setModalData({
@@ -359,6 +382,35 @@ const handleInputChangelead = (e) => {
         updatedLead.employeephone = ""; // Reset employeephone if no match
       }
     }
+
+     // If project_name changes, find and set project_id
+     if (name === "project_name") {
+      const selectedProject = projects.find(
+          (project) => project.project_name === value
+      );
+
+      if (selectedProject) {
+          updatedLead.main_project_id = selectedProject.main_project_id;
+          fetchProjectsUnit(selectedProject.main_project_id);  // Call API to fetch units
+
+      } else {
+          updatedLead.main_project_id = ""; // Reset if no match
+          fetchProjectsUnit("");  
+      }
+  }
+
+   // If unit_type changes, update unit_id accordingly
+   if (name === "unit_type") {
+    const selectedUnit = projectunit.find(
+        (unit) => unit.unit_type === value
+    );
+
+    if (selectedUnit) {
+        updatedLead.unit_id = selectedUnit.unit_id;
+    } else {
+        updatedLead.unit_id = ""; // Reset if no match
+    }
+}
 
     return updatedLead;
   });
@@ -759,6 +811,9 @@ const closeModalLead = () => {
                     S.no
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Project Name
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Lead Id
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
@@ -769,6 +824,9 @@ const closeModalLead = () => {
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Lead Source
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Unit Type
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Assigned To
@@ -810,6 +868,7 @@ const closeModalLead = () => {
                 </tr>
               </thead>
               <tbody>
+
   {currentLeads.length > 0 ? (
     currentLeads.map((lead, index) => (
       <tr
@@ -818,6 +877,9 @@ const closeModalLead = () => {
       >
         <td className="px-6 py-4 border-b border-gray-200 text-gray-800 ">
         {leadsPerPage === Infinity ? index + 1 : index + 1 + currentPage * leadsPerPage}
+        </td>
+        <td className="px-6 py-4 border-b border-gray-200 text-gray-800 text-wrap font-semibold">
+          {lead.project_name}
         </td>
         <td
   className="px-6 py-4 border-b border-gray-200 underline text-[blue] cursor-pointer font-semibold"
@@ -835,10 +897,11 @@ const closeModalLead = () => {
           {lead.leadSource}
         </td>
         <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
+          {lead.unit_type}
+        </td>
+        <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
           {lead.assignedTo}
         </td>
-      
-      
           <td className="px-6 py-4 border-b border-gray-200 font-semibold">
             {lead.lead_status}
           </td>
@@ -1117,6 +1180,45 @@ const closeModalLead = () => {
                     <span className="text-red-500">{errors.project_name}</span>
                   )}
                 </div>
+                {currentLead.main_project_id && (
+    projectunit.length > 0  ? (
+        <div className="mb-4">
+            <label className="block text-gray-700">Unit Type</label>
+            <select
+                name="unit_type"
+                id="unit_type"
+                value={currentLead.unit_type}
+                onChange={handleInputChangelead}
+                className={`w-full px-3 py-2 border ${
+                    errors.unit_type ? "border-red-500" : "border-gray-300"
+                } rounded`}
+            >
+                <option value="">Select Unit Type</option>
+                {projectunit.map((unit) => (
+                    <option key={unit.unit_id} value={unit.unit_type}>
+                        {unit.unit_type}
+                    </option>
+                ))}
+            </select>
+            {errors.unit_type && (
+                <span className="text-red-500">{errors.unit_type}</span>
+            )}
+        </div>
+    ) : (
+        <p className="text-red-500 text-sm">Unit not set for this project.</p>
+    )
+)}
+
+{/* Hidden unit_id field */}
+<input
+                  type="hidden"
+                  id="unit_id"
+                  name="unit_id"
+                  value={currentLead.unit_id}
+                />
+
+
+
                 <div className="mb-4">
                   <label className="block text-gray-700">Address</label>
                   <input
