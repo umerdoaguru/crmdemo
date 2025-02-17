@@ -24,7 +24,12 @@ const {
   updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,
   updateOnlyRemarkStatus,
   updateOnlyRemarkAnswer,
-  updateOnlyRemarkAnswerStatus
+  updateOnlyRemarkAnswerStatus,
+  createEmployeeUnitSold,
+  updateEmployeeUnitSold,
+  deleteEmployeeUnitSold,
+  getEmployeeUnitSold,
+  getEmployeeUnitSoldById
 } = require("../controllers/employeController");
 const authenticateEmployee = require("../Middleware/authenticateEmployee");
 const { getleadbyid } = require("../controllers/UserController");
@@ -76,5 +81,12 @@ router.put("/updateOnlyRemarkStatus/:id", updateOnlyRemarkStatus);
 router.put("/updateOnlyRemarkAnswerStatus/:id", updateOnlyRemarkAnswerStatus);
 router.put("/updateOnlyAnswerRemark", updateOnlyRemarkAnswer);
 router.get("/leads-employee/:id",authenticateEmployee, getleadbyid);
+
+
+router.post("/unit-sold", createEmployeeUnitSold);
+router.put("/unit-sold", updateEmployeeUnitSold);
+router.delete("/unit-sold/:id", deleteEmployeeUnitSold);
+router.get("/unit-sold", getEmployeeUnitSold);
+router.get("/unit-sold/:id", getEmployeeUnitSoldById);
 
 module.exports = router;

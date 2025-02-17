@@ -888,6 +888,9 @@ console.log(totalVisit);
       <th className="px-6 py-3 border-b-2 border-gray-300">Registry</th>
     
       <th className="px-6 py-3 border-b-2 border-gray-300">Project Name</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Project Id</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Type</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Id</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Close Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Assigned Date</th>
@@ -919,6 +922,9 @@ console.log(totalVisit);
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.registry}</td>
 
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.project_name}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.main_project_id}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_type}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_id}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.visit}</td>
     <td className="px-6 py-4 border-b border-gray-200 font-semibold text-gray-800">
       {lead.d_closeDate === "pending"

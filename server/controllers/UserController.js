@@ -824,12 +824,12 @@ const createLead = (req, res) => {
     assignedTo,
     leadSource,
     employeeId,
-    project_name,address,
+    project_name,main_project_id,unit_type,unit_id,address,
     createdTime,
     actual_date,
     assignedBy,
   } = req.body;
-  const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,project_name,address,createdTime,actual_date,assignedBy) VALUES (?,?,?,?,?,?, ?, ?, ?, ?,?)`;
+  const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,project_name,main_project_id,unit_type,unit_id,address,createdTime,actual_date,assignedBy) VALUES (?,?,?,?,?,?, ?,?, ?,?, ?, ?,?,?)`;
   db.query(
     sql,
     [
@@ -839,7 +839,7 @@ const createLead = (req, res) => {
       assignedTo,
       leadSource,
       employeeId,
-      project_name,address,
+      project_name,main_project_id,unit_type,unit_id,address,
       createdTime,
       actual_date,
       assignedBy
@@ -927,12 +927,13 @@ const updateLead = async (req, res) => {
       createdTime,
       actual_date,
       project_name,
+      main_project_id,unit_type,unit_id,
       address,
     } = req.body;
 
     // Construct SQL query to update the lead
     const sql = `UPDATE leads 
-                 SET lead_no = ?, name = ?, phone = ?, assignedTo = ?, employeeId = ?, leadSource = ?, createdTime = ?, actual_date = ?, project_name = ?, address = ? 
+                 SET lead_no = ?, name = ?, phone = ?, assignedTo = ?, employeeId = ?, leadSource = ?, createdTime = ?, actual_date = ?, project_name= ?,main_project_id = ?,unit_type = ?, unit_id = ?, address = ? 
                  WHERE lead_id = ?`;
 
     // Execute the update query asynchronously
@@ -949,6 +950,7 @@ const updateLead = async (req, res) => {
           createdTime,
           actual_date,
           project_name,
+          main_project_id,unit_type,unit_id,
           address, // added to the SQL query
           leadId,
         ],
@@ -1451,29 +1453,41 @@ const updateUnit = async (req, res) => {
 const addUnit = async (req, res) => {
   const { main_project_id, unit_type, unit_size, total_units, base_price } = req.body;
 
-  console.log(main_project_id, unit_type, unit_size, total_units, base_price );
-  
   if (!main_project_id || !unit_type || !unit_size || !total_units) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  const query = `INSERT INTO units (main_project_id, unit_type, unit_size, total_units, base_price) 
-                 VALUES (?, ?, ?, ?, ?)`;
+  const insertUnitQuery = `INSERT INTO units (main_project_id, unit_type, unit_size, total_units, base_price) 
+                           VALUES (?, ?, ?, ?, ?)`;
 
   try {
     const result = await new Promise((resolve, reject) => {
-      db.query(query, [main_project_id, unit_type, unit_size, total_units, base_price], (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
+      db.query(insertUnitQuery, [main_project_id, unit_type, unit_size, total_units, base_price], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+
+    const unit_id = result.insertId;
+
+    // **Insert `unit_size` number of entries into `unit_data`**
+    const unitDataInsertQuery = `INSERT INTO unit_data (unit_number, main_project_id, unit_id, status) VALUES ?`;
+
+    const unitDataValues = [];
+    for (let i = 1; i <= total_units; i++) {
+      unitDataValues.push([i, main_project_id, unit_id, 'pending']);
+    }
+
+    await new Promise((resolve, reject) => {
+      db.query(unitDataInsertQuery, [unitDataValues], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
       });
     });
 
     res.status(200).json({
-      message: "Unit added successfully",
-      unit_id: result.insertId,
+      message: "Unit and unit data added successfully",
+      unit_id: unit_id,
       data: { main_project_id, unit_type, unit_size, total_units, base_price }
     });
   } catch (err) {
@@ -1588,6 +1602,7 @@ const getUnitById = async (req, res) => {
       });
   }
 };
+
 
 const getUnitsdistributeById = (req, res) => {
   const { id } = req.params; // This 'id' will be used as 'main_project_id'
@@ -1704,6 +1719,41 @@ const updateUnitmanualy = async (req, res) => {
   }
 };
 
+const getUnitByProjectId = async (req, res) => {
+  const main_project_id = req.params.id; 
+
+  if (!main_project_id) {
+      return res.status(400).json({ message: 'main_project_id is required in the URL' });
+  }
+
+  const query = 'SELECT * FROM units WHERE main_project_id = ?'; // `main_project_id` primary key hai
+
+  try {
+      const result = await new Promise((resolve, reject) => {
+          db.query(query, [main_project_id], (err, result) => {
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve(result);
+              }
+          });
+      });
+
+      if (result.length === 0) {
+          return res.status(404).json({ message: 'Project unit not found' });
+      }
+
+      res.status(200).json(result);
+  } catch (err) {
+      console.error('Error fetching project unit:', err);
+      res.status(500).json({
+          message: 'Failed to fetch project unit',
+          error: err.message || 'Unknown error'
+      });
+  }
+};
+
+
 module.exports = {
   Quotation,
   GetQuotation,
@@ -1744,5 +1794,5 @@ module.exports = {
   getUnitById,
   getUnitsByProject,
   updateUnitmanualy,
-  getUnitsdistributeById,
+  getUnitsdistributeById,getUnitByProjectId
 };

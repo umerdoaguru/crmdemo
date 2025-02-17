@@ -24,6 +24,9 @@ function Leads() {
     phone: "",
     leadSource: "",
     project_name: "",
+    main_project_id: "",
+    unit_type: "",
+    unit_id: "",
     address: "",
     actual_date: "",
   });
@@ -52,6 +55,7 @@ function Leads() {
   const [monthFilter, setMonthFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("asc"); 
   const [projects, setProjects] = useState([]);
+  const [projectunit, setProjectUnit] = useState([]);
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
 
@@ -60,6 +64,7 @@ function Leads() {
     fetchLeads();
     fetchEmployees();
     fetchProjects();
+    fetchProjectsUnit();
   }, []);
 
   const fetchLeads = async () => {
@@ -94,13 +99,35 @@ function Leads() {
   };
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get("http://localhost:9000/api/all-project");
+      const { data } = await axios.get("http://localhost:9000/api/all-project");   
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
      
     }
   };
+  const fetchProjectsUnit = async (main_project_id) => {
+    try {
+        if (!main_project_id) {
+            setProjectUnit([]);  // Reset if no project is selected
+            return;
+        }
+
+        const response = await axios.get(`http://localhost:9000/api/project-unit/${main_project_id}`);
+
+        if (response.data.length > 0) {
+            setProjectUnit(response.data);  // Store fetched unit types
+        } else {
+            setProjectUnit([]);  // Reset if no units found
+        }
+
+    } catch (error) {
+        console.error("Error fetching units:", error);
+        setProjectUnit([]);  // Reset in case of error
+    }
+};
+
+
 
   const validateForm = () => {
     let formErrors = {};
@@ -152,31 +179,61 @@ function Leads() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setCurrentLead((prevLead) => {
-      const updatedLead = { ...prevLead, [name]: value };
+        const updatedLead = { ...prevLead, [name]: value };
 
-      // If createdTime changes, update actual_date accordingly
-      if (name === "createdTime") {
-        updatedLead.actual_date = value; // Copy createdTime to actual_date
-      }
-
-      // If assignedTo changes, update employeeId and employeephone accordingly
-      if (name === "assignedTo") {
-        const selectedEmployee = employees.find(
-          (employee) => employee.name === value
-        );
-        if (selectedEmployee) {
-          updatedLead.employeeId = selectedEmployee.employeeId;
-          updatedLead.employeephone = selectedEmployee.phone; // Store employee's phone number in employeephone
-        } else {
-          updatedLead.employeeId = ""; // Reset if no match
-          updatedLead.employeephone = ""; // Reset employeephone if no match
+        // If createdTime changes, update actual_date accordingly
+        if (name === "createdTime") {
+            updatedLead.actual_date = value; // Copy createdTime to actual_date
         }
+
+        // If assignedTo changes, update employeeId and employeephone accordingly
+        if (name === "assignedTo") {
+            const selectedEmployee = employees.find(
+                (employee) => employee.name === value
+            );
+            if (selectedEmployee) {
+                updatedLead.employeeId = selectedEmployee.employeeId;
+                updatedLead.employeephone = selectedEmployee.phone; 
+            } else {
+                updatedLead.employeeId = ""; 
+                updatedLead.employeephone = ""; 
+            }
+        }
+
+        // If project_name changes, find and set project_id
+        if (name === "project_name") {
+            const selectedProject = projects.find(
+                (project) => project.project_name === value
+            );
+
+            if (selectedProject) {
+                updatedLead.main_project_id = selectedProject.main_project_id;
+                fetchProjectsUnit(selectedProject.main_project_id);  // Call API to fetch units
+
+            } else {
+                updatedLead.main_project_id = ""; // Reset if no match
+                fetchProjectsUnit("");  
+            }
+        }
+
+         // If unit_type changes, update unit_id accordingly
+         if (name === "unit_type") {
+          const selectedUnit = projectunit.find(
+              (unit) => unit.unit_type === value
+          );
+
+          if (selectedUnit) {
+              updatedLead.unit_id = selectedUnit.unit_id;
+          } else {
+              updatedLead.unit_id = ""; // Reset if no match
+          }
       }
 
-      return updatedLead;
+        return updatedLead;
     });
-  };
+};
 
   const handleCreateClick = () => {
     setIsEditing(false);
@@ -190,13 +247,19 @@ function Leads() {
       leadSource: "",
       createdTime: "", // Clear out createdTime for new lead
       project_name: "",
+      main_project_id: "",
+      unit_type: "",
+      unit_id: "",
       address: "",
       actual_date: "",
     });
     setShowPopup(true);
+    
   };
 
   const handleEditClick = (lead) => {
+    console.log(lead);
+    fetchProjectsUnit(lead.main_project_id)
     setIsEditing(true);
     setCurrentLead({
       ...lead,
@@ -1032,7 +1095,7 @@ const toggleSortOrder = () => {
                   >
                     <option value="">Select Project Name</option>
                     {projects.map((project) => (
-                      <option key={project.project_id} value={project.project_name}>
+                      <option key={project.main_project_id} value={project.project_name}>
                         {project.project_name}
                       </option>
                     ))}
@@ -1041,6 +1104,46 @@ const toggleSortOrder = () => {
                     <span className="text-red-500">{errors.project_name}</span>
                   )}
                 </div>
+               
+               {currentLead.main_project_id && (
+    projectunit.length > 0  ? (
+        <div className="mb-4">
+            <label className="block text-gray-700">Unit Type</label>
+            <select
+                name="unit_type"
+                id="unit_type"
+                value={currentLead.unit_type}
+                onChange={handleInputChange}
+                className={`w-full px-3 py-2 border ${
+                    errors.unit_type ? "border-red-500" : "border-gray-300"
+                } rounded`}
+            >
+                <option value="">Select Unit Type</option>
+                {projectunit.map((unit) => (
+                    <option key={unit.unit_id} value={unit.unit_type}>
+                        {unit.unit_type}
+                    </option>
+                ))}
+            </select>
+            {errors.unit_type && (
+                <span className="text-red-500">{errors.unit_type}</span>
+            )}
+        </div>
+    ) : (
+        <p className="text-red-500 text-sm">Unit not set for this project.</p>
+    )
+)}
+{/* Hidden unit_id field */}
+<input
+                  type="hidden"
+                  id="unit_id"
+                  name="unit_id"
+                  value={currentLead.unit_id}
+                />
+
+
+
+
                 <div className="mb-4">
                   <label className="block text-gray-700">Address</label>
                   <input

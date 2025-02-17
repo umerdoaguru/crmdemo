@@ -437,6 +437,8 @@ const deleteVisit = (req, res) => {
   });
 };
 
+
+
 const getEmployeeFollow_Up= async (req, res) => {
   try {
     const { id } = req.params;
@@ -954,6 +956,214 @@ const updateOnlyRemarkAnswer = async (req, res) =>{
 }
 
 
+const createEmployeeUnitSold = (req, res) => {
+  const {
+    
+    lead_id,
+    name,
+    employeeId,
+    employee_name,
+    unit_no,
+    unit_status,
+  
+  } = req.body;
+
+  const sql = `INSERT INTO employee_sold_units (
+    
+    lead_id,
+    name,
+    employeeId,
+    employee_name,
+    unit_no,
+    unit_status	
+   
+  ) VALUES (?,?,?,?,?,?)`;
+
+  db.query(
+    sql,
+    [ lead_id, name, employeeId, employee_name, unit_no,unit_status],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: "Error inserting data" });
+      } else {
+        res.status(201).json({
+          success: true,
+          message: "Unit Number data successfully submitted",
+        });
+      }
+    }
+  );
+};
+
+const updateEmployeeUnitSold = (req, res) => {
+  const {
+    id, // Unique identifier for the visit
+    lead_id,
+    name,
+    employeeId,
+    employee_name,
+    unit_no,
+    unit_status,
+  } = req.body;
+
+  // Basic validation
+  if (!id || !lead_id || !name || !unit_no || !unit_status) {
+    return res
+      .status(400)
+      .json({ error: "Please provide all required fields." });
+  }
+
+  const sql = `UPDATE employee_sold_units SET 
+   
+    lead_id = ?,
+    name = ?,
+    employeeId = ?,
+    employee_name = ?,
+    unit_no = ?,
+    unit_status = ?,
+    WHERE id = ?`;
+
+  db.query(
+    sql,
+    [ lead_id,
+      name,
+      employeeId,
+      employee_name,
+      unit_no,
+      unit_status, id],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: "Error updating Unit Sold data" });
+      } else if (results.affectedRows === 0) {
+        res.status(404).json({ error: "Unit Sold not found" });
+      } else {
+        res
+          .status(200)
+          .json({ success: true, message: "Unit Sold data updated successfully" });
+      }
+    }
+  );
+};
+
+const deleteEmployeeUnitSold = (req, res) => {
+  const { id } = req.params;
+
+  // Basic validation
+  if (!id) {
+    return res.status(400).json({ error: "Unit ID is required" });
+  }
+
+  const sql = `DELETE FROM EmployeeUnitSold WHERE id = ?`;
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "Error deleting Unit Sold" });
+    } else if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Unit Sold not found" });
+    } else {
+      res
+        .status(200)
+        .json({ success: true, message: "Unit Sold deleted successfully" });
+    }
+  });
+};
+
+
+const getEmployeeUnitSold = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sql = "SELECT * FROM EmployeeUnitSold";
+
+    const result = await new Promise((resolve, reject) => {
+      db.query(sql, [id], (err, results) => {
+        if (err) {
+          reject(err); 
+        } else {
+          resolve(results); 
+        }
+      });
+    });
+    // Send the result as a response
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Database query error:", err); // Log the error for debugging
+    res.status(500).json({ message: "Internal Server Erro, error: errr" });
+  }
+};
+const getEmployeeUnitSoldById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sql = "SELECT * FROM EmployeeUnitSold WHERE employeeId = ?";
+
+    const result = await new Promise((resolve, reject) => {
+      db.query(sql, [id], (err, results) => {
+        if (err) {
+          reject(err); 
+        } else {
+          resolve(results); 
+        }
+      });
+    });
+    // Send the result as a response
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Database query error:", err); // Log the error for debugging
+    res.status(500).json({ message: "Internal Server Erro, error: errr" });
+  }
+};
+
+
+const getUnitData = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sql = "SELECT * FROM unit_data";
+
+    const result = await new Promise((resolve, reject) => {
+      db.query(sql, [id], (err, results) => {
+        if (err) {
+          reject(err); 
+        } else {
+          resolve(results); 
+        }
+      });
+    });
+    // Send the result as a response
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Database query error:", err); // Log the error for debugging
+    res.status(500).json({ message: "Internal Server Erro, error: errr" });
+  }
+};
+const updateOnlyUnitDataStatusById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    console.log(status, id);
+
+    const sql = `UPDATE unit_data SET 
+    status = ?
+                    
+    WHERE lead_id = ?`;
+
+    await new Promise((resolve, reject) => {
+      db.query(sql, [status, id], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+
+    res.status(200).json({ message: "Unit Status updated successfully" });
+  } catch (error) {
+    console.error("Database update error:", error);
+    res.status(500).json({ message: "Internal Server Error", error: err });
+  }
+};
+
+
 
 module.exports = {
   getEmployeeInvoice,
@@ -976,5 +1186,5 @@ module.exports = {
   getEmployeebyidvisit,
   AllgetEmployeebyvisit,
   updateOnlyVisitStatus,
-  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus
+  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById
 };
