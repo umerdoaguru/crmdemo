@@ -72,6 +72,7 @@ import ViewAllVisit from "../components/Leads/ViewAllVisit";
 import Final_Quotation_All from "../pages/Quotation/Final_Quotation_All";
 import ViewAllFollowUp from "../components/Leads/ViewAllFollowUp";
 import ViewAllRemark from "../components/Leads/ViewAllRemark";
+import ViewAllUnitSold from "../components/Leads/ViewAllUnitSold";
 
 function EmployeeRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -184,6 +185,10 @@ function EmployeeRoutes() {
           <Route
             path="/view_follow_up/:id"
             element={<ViewAllFollowUp />}
+          />
+          <Route
+            path="/view_unit_sold/:id"
+            element={<ViewAllUnitSold />}
           />
           <Route
             path="/view_remark/:id"

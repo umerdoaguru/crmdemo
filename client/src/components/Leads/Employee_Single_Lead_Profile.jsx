@@ -14,8 +14,11 @@ function Employee_Single_Lead_Profile() {
   const navigate = useNavigate();
   const [leads, setLeads] = useState([]);
   const [visit, setVisit] = useState([]);
+  const [unitdata, setUnitData] = useState([]);
+  const [unitemployeesolddata, setUnitEmployeeSoldData] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupVisit, setShowPopupVisit] = useState(false);
+  const [showPopupUnitSold, setShowPopupUnitSold] = useState(false);
   const [showPopupFollowUp, setShowPopupFollowUp] = useState(false);
   const [showPopupRemark, setShowPopupRemark] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -73,6 +76,17 @@ const [remark, setRemark] = useState({
   
   date: "",
 });
+const [unitsold, setUnitSold] = useState({
+  lead_id: "",
+  name: "",
+  employee_name: "",
+  employeeId: "",
+  unit_no: "",
+  unit_id:"",
+  unit_status:"",
+  main_project_id:"",
+  date: "",
+});
 
 const EmpId = useSelector((state) => state.auth.user);
 
@@ -81,6 +95,7 @@ const token = EmpId?.token;
   const [quotationCreated, setQuotationCreated] = useState(false);
   const [visitCreated, setVisitCreated] = useState(false);
   const [followCreated, setFollowCreated] = useState(false);
+  const [employeeunitsoldCreated, setemployeeunitsoldCreated] = useState(false);
   const [remarkCreated, setRemarkCreated] = useState(false);
  
   // const leads = [{ /* lead data */ }];
@@ -206,17 +221,20 @@ const token = EmpId?.token;
     fetchVisit();
     fetchFollowUp();
     fetchRemark();
+    fetchUnitdata();
+    fetchUnitSoldEmployee();
   }, [id]);
 
-  // const fetchLeads = async () => {
-  //   try {
-  //     const response = await axios.get(http://localhost:9000/api/leads/${id});
-  //     setLeads(response.data);
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error("Error fetching quotations:", error);
-  //   }
-  // };
+  const fetchUnitdata = async () => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/unit-data/${leads[0].unit_id}`);
+      setUnitData(response.data);
+      console.log(unitdata);
+      
+    } catch (error) {
+      console.error("Error fetching Unit Data:", error);
+    }
+  };
 
   const fetchLeads = async () => {
     try {
@@ -292,6 +310,20 @@ const token = EmpId?.token;
       console.error("Error fetching quotations:", error);
     }
   };
+  const fetchUnitSoldEmployee = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/unit-sold/${leads[0].employeeId}`,
+       
+      );
+
+      setUnitEmployeeSoldData(response.data);
+      // Ensure proper comparison with 'Created', trim any spaces and normalize the case
+      setemployeeunitsoldCreated(response.data[0]);
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
   
   const fetchRemark = async () => {
     try {
@@ -345,6 +377,13 @@ const token = EmpId?.token;
   const handleInputChangeVisit = (e) => {
     const { name, value } = e.target;
     setVisitLead((prevLead) => ({
+      ...prevLead,
+      [name]: value,
+    }));
+  };
+  const handleInputChangeUnitSold = (e) => {
+    const { name, value } = e.target;
+    setUnitSold((prevLead) => ({
       ...prevLead,
       [name]: value,
     }));
@@ -413,10 +452,30 @@ const token = EmpId?.token;
     }); // Reset remark state
     setShowPopupRemark(true); // Open the popup for creating a remark
   };
+  const handleCreateClickUnit = () => {
+    setRemark({
+      lead_id: "",
+      name: "",
+      employee_name: "",
+      employeeId: "",
+      unit_no: "",
+      unit_id:"",
+      unit_status:"",
+      main_project_id:"",
+      date: "",
+    }); // Reset remark state
+    setShowPopupUnitSold(true); // Open the popup for creating a remark
+    fetchUnitdata()
+  };
   
   const handleViewVisit = () => {
     navigate(`/view_visit/${leads[0].lead_id}`);
     console.log(leads[0].lead_id);
+    
+  };
+  const handleViewEmployeeUnitSold = () => {
+    navigate(`/view_unit_sold/${leads[0].employeeId}`);
+    console.log(leads[0].employeeId);
     
   };
 
@@ -666,6 +725,46 @@ const token = EmpId?.token;
       cogoToast.error("Failed to create remark and update lead.");
     }
   };
+  const saveUnitSold = async () => {
+    if (!unitsold.unit_status) {
+      cogoToast.error("Please select a unitsold status.");
+      return;
+    }
+  
+    if (!unitsold.date) {
+      cogoToast.error("Please select a date.");
+      return;
+    }
+  
+    try {
+
+        const response = await axios.post(`http://localhost:9000/api/unit-sold`,
+        {
+          project_name: leads[0].project_name,
+          main_project_id: leads[0].main_project_id,
+          lead_id: leads[0].lead_id,
+          name: leads[0].name,
+          employee_name: leads[0].assignedTo,
+          employeeId: leads[0].employeeId,
+          unit_id: leads[0].unit_id,
+          unit_no: unitsold.unit_no,
+          unit_status: unitsold.unit_status,
+          date: unitsold.date,
+        }
+      );
+  
+      if (response.status === 201) {
+        cogoToast.success("UnitSold Save successfully");
+        closePopupUnitSold();
+        fetchUnitdata();
+        fetchLeads();
+        fetchUnitSoldEmployee();
+      } 
+    } catch (error) {
+      console.error("Request failed:", error);
+      cogoToast.error("Failed to Save Error.");
+    }
+  };
   
   const closePopup = () => {
     setShowPopup(false);
@@ -673,6 +772,9 @@ const token = EmpId?.token;
 
   const closePopupVisit = () => {
     setShowPopupVisit(false);
+  };
+  const closePopupUnitSold = () => {
+    setShowPopupUnitSold(false);
   };
 
   const closePopupFollowUp = () => {
@@ -774,12 +876,6 @@ console.log(totalVisit);
           <div className="flex flex-wrap justify-between gap-4 p-4">
   {/* Left Section for Creation Buttons */}
   <div className="flex flex-wrap gap-2">
-    {/* <button
-      onClick={() => handleQuotation(leads[0])}
-      className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
-    >
-      Quotation Creation
-    </button> */}
 
     <button
       className="bg-orange-500 text-white px-4 py-2 rounded w-full sm:w-auto"
@@ -799,24 +895,20 @@ console.log(totalVisit);
     >
       Remark Creation
     </button>
+    <button
+      className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+      onClick={handleCreateClickUnit}
+    >
+      Unit Sold Creation
+    </button>
+
+       
   </div>
 
   {/* Right Section for View Buttons */}
   <div className="flex flex-wrap gap-2">
     {/* Quotation */}
-    {/* {quotationCreated ? (
-      <button
-        onClick={() => handleViewQuotation(leads[0])}
-        className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
-      >
-        View Quotation
-      </button>
-    ) : (
-      <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full sm:w-auto">
-        Quotation not yet created
-      </p>
-    )} */}
-
+    
     {/* Visit */}
 
     {visitCreated ? (
@@ -859,6 +951,20 @@ console.log(totalVisit);
         Remark not yet created
       </p>
     )}
+
+    {employeeunitsoldCreated ? (
+      <button
+        onClick={handleViewEmployeeUnitSold}
+        className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+      >
+        View Unit Sold
+      </button>
+    ) : (
+      <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full sm:w-auto">
+        Unit not yet sold
+      </p>
+    )}
+
   </div>
 </div>
 
@@ -1025,16 +1131,7 @@ console.log(totalVisit);
                     className={`w-full px-3 py-2 border  rounded`}
                   />
                 </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Lead Number</label>
-                  <input
-                    type="text"
-                    name="lead_no"
-                    value={leads[0].project_name}
-                    onChange={handleInputChangeVisit}
-                    className={`w-full px-3 py-2 border  rounded`}
-                  />
-                </div>
+              
                 <div className="mb-4">
                   <label className="block text-gray-700">Lead Number</label>
                   <input
@@ -1095,6 +1192,104 @@ console.log(totalVisit);
                   <button
                     className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
                     onClick={closePopupVisit}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {showPopupUnitSold && (
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
+                <h2 className="text-xl mb-4">{"Add Site Visit"}</h2>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Project Name</label>
+                  <input
+                    type="text"
+                    name="project_name"
+                    value={leads[0].project_name}
+                    onChange={handleInputChangeUnitSold}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
+              
+                <div className="mb-4">
+                  <label className="block text-gray-700">Lead Number</label>
+                  <input
+                    type="number"
+                    name="lead_no"
+                    value={leads[0].lead_no}
+                    onChange={handleInputChangeUnitSold}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={leads[0].name}
+                    onChange={handleInputChangeUnitSold}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
+            
+                <div className="mb-4">
+                  <label className="block text-gray-700">Unit Number</label>
+                  <select
+                    name="unit_no"
+                    value={unitsold.unit_no}
+                    onChange={handleInputChangeUnitSold}
+                    className="border rounded-2xl p-2 w-full"
+                  >
+                    <option value="">Select Unit Number </option>
+                    {unitdata.map((unit) => (
+                      <option key={unit.id} value={unit.unit_number}>
+                        {unit.unit_number}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+            <div className="mb-4">
+                  <label className="block text-gray-700">Unit Status</label>
+                  <select
+                    name="unit_status"
+                    value={unitsold.unit_status}
+                    onChange={handleInputChangeUnitSold}
+                    className="border rounded-2xl p-2 w-full"
+                  >
+                    <option value="">Select Unit Status Type</option>
+                    <option value="pending">Pending</option>
+                    <option value="sold">Sold</option>
+                   
+                  </select>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-gray-700">Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={unitsold.date}
+                    onChange={handleInputChangeUnitSold}
+                    className={`w-full px-3 py-2 border  rounded`}
+                  />
+                </div>
+
+               
+
+                <div className="flex justify-end">
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
+                    onClick={saveUnitSold}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
+                    onClick={closePopupUnitSold}
                   >
                     Cancel
                   </button>

@@ -963,25 +963,44 @@ const createEmployeeUnitSold = (req, res) => {
     name,
     employeeId,
     employee_name,
+    unit_id,
     unit_no,
     unit_status,
+    main_project_id,
+    project_name,
+    date
   
   } = req.body;
 
   const sql = `INSERT INTO employee_sold_units (
     
+   
     lead_id,
     name,
     employeeId,
     employee_name,
+    unit_id,
     unit_no,
-    unit_status	
+    unit_status,
+    main_project_id,
+    project_name,
+    date
    
-  ) VALUES (?,?,?,?,?,?)`;
+  ) VALUES (?,?,?,?,?,?,?,?,?,?)`;
 
   db.query(
     sql,
-    [ lead_id, name, employeeId, employee_name, unit_no,unit_status],
+    [ 
+      lead_id,
+      name,
+      employeeId,
+      employee_name,
+      unit_id,
+      unit_no,
+      unit_status,
+      main_project_id,
+      project_name,
+      date],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: "Error inserting data" });
@@ -1002,8 +1021,12 @@ const updateEmployeeUnitSold = (req, res) => {
     name,
     employeeId,
     employee_name,
+    unit_id,
     unit_no,
     unit_status,
+    main_project_id,
+    project_name,
+    date
   } = req.body;
 
   // Basic validation
@@ -1015,22 +1038,32 @@ const updateEmployeeUnitSold = (req, res) => {
 
   const sql = `UPDATE employee_sold_units SET 
    
+    
     lead_id = ?,
     name = ?,
     employeeId = ?,
     employee_name = ?,
+    unit_id = ?,
     unit_no = ?,
     unit_status = ?,
+    main_project_id = ?,
+    project_name = ?,
+    date= ? 
     WHERE id = ?`;
 
   db.query(
     sql,
-    [ lead_id,
+    [ 
+      lead_id,
       name,
       employeeId,
       employee_name,
+      unit_id,
       unit_no,
-      unit_status, id],
+      unit_status,
+      main_project_id,
+      project_name,
+      date, id],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: "Error updating Unit Sold data" });
@@ -1053,7 +1086,7 @@ const deleteEmployeeUnitSold = (req, res) => {
     return res.status(400).json({ error: "Unit ID is required" });
   }
 
-  const sql = `DELETE FROM EmployeeUnitSold WHERE id = ?`;
+  const sql = `DELETE FROM  employee_sold_units WHERE id = ?`;
 
   db.query(sql, [id], (err, results) => {
     if (err) {
@@ -1072,7 +1105,7 @@ const deleteEmployeeUnitSold = (req, res) => {
 const getEmployeeUnitSold = async (req, res) => {
   try {
     const { id } = req.params;
-    const sql = "SELECT * FROM EmployeeUnitSold";
+    const sql = "SELECT * FROM  employee_sold_units";
 
     const result = await new Promise((resolve, reject) => {
       db.query(sql, [id], (err, results) => {
@@ -1093,7 +1126,7 @@ const getEmployeeUnitSold = async (req, res) => {
 const getEmployeeUnitSoldById = async (req, res) => {
   try {
     const { id } = req.params;
-    const sql = "SELECT * FROM EmployeeUnitSold WHERE employeeId = ?";
+    const sql = "SELECT * FROM  employee_sold_units WHERE employeeId = ?";
 
     const result = await new Promise((resolve, reject) => {
       db.query(sql, [id], (err, results) => {
@@ -1113,10 +1146,10 @@ const getEmployeeUnitSoldById = async (req, res) => {
 };
 
 
-const getUnitData = async (req, res) => {
+const getUnitDataByUnitId = async (req, res) => {
   try {
     const { id } = req.params;
-    const sql = "SELECT * FROM unit_data";
+    const sql = "SELECT * FROM unit_data WHERE unit_id = ?";
 
     const result = await new Promise((resolve, reject) => {
       db.query(sql, [id], (err, results) => {
@@ -1144,7 +1177,7 @@ const updateOnlyUnitDataStatusById = async (req, res) => {
     const sql = `UPDATE unit_data SET 
     status = ?
                     
-    WHERE lead_id = ?`;
+    WHERE unit_number = ?`;
 
     await new Promise((resolve, reject) => {
       db.query(sql, [status, id], (err, result) => {
@@ -1186,5 +1219,5 @@ module.exports = {
   getEmployeebyidvisit,
   AllgetEmployeebyvisit,
   updateOnlyVisitStatus,
-  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById
+  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById,getUnitDataByUnitId,updateOnlyUnitDataStatusById
 };
