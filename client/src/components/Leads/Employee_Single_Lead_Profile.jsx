@@ -453,6 +453,8 @@ const token = EmpId?.token;
     setShowPopupRemark(true); // Open the popup for creating a remark
   };
   const handleCreateClickUnit = () => {
+
+  
     setRemark({
       lead_id: "",
       name: "",
@@ -464,8 +466,9 @@ const token = EmpId?.token;
       main_project_id:"",
       date: "",
     }); // Reset remark state
-    setShowPopupUnitSold(true); // Open the popup for creating a remark
     fetchUnitdata()
+    setShowPopupUnitSold(true); // Open the popup for creating a remark
+
   };
   
   const handleViewVisit = () => {
