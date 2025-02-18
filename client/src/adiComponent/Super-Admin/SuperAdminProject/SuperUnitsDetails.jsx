@@ -68,46 +68,16 @@ const SuperUnitsDetails = () => {
               <h3 className="mb-4 text-lg font-semibold mt-2">
                 The Details Of Unit ID {id}
               </h3>
-              <div className="space-x-2">
-                <button
-                  onClick={() => {
-                    setStatusFilter("pending");
-                    setCurrentPage(0);
-                  }}
-                  className={`px-3 py-1 rounded-lg ${
-                    statusFilter.toLowerCase() === "pending"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-700"
-                  }`}
-                >
-                  Pending
-                </button>
-                <button
-                  onClick={() => {
-                    setStatusFilter("sold");
-                    setCurrentPage(0);
-                  }}
-                  className={`px-3 py-1 rounded-lg ${
-                    statusFilter.toLowerCase() === "sold"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-700"
-                  }`}
-                >
-                  Sold
-                </button>
-                <button
-                  onClick={() => {
-                    setStatusFilter("");
-                    setCurrentPage(0);
-                  }}
-                  className={`px-3 py-1 rounded-lg ${
-                    statusFilter === ""
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-700"
-                  }`}
-                >
-                  All
-                </button>
+              <div className="flex items-center justify-center p-2">
+              <select
+              value={statusFilter}
+              onChange={(e) => {setStatusFilter(e.target.value);   
+                                setCurrentPage(0);}}
+              className="border border-gray-300 p-2 rounded-lg bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="sold">Sold</option>
+              </select>
               </div>
             </div>
 

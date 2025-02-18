@@ -218,9 +218,9 @@ const Units = () => {
             <button onClick={() => handleEdit(unit)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
             <button onClick={() => handleDelete(unit.unit_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
             </td>
-            <td>
+            <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
               <Link to={`/admin-unit-Detail-Dash/${unit.unit_id}`} className="inline-block">
-                                <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                                <button className="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition">
                                  Detail
                                 </button>
                                 </Link>
