@@ -1426,16 +1426,17 @@ const deleteProject = (req, res) => {
 
 const updateUnit = async (req, res) => {
   const unit_id = req.params.id;
-  const { unit_type, unit_size, total_units, base_price } = req.body;
+  const { unit_type, unit_size, total_units, base_price,main_project_id } = req.body;
 
   const sql = `UPDATE units 
                SET unit_type = ?, 
                    unit_size = ?, 
                    total_units = ?, 
-                   base_price = ? 
+                   base_price = ? ,
+                   main_project_id = ?
                WHERE unit_id = ?`; 
 
-  db.query(sql, [unit_type, unit_size, total_units, base_price, unit_id], async (err, result) => {
+  db.query(sql, [unit_type, unit_size, total_units, base_price,main_project_id, unit_id], async (err, result) => {
     if (err) {
       console.error("Error updating Unit:", err);
       return res.status(500).json({ message: "Server error", error: err });
@@ -1464,10 +1465,10 @@ const updateUnit = async (req, res) => {
         const unitDataValues = [];
 
         for (let i = currentTotalUnits + 1; i <= total_units; i++) {
-          unitDataValues.push([i, unit_type, unit_id, unit_size, base_price, 'pending']);
+          unitDataValues.push([i, unit_type, unit_id, unit_size, base_price,main_project_id, 'pending']);
         }
 
-        const insertQuery = `INSERT INTO unit_data (unit_number, unit_type, unit_id, unit_size, base_price, status) VALUES ?`;
+        const insertQuery = `INSERT INTO unit_data (unit_number, unit_type, unit_id, unit_size, base_price,main_project_id, status) VALUES ?`;
         await new Promise((resolve, reject) => {
           db.query(insertQuery, [unitDataValues], (err, result) => {
             if (err) reject(err);

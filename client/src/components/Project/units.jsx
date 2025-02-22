@@ -87,12 +87,22 @@ const Units = () => {
   };
 
  const handleaddunit = () =>{
+  setUnitData({
+    main_project_id: id, 
+    unit_type: "",
+    custom_unit_type: "",
+    unit_size: "",
+    total_units: "",
+    base_price: "",
+  });
   setaddunit((prev) => !prev);
 
  }
 
   const handleEdit = (unit) => {
     setEditProject(unit); 
+    console.log(unit);
+    
     setShowModal(true);
   };
 

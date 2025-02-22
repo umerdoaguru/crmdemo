@@ -217,24 +217,17 @@ const token = EmpId?.token;
   
   useEffect(() => {
     fetchLeads();
-
     fetchVisit();
     fetchFollowUp();
     fetchRemark();
+   
+  }, [id]);
+  useEffect(() => {
     fetchUnitdata();
     fetchUnitSoldEmployee();
-  }, [id]);
+   
+  }, [leads[0]]);
 
-  const fetchUnitdata = async () => {
-    try {
-      const response = await axios.get(`http://localhost:9000/api/unit-data/${leads[0].unit_id}`);
-      setUnitData(response.data);
-      console.log(unitdata);
-      
-    } catch (error) {
-      console.error("Error fetching Unit Data:", error);
-    }
-  };
 
   const fetchLeads = async () => {
     try {
@@ -267,6 +260,11 @@ const token = EmpId?.token;
       console.error("Error fetching quotations:", error);
     }
   };
+
+
+
+
+
 
   const fetchVisit = async () => {
     try {
@@ -343,7 +341,17 @@ const token = EmpId?.token;
     }
   };
   
-
+  const fetchUnitdata = async () => {
+    
+    try {
+      const response = await axios.get(`http://localhost:9000/api/unit-data/${leads[0].unit_id}`);
+      setUnitData(response.data);
+      console.log(unitdata);
+      
+    } catch (error) {
+      console.error("Error fetching Unit Data:", error);
+    }
+  };
   const handleBackClick = () => {
     navigate(-1); // -1 navigates to the previous page in history
   };
@@ -757,6 +765,20 @@ const token = EmpId?.token;
       );
   
       if (response.status === 201) {
+
+        const putResponse = await axios.put(
+          `http://localhost:9000/api/unid-sold/${leads[0].unit_no}`,
+          { unit_status: unitsold.unit_status }
+        );
+  
+        if (putResponse.status === 200) {
+          console.log("Unit Status updated successfully:", putResponse.data);
+        } else {
+          console.error("Error updating Unit Status:", putResponse.data);
+          cogoToast.error("Failed to update the lead Unit Status.");
+        }
+
+
         cogoToast.success("UnitSold Save successfully");
         closePopupUnitSold();
         fetchUnitdata();
@@ -1000,6 +1022,7 @@ console.log(totalVisit);
       <th className="px-6 py-3 border-b-2 border-gray-300">Project Id</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Unit Type</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Unit Id</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Number</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Close Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Assigned Date</th>
@@ -1034,6 +1057,7 @@ console.log(totalVisit);
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.main_project_id}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_type}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_id}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_number}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.visit}</td>
     <td className="px-6 py-4 border-b border-gray-200 font-semibold text-gray-800">
       {lead.d_closeDate === "pending"
