@@ -18,6 +18,7 @@ function EmployeeLead() {
   const [filteredLeads, setFilteredLeads] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDate, setFilterDate] = useState("");
+  const [loading , setLoading] = useState(false)
   const [startDate, setStartDate] = useState("");
   const [leadSourceFilter, setLeadSourceFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -26,8 +27,39 @@ function EmployeeLead() {
   const [leadStatusFilter, setLeadStatusFilter] = useState("");
   const [leadnotInterestedStatusFilter, setLeadnotInterestedStatusFilter] = useState("");
   const [meetingStatusFilter, setMeetingStatusFilter] = useState("");
+  const [visitmonthFilter, setVisitMonthFilter] = useState("");
   const [monthFilter, setMonthFilter] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc"); 
+  const [yearFilter, setYearFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState("desce"); 
+  const uniqueYears = [
+    ...new Set(leads.map((lead) => moment(lead.createdTime).format("YYYY")))
+  ];
+
+  const monthOrder = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ]
+  const uniqueMonth = [
+    ...new Set(
+      leads
+        .filter((lead) => moment(lead.createdTime).format("YYYY") === yearFilter)
+        .map((lead) => moment(lead.createdTime).format("MMMM"))
+    ),
+  ].sort((a, b) => monthOrder.indexOf(a) - monthOrder.indexOf(b)); // Sort by monthOrder
+
+  const uniqueVisitMonth = [
+    ...new Set(
+      leads
+        .filter(
+          (lead) =>
+            lead.visit === visitFilter && 
+            lead.visit !== "pending" && 
+            lead.visit_date && moment(lead.visit_date, moment.ISO_8601, true).isValid() 
+        )
+        .map((lead) => moment(lead.visit_date).format("MMMM"))
+    ),
+  ].sort((a, b) => monthOrder.indexOf(a) - monthOrder.indexOf(b)); // Sort months in order
+
 
 
 
@@ -59,7 +91,7 @@ function EmployeeLead() {
       );
       const data = response.data;
       console.log(data);
-      setLeads(data.reverse()); // Reverse the data here
+      setLeads(data); // Reverse the data here
     } catch (error) {
       console.error("Error fetching leads:", error);
     }
@@ -94,10 +126,10 @@ function EmployeeLead() {
   
     // Sort by date
     filtered = filtered.sort((a, b) => {
-      if (sortOrder === "asc") {
-        return new Date(a.createdTime) - new Date(b.createdTime);
-      } else {
+      if (sortOrder === "desce") {
         return new Date(b.createdTime) - new Date(a.createdTime);
+      } else {
+        return new Date(a.createdTime) - new Date(b.createdTime);
       }
     });
   
@@ -112,10 +144,10 @@ function EmployeeLead() {
 }
   
     // Filter by date range
-    if (startDate && endDate) {
+    if (filterDate) {
       filtered = filtered.filter((lead) => {
         const leadDate = moment(lead.createdTime).format("YYYY-MM-DD");
-        return leadDate >= startDate && leadDate <= endDate;
+        return leadDate === filterDate
       });
     }
   
@@ -165,11 +197,23 @@ function EmployeeLead() {
     }
   
   
-    // Filter by month
     if (monthFilter) {
       filtered = filtered.filter((lead) => {
-        const leadMonth = moment(lead.createdTime).format("MM");
+        const leadMonth = moment(lead.createdTime).format("MMMM");
         return leadMonth === monthFilter;
+      });
+    }
+    if (yearFilter) {
+      filtered = filtered.filter((lead) => {
+        const leadYear = moment(lead.createdTime).format("YYYY");
+        return leadYear === yearFilter;
+      });
+    }
+  
+    if (visitmonthFilter) {
+      filtered = filtered.filter((lead) => {
+        const visitleadMonth = moment(lead.visit_date).format("MMMM");
+        return visitleadMonth === visitmonthFilter;
       });
     }
   
@@ -181,8 +225,7 @@ function EmployeeLead() {
     setFilteredLeads(filtered);
   }, [
     searchTerm,
-    startDate,
-    endDate,
+    filterDate,
     leads,
     leadSourceFilter,
     statusFilter,
@@ -193,6 +236,8 @@ function EmployeeLead() {
     meetingStatusFilter,
     
     monthFilter,
+    yearFilter,
+    visitmonthFilter,
     sortOrder,
   ]);
   
@@ -227,7 +272,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
     setCurrentPage(0); // Reset to the first page
   };
   const toggleSortOrder = () => {
-    setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+    setSortOrder((prevOrder) => (prevOrder === "desce" ? "asce" : "desce"));
   };
 
   return (
@@ -248,30 +293,45 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                 <label htmlFor="">Search</label>
                 <input
                   type="text"
-                    placeholder="Project Name,Name,Lead Source,Assigned To,Phone No"
+                    placeholder=" Name,Lead Source,Assigned To,Phone No"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border rounded-2xl p-2 w-full"
+                 
+                  className={`border rounded-2xl p-2 w-full ${
+                    searchTerm ? "bg-blue-500 text-white" : "bg-white"
+                   }`}
                 />
               </div>
               <div>
-                <label htmlFor="">Start Date</label>
+                <label htmlFor="">Filterd Date</label>
                 <input
                   type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="border  rounded-2xl p-2 w-full"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+               
+                  className={`border rounded-2xl p-2 w-full ${
+                    filterDate ? "bg-blue-500 text-white" : "bg-white"
+                   }`}
                 />
               </div>
+             
 
-              <div>
-                <label htmlFor="">End Date</label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="border   rounded-2xl p-2 w-full"
-                />
+
+           <div>
+                <label htmlFor="">Meeting Status</label>
+                <select
+                  value={meetingStatusFilter}
+                  onChange={(e) => setMeetingStatusFilter(e.target.value)}
+                  className={`border rounded-2xl p-2 w-full ${
+                   meetingStatusFilter ? "bg-blue-500 text-white" : "bg-white"
+                  }`}
+                >
+                  <option value="">All Meeting Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="done by director">Done By Director</option>
+                  <option value="done by manager">Done By Manager</option>
+                 
+                </select>
               </div>
               <div>
                 <label htmlFor="">Lead Source Filter</label>
@@ -327,6 +387,9 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                   <option value="cancelled">Cancelled</option>
                 </select>
               </div>
+
+
+            
               <div>
                 <label htmlFor="">Lead Status</label>
                 <select
@@ -372,8 +435,8 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
 
               )}
 
-{leadStatusFilter === "site visit done" && (
-                    <div>
+
+     <div>
                 <label htmlFor="">Visit Filter</label>
                 <select
                   value={visitFilter}
@@ -389,50 +452,68 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                   <option value="self">Self Visit</option>
                 </select>
               </div>
-                )}
-              <div>
-                <label htmlFor="">Meeting Status</label>
-                <select
-                  value={meetingStatusFilter}
-                  onChange={(e) => setMeetingStatusFilter(e.target.value)}
-                  className={`border rounded-2xl p-2 w-full ${
-                   meetingStatusFilter ? "bg-blue-500 text-white" : "bg-white"
-                  }`}
-                >
-                  <option value="">All Meeting Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="done by director">Done By Director</option>
-                  <option value="done by manager">Done By Manager</option>
-                 
-                </select>
-              </div>
 
-
+  {visitFilter && (
               <div>
-  <label htmlFor="">Month Filter</label>
+  <label htmlFor="" className=" fw-semibold text-[blue]">Visit Month Filter</label>
   <select
-    value={monthFilter}
-    onChange={(e) => setMonthFilter(e.target.value)}
+    value={visitmonthFilter}
+    onChange={(e) => setVisitMonthFilter(e.target.value)}
     className={`border rounded-2xl p-2 w-full ${
-     monthFilter ? "bg-blue-500 text-white" : "bg-white"
+     visitmonthFilter ? "bg-blue-500 text-white" : "bg-white"
     }`}
   >
     <option value="">All Months</option>
-    <option value="01">January</option>
-    <option value="02">February</option>
-    <option value="03">March</option>
-    <option value="04">April</option>
-    <option value="05">May</option>
-    <option value="06">June</option>
-    <option value="07">July</option>
-    <option value="08">August</option>
-    <option value="09">September</option>
-    <option value="10">October</option>
-    <option value="11">November</option>
-    <option value="12">December</option>
+    {uniqueVisitMonth.map((visitmonth) => (
+        <option key={visitmonth} value={visitmonth}>
+          {visitmonth}
+        </option>
+      ))}
   </select>
 </div>
 
+    )}
+
+
+<div>
+    <label htmlFor="yearFilter">Year Filter</label>
+    <select
+      value={yearFilter}
+      onChange={(e) => setYearFilter(e.target.value)}
+      className={`border rounded-2xl p-2 w-full ${
+        yearFilter ? "bg-blue-500 text-white" : "bg-white"
+      }`}
+    >
+      <option value="">All Years</option>
+      {uniqueYears.map((year) => (
+        <option key={year} value={year}>
+          {year}
+        </option>
+      ))}
+    
+    </select>
+  </div>
+
+  {yearFilter && (
+         <div>
+         <label htmlFor="">Month Filter</label>
+         <select
+           value={monthFilter}
+           onChange={(e) => setMonthFilter(e.target.value)}
+           className={`border rounded-2xl p-2 w-full ${
+            monthFilter ? "bg-blue-500 text-white" : "bg-white"
+           }`}
+         >
+           <option value="">All Months</option>
+          
+             {uniqueMonth.map((month) => (
+               <option key={month} value={month}>
+                 {month}
+               </option>
+             ))}
+         </select>
+       </div>
+      )}
             
             </div>
             
@@ -507,10 +588,10 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                     Visit
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
-                    Reason
+                    Visit Date
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
-                    Deal Status
+                    Reason
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Meeting Status
@@ -528,7 +609,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
   onClick={toggleSortOrder}
 >
   Assigned Date
-  <span>{sortOrder === "asc" ? "▲" : "▼" }</span>
+  <span className="text-blue-900 mx-2">{sortOrder === "desce" ? "▲" : "▼" }</span>
 </th>
             <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Action
@@ -543,7 +624,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
 
       <tr
         key={lead.id}
-        className={index % 2 === 0 ? "bg-gray-100" : ""}
+        className={`${index % 2 === 0 ? "bg-gray-100" : ""} `}
       >
         <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
         {leadsPerPage === Infinity ? index + 1 : index + 1 + currentPage * leadsPerPage}
@@ -576,12 +657,15 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.visit}
                         </td>
+                        <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold text-nowrap">
+                                             {lead.visit_date === "pending"
+                                               ? "pending"
+                                               : moment(lead.visit_date).format("DD MMM YYYY").toUpperCase()}
+                                           </td>
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.reason}
                         </td>
-                        <td className="px-6 py-4 border-b border-gray-200 font-semibold">
-                          {lead.deal_status}
-                        </td>
+                     
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.meeting_status}
                         </td>

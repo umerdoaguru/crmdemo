@@ -21,30 +21,35 @@ function LeadData() {
 
   const [selectedColumns, setSelectedColumns] = useState([
     "lead_no",
-        "assignedTo",
-        "name",
-        "phone",
-        "leadSource",
-        "remark_status",
-        "answer_remark",
-        "meeting_status",
-        "assignedBy",
-        "lead_status",
-        "address",
-        "booking_amount",
-        "deal_status",
-        "employeeId",
-        "follow_up_status",
-        "payment_mode",
-        "reason",
-        "registry",
-      
-        "project_name",
-        "visit",
-        "d_closeDate",
-        "createdTime",
-        "actual_date",
+    "assignedTo",
+    "name",
+    "phone",
+    "leadSource",
+    "remark_status",
+    "answer_remark",
+    "meeting_status",
+    "assignedBy",
+    "lead_status",
+    "address",
+    "booking_amount",
+    "deal_status",
+    "employeeId",
+    "follow_up_status",
+    "payment_mode",
+    "quotation",
+    "quotation_status",
+    "reason",
+    "registry",
+   
+    "subject",
+    "visit",
+    "visit_date",
+    "d_closeDate",
+    "createdTime",
+    "actual_date",
+    
   ]);
+
 
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
@@ -141,6 +146,7 @@ const downloadExcel = () => {
    
     project_name: "Project",
     visit: "Visit",
+    visit_Date: "Visit Date",
     d_closeDate: "Close Date",
     createdTime: "Assigned Date",
     actual_date: "Actual Date",

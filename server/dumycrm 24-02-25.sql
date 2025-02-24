@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2025 at 06:42 AM
+-- Generation Time: Feb 24, 2025 at 07:27 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `crm`
+-- Database: `dumycrm`
 --
 
 -- --------------------------------------------------------
@@ -34,6 +34,7 @@ CREATE TABLE `admins` (
   `password` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
+  `salary` decimal(10,2) NOT NULL,
   `roles` varchar(255) NOT NULL DEFAULT 'Admin',
   `createdTime` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -42,9 +43,8 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`admin_id`, `name`, `email`, `password`, `position`, `phone`, `roles`, `createdTime`) VALUES
-(34, 'umer', 'umerqureshi786786@gmail.com', 'umer', 'Admin', '6260550661', 'Admin', '2024-11-02 08:34:29'),
-(36, 'Hemlata Mahatma', 'hemlatamahatma1989@gmail.com', 'hemlata@onerealty', 'Admin', '9098300280', 'Admin', '2024-11-04 07:19:44');
+INSERT INTO `admins` (`admin_id`, `name`, `email`, `password`, `position`, `phone`, `salary`, `roles`, `createdTime`) VALUES
+(29, 'Doaguru Organization', 'doaguruinfosystems@gmail.com', 'Doaguru@2024', 'Admin', '8888888888', 150005.00, 'Admin', '2024-10-16 05:47:03');
 
 -- --------------------------------------------------------
 
@@ -172,8 +172,36 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employeeId`, `name`, `email`, `password`, `position`, `phone`, `salary`, `designation`, `signature`, `photo`, `roles`, `createdTime`) VALUES
-(33, 'Raveena Shivhare', 'yadavraveena668@gmail.com', 'raveena@2024', 'employee', '9340338374', NULL, NULL, NULL, NULL, 'Employee', '2025-02-19 07:45:22'),
-(34, 'test', 'test@gmail.com', 'test', 'employee', '6260550661', NULL, NULL, NULL, NULL, 'Employee', '2024-11-04 07:21:32');
+(24, 'test', 'test@gmail.com', 'test', 'sale', '9858582253', 150007.00, NULL, '/Assets/1726383330972-208977126-imgnew1.png', '/Assets/1726383330997-469333504-lead_profile.png', 'Employee', '2024-09-15 06:55:31'),
+(25, 'vinay', 'vinay@gmail.com', '', 'sale', '6260550661', 150007.00, NULL, NULL, NULL, 'Employee', '2024-10-18 11:55:43'),
+(29, 'umer', 'umer@gmail.com', 'umer', 'saless', '6260550661', 150007.00, NULL, NULL, NULL, 'Employee', '2024-09-14 16:09:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee_sold_units`
+--
+
+CREATE TABLE `employee_sold_units` (
+  `id` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `lead_id` int(255) NOT NULL,
+  `employee_name` varchar(255) NOT NULL,
+  `employeeId` int(255) NOT NULL,
+  `unit_id` int(255) NOT NULL,
+  `unit_no` int(255) NOT NULL,
+  `unit_status` varchar(255) NOT NULL,
+  `main_project_id` int(100) NOT NULL,
+  `project_name` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee_sold_units`
+--
+
+INSERT INTO `employee_sold_units` (`id`, `name`, `lead_id`, `employee_name`, `employeeId`, `unit_id`, `unit_no`, `unit_status`, `main_project_id`, `project_name`, `date`) VALUES
+(20, 'test of project name unit233', 155, 'umer', 29, 7, 3, 'sold', 21, 'nirvana homes exotica', '2025-02-22');
 
 -- --------------------------------------------------------
 
@@ -183,6 +211,7 @@ INSERT INTO `employee` (`employeeId`, `name`, `email`, `password`, `position`, `
 
 CREATE TABLE `follow_up_leads` (
   `id` int(255) NOT NULL,
+  `project_name` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `lead_id` int(255) NOT NULL,
   `employee_name` varchar(255) NOT NULL,
@@ -196,11 +225,10 @@ CREATE TABLE `follow_up_leads` (
 -- Dumping data for table `follow_up_leads`
 --
 
-INSERT INTO `follow_up_leads` (`id`, `name`, `lead_id`, `employee_name`, `employeeId`, `follow_up_type`, `follow_up_date`, `report`) VALUES
-(8, 'Jyoti Rohit', 140, 'test', 34, 'call', '2024-11-05', 'he said that plots is good '),
-(11, 'Sanjay Shukla', 148, 'test', 34, 'call', '2024-12-06', 'he said that plots is good '),
-(12, 'Sumit Kasture', 147, 'test', 34, 'call', '2025-02-02', 'testdsf4343'),
-(13, 'Umer Doaguru', 149, 'Raveena Shivhare', 33, 'in-person', '2025-02-04', 'aw');
+INSERT INTO `follow_up_leads` (`id`, `project_name`, `name`, `lead_id`, `employee_name`, `employeeId`, `follow_up_type`, `follow_up_date`, `report`) VALUES
+(9, '', 'Prakash Pandey', 149, 'umer', 29, 'call', '2024-11-09', 'he said that plots is good '),
+(10, '', 'Prakash Pandey', 149, 'umer', 29, 'call', '2024-11-08', 'he said that plots is good '),
+(11, 'nirvana homes exotica', 'test of project name unit233', 155, 'umer', 29, 'call', '2025-02-18', 'he said that plots is good ');
 
 -- --------------------------------------------------------
 
@@ -211,17 +239,18 @@ INSERT INTO `follow_up_leads` (`id`, `name`, `lead_id`, `employee_name`, `employ
 CREATE TABLE `formtable` (
   `id` int(11) NOT NULL,
   `form_id` varchar(255) NOT NULL,
-  `form_name` varchar(255) NOT NULL
+  `form_name` varchar(255) NOT NULL,
+  `project_id` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `formtable`
 --
 
-INSERT INTO `formtable` (`id`, `form_id`, `form_name`) VALUES
-(12, '1935750583597667', 'nirvana home leads 14/10'),
-(13, '1564826437399879', 'Old Nirvana House Form'),
-(16, '1313910650026035', 'Nirvana Homes Meta 1/12/25');
+INSERT INTO `formtable` (`id`, `form_id`, `form_name`, `project_id`) VALUES
+(12, '1935750583597667', 'META Ad One', 0),
+(13, '1564826437399879', 'META Ad Two', 0),
+(20, '1212555', '12545', 21);
 
 -- --------------------------------------------------------
 
@@ -334,18 +363,21 @@ CREATE TABLE `leads` (
   `name` varchar(100) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `leadSource` varchar(100) NOT NULL,
+  `project_name` varchar(255) NOT NULL,
+  `main_project_id` int(255) NOT NULL,
+  `unit_type` varchar(255) NOT NULL,
+  `unit_id` int(255) NOT NULL,
+  `unit_number` varchar(255) NOT NULL DEFAULT 'pending',
+  `unit_status` varchar(255) NOT NULL DEFAULT 'pending',
   `remark_status` varchar(255) NOT NULL DEFAULT 'pending',
   `answer_remark` varchar(255) NOT NULL DEFAULT 'pending',
   `remark_id` int(255) DEFAULT NULL,
   `meeting_status` varchar(255) NOT NULL DEFAULT 'pending',
   `lead_status` varchar(255) NOT NULL DEFAULT 'pending',
-  `subject` varchar(255) NOT NULL,
   `booking_amount` varchar(255) NOT NULL DEFAULT 'pending',
   `payment_mode` varchar(255) NOT NULL DEFAULT 'pending',
   `registry` varchar(255) NOT NULL DEFAULT 'pending',
   `address` varchar(255) NOT NULL,
-  `quotation` varchar(255) NOT NULL DEFAULT 'not created',
-  `quotation_status` varchar(255) NOT NULL DEFAULT 'not approved',
   `visit` varchar(255) NOT NULL DEFAULT 'pending ',
   `visit_date` varchar(255) NOT NULL DEFAULT 'pending',
   `deal_status` varchar(255) NOT NULL DEFAULT 'pending',
@@ -358,33 +390,34 @@ CREATE TABLE `leads` (
 -- Dumping data for table `leads`
 --
 
-INSERT INTO `leads` (`lead_id`, `lead_no`, `assignedTo`, `employeeId`, `createdTime`, `actual_date`, `assignedBy`, `name`, `phone`, `leadSource`, `remark_status`, `answer_remark`, `remark_id`, `meeting_status`, `lead_status`, `subject`, `booking_amount`, `payment_mode`, `registry`, `address`, `quotation`, `quotation_status`, `visit`, `visit_date`, `deal_status`, `d_closeDate`, `reason`, `follow_up_status`) VALUES
-(124, '211', 'umer', 29, '2024-10-31', '2024-10-29', 'Admin', 'Satyam Mishra', '+91-8770422546', '99 Acres', 'pending', 'pending', NULL, 'pending', 'completed', 'Nirvana Homes', '1000', 'cash', 'done', 'Jabalpur', 'created', 'not approved', 'fresh', '', 'close', '2024-11-01', 'pending', 'pending'),
-(129, '1218599669443593', 'vinay', 25, '2024-11-22', '2024-10-31', 'Admin', 'Binod kumar Swarnkar', '+919993454635', 'Facebook Campaign', 'pending', 'pending', NULL, 'pending', 'pending', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', 'Plot A-67,  jasuja city phase 3', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(130, '1601177500780293', 'sofia', 31, '2024-11-10', '2024-10-31', 'Admin', 'M.P. Singh', '9425015136', 'Facebook Campaign', 'pending', 'pending', NULL, 'pending', 'pending', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', '????????', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(131, '215', 'vinay', 25, '2024-11-30', '2024-10-31', 'Admin', 'Dr Umesh Kumar Kori', '+91-7000275146', '99 Acres', 'pending', 'pending', NULL, 'pending', 'pending', 'Nirvana Homes', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(132, '24', 'umer', 29, '2024-11-17', '2024-10-23', 'Admin', 'Test Email Integration  ', '9696969696', 'One Realty Website', 'pending', 'pending', NULL, 'pending', 'pending', 'Nirvana Homes', 'pending', 'pending', 'pending', 'indore', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(133, '220', 'umer', 29, '2024-11-02', '2024-11-02', 'Admin', 'Mohit Verma', '+91-8269973198', '99 Acres', 'pending', 'pending', NULL, 'pending', 'in progress', 'Nirvana Homes', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'fresh', '', 'pending', 'pending', 'pending', 'in progress'),
-(134, '136', 'vinay', 25, '2024-11-16', '2024-11-16', 'Admin', 'Baiche', '7584838488', 'Paid Advertising', 'pending', 'pending', NULL, 'pending', 'pending', 'Jfchvheh', 'pending', 'pending', 'pending', '2hchw', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(135, '9198900449', 'vinay', 25, '2024-11-03', '2024-11-03', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', 'pending', 'pending', NULL, 'pending', 'pending', 'just for testing purpose ', 'pending', 'pending', 'pending', 'Gorakhpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(136, '9198900449', 'vinay', 25, '2024-11-03', '2024-11-03', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', 'pending', 'pending', NULL, 'pending', 'pending', 'just for testing purpose ', 'pending', 'pending', 'pending', 'Gorakhpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(137, '9198900449', 'vinay', 25, '2024-11-07', '2024-11-07', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', 'pending', 'pending', NULL, 'pending', 'pending', 'just for testing purpose ', 'pending', 'pending', 'pending', 'Gorakhpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(138, '9198900449', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', 'pending', 'pending', NULL, 'pending', 'in progress', 'just for testing purpose ', '500', 'cash', 'done', 'Gorakhpur', 'created', 'not approved', 'fresh', '', 'close', '2024-11-03', 'pending', 'in progress'),
-(139, '901808688556391', 'vinay', 25, '2024-11-07', '2024-11-07', 'Admin', 'Gourav Vishwakarma', '8823020013', 'Facebook Campaign', 'pending', 'pending', NULL, 'pending', 'pending', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', 'Adhartal', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(140, '519643124275656', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Jyoti Rohit', '8492828523', 'Facebook Campaign', 'pending', 'pending', NULL, 'pending', 'in progress', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', 'Dhanwantari nagar.', 'created', 'not approved', 'fresh', '', 'pending', 'pending', 'pending', 'done'),
-(141, '899446881796547', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Deepak Patwa', '9329512080', 'Facebook Campaign', 'pending', 'pending', NULL, 'pending', 'pending', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', 'trimurti nager', 'not created', 'not approved', 'self', '', 'pending', 'pending', 'pending', 'pending'),
-(142, '33', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'test for crm ', '8888888888', 'One Realty Website', 'pending', 'pending', NULL, 'pending', 'pending', 'Query', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(143, '235', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Abhishek shahi', '7987826723', '99 Acres', 'pending', 'pending', NULL, 'pending', 'pending', 'Nirvana Homes', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(144, '4545234', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'umer', '6260550661', 'Cold Calling', 'pending', 'pending', NULL, 'pending', 'pending', '2BHK  plots', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(145, '4545234', 'Raveena Shivhare', 33, '2024-11-07', '2024-11-07', 'Admin', 'umer', '6260550661', 'Online Directories', 'pending', 'pending', NULL, 'pending', 'pending', '1BHK PlotS', 'pending', 'pending', 'pending', '2bhk', 'not created', 'not approved', 'self', '', 'pending', 'pending', 'pending', 'pending'),
-(146, '4545', 'Raveena Shivhare', 33, '2024-11-07', '2024-11-07', 'Admin', 'umer', '6260550661', 'Online Directories', 'pending', 'pending', NULL, 'pending', 'pending', '1BHK PlotS', 'pending', 'pending', 'pending', 'jbp', 'not created', 'not approved', 'self', '', 'pending', 'pending', 'pending', 'pending'),
-(147, '1262813061705939', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Sumit Kasture', '+918965850379', 'Facebook Campaign', 'test the id ', 'pending', 20, 'pending', 'site visit done', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', '1441, Ganga Nagar, Garha, JBP', 'created', 'not approved', 'fresh', '', 'pending', 'pending', 'pending', 'in progress'),
-(148, '1336161474460078', 'test', 34, '2024-11-08', '2024-11-06', 'Admin', 'Sanjay Shukla', '+919098575700', 'Facebook Campaign', 'mohit sahu ji said that he will purchase plots', 'ok i will talk you', 19, 'done by manager', 'completed', 'nirvana home leads 14/10', 'pending', 'pending', 'pending', 'Kundqm', 'not created', 'not approved', 're-visit', '', 'pending', 'pending', 'df', 'in progress'),
-(149, '4545', 'Raveena Shivhare', 33, '2025-02-14', '2025-02-14', 'Admin', 'Umer Doaguru', '9340338374', 'Online Directories', 'dd', 'pending', 21, 'pending', 'site visit done', 'wed', 'pending', 'pending', 'pending', '2bhk', 'created', 'not approved', 'self', '2025-02-20', 'pending', 'pending', 'pending', 'in progress'),
-(150, '23', 'Raveena Shivhare', 33, '2025-02-03', '2025-02-03', 'Admin', 'test of auth', '6260550661', 'Direct Mail', 'pending', 'pending', NULL, 'pending', 'pending', 'wed', 'pending', 'pending', 'pending', 'udaiypur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(151, '1161874615465961', 'Raveena Shivhare', 33, '2025-02-04', '2025-02-01', 'Super Admin', 'Sudhir Tiwari', '8136073922', 'Facebook', 'pending', 'pending', NULL, 'pending', 'site visit done', 'Nirvana Homes Meta 1/12/25', 'pending', 'pending', 'pending', 'H no 36 suncity kanchanpur adhartal jabalpur', 'not created', 'not approved', 're-visit', '2024-07-31', 'pending', 'pending', 'pending', 'pending'),
-(152, '421', 'Raveena Shivhare', 33, '2025-02-03', '2025-01-30', 'Super Admin', 'AMRESH KUMAR', '8149732360', '99 Acres', 'pending', 'pending', NULL, 'pending', 'pending', 'Nirvana Homes', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending'),
-(153, '3434', 'Raveena Shivhare', 33, '2024-02-19', '2024-02-19', 'Admin', '.htaccess', '6260550661', 'Online Directories', 'pending', 'pending', NULL, 'pending', 'pending', '1BHK PlotS', 'pending', 'pending', 'pending', 'Jabalpur', 'not created', 'not approved', 'pending ', '', 'pending', 'pending', 'pending', 'pending');
+INSERT INTO `leads` (`lead_id`, `lead_no`, `assignedTo`, `employeeId`, `createdTime`, `actual_date`, `assignedBy`, `name`, `phone`, `leadSource`, `project_name`, `main_project_id`, `unit_type`, `unit_id`, `unit_number`, `unit_status`, `remark_status`, `answer_remark`, `remark_id`, `meeting_status`, `lead_status`, `booking_amount`, `payment_mode`, `registry`, `address`, `visit`, `visit_date`, `deal_status`, `d_closeDate`, `reason`, `follow_up_status`) VALUES
+(124, '211', 'umer', 29, '2024-10-31', '2024-10-31', 'Admin', 'Satyam Mishra', '8770422546', '99 Acres', 'nirvana homes exotica', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'completed', '1000', 'cash', 'done', 'Jabalpur', 'fresh', 'pending', 'close', '2024-11-01', 'pending', 'pending'),
+(129, '1218599669443593', 'vinay', 25, '2024-11-22', '2024-10-31', 'Admin', 'Binod kumar Swarnkar', '+919993454635', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Plot A-67,  jasuja city phase 3', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(130, '1601177500780293', 'sofia', 31, '2024-11-10', '2024-10-31', 'Admin', 'M.P. Singh', '9425015136', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', '????????', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(131, '215', 'vinay', 25, '2024-11-30', '2024-10-31', 'Admin', 'Dr Umesh Kumar Kori', '+91-7000275146', '99 Acres', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Jabalpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(132, '24', 'umer', 29, '2024-11-17', '2024-10-23', 'Admin', 'Test Email Integration  ', '9696969696', 'One Realty Website', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'active lead', 'pending', 'pending', 'pending', 'indore', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(133, '220', 'umer', 29, '2024-11-02', '2024-11-02', 'Admin', 'Mohit Verma', '+91-8269973198', '99 Acres', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'in progress', 'pending', 'pending', 'pending', 'Jabalpur', 'fresh', 'pending', 'pending', 'pending', 'pending', 'in progress'),
+(134, '136', 'vinay', 25, '2024-11-16', '2024-11-16', 'Admin', 'Baiche', '7584838488', 'Paid Advertising', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', '2hchw', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(135, '9198900449', 'vinay', 25, '2024-11-03', '2024-11-03', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Gorakhpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(136, '9198900449', 'vinay', 25, '2024-11-03', '2024-11-03', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Gorakhpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(137, '9198900449', 'vinay', 25, '2024-11-07', '2024-11-07', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Gorakhpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(138, '9198900449', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'ayush jaiswal', '8318864691', 'just for testing purpose ', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'in progress', '500', 'cash', 'done', 'Gorakhpur', 'fresh', 'pending', 'close', '2024-11-03', 'pending', 'in progress'),
+(139, '901808688556391', 'vinay', 25, '2024-11-07', '2024-11-07', 'Admin', 'Gourav Vishwakarma', '8823020013', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Adhartal', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(140, '519643124275656', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Jyoti Rohit', '8492828523', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'in progress', 'pending', 'pending', 'pending', 'Dhanwantari nagar.', 'fresh', 'pending', 'pending', 'pending', 'pending', 'done'),
+(141, '899446881796547', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Deepak Patwa', '9329512080', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'trimurti nager', 'self', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(142, '33', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'test for crm ', '8888888888', 'One Realty Website', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Jabalpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(143, '235', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Abhishek shahi', '7987826723', '99 Acres', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Jabalpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(144, '4545234', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'umer', '6260550661', 'Cold Calling', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'Jabalpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(145, '4545234', 'Raveena Shivhare', 33, '2024-11-07', '2024-11-07', 'Admin', 'umer', '6260550661', 'Online Directories', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', '2bhk', 'self', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(146, '4545', 'Raveena Shivhare', 33, '2024-11-07', '2024-11-07', 'Admin', 'umer', '6260550661', 'Online Directories', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'jbp', 'self', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(147, '1262813061705939', 'test', 34, '2024-11-07', '2024-11-07', 'Admin', 'Sumit Kasture', '+918965850379', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', '1441, Ganga Nagar, Garha, JBP', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(148, '1336161474460078', 'test', 34, '2024-11-08', '2024-11-06', 'Admin', 'Sanjay Shukla', '+919098575700', 'Facebook Campaign', '', 0, '', 0, 'pending', 'pending', 'mohit sahu ji said that he will purchase plots', 'ok i will talk you', 19, 'done by manager', 'completed', 'pending', 'pending', 'pending', 'Kundqm', 're-visit', 'pending', 'pending', 'pending', 'df', 'in progress'),
+(149, '4545', 'umer', 29, '2025-02-12', '2025-02-12', 'Admin', 'Umer Doaguru', '6260550661', 'Cold Calling', 'SS construction', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'fde', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(150, '12', 'umer', 29, '2025-02-12', '2025-02-12', 'Admin', 'test', '6260550661', 'Direct Mail', 'nirvana homes exotica', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'completed', 'pending', 'pending', 'pending', 'Jabalpur', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(151, '345', 'vinay', 25, '2025-02-08', '2025-02-08', 'Admin', '345', '4545454554', 'Email Campaigns', 'nirvana homes exotica', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', '45', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(152, '344', 'umer', 29, '2025-02-12', '2025-02-12', 'Super Admin', '.htaccess', '6260550661', 'Direct Mail', 'nirvana homes exotica', 0, '', 0, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'jbp', 'pending ', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(154, '4545234', 'umer', 29, '2025-02-15', '2025-02-15', 'Admin', 'test of project name unit', '6260550661', 'Email Campaigns', 'nirvana homes exotica', 21, '2BHK', 5, 'pending', 'pending', 'pending', 'pending', NULL, 'pending', 'site visit done', 'pending', 'pending', 'pending', 'Satna', 'fresh', 'pending', 'pending', 'pending', 'pending', 'pending'),
+(155, '45454545', 'umer', 29, '2025-02-18', '2025-02-18', 'Admin', 'test of project name unit233', '6260550661', 'Direct Mail', 'nirvana homes exotica', 21, '1BHK', 7, '3', 'sold', 'pending', 'pending', NULL, 'pending', 'pending', 'pending', 'pending', 'pending', 'jbp', 'pending ', 'pending', 'pending', 'pending', 'pending', 'in progress');
 
 -- --------------------------------------------------------
 
@@ -407,62 +440,153 @@ CREATE TABLE `leadstable` (
 --
 
 INSERT INTO `leadstable` (`id`, `lead_id`, `full_name`, `phone_number`, `street_address`, `created_time`, `form_id`) VALUES
-(1117, '1729457887615810', 'Mayank Mishra', '+919617383531', 'vindavan colony  jabalpur', '2025-01-26 23:48:35', '1313910650026035'),
-(1118, '499478419845128', 'Aanya Colletion Neeraj Jain', '+916262855442', 'Jabalpur', '2025-01-26 23:42:11', '1313910650026035'),
-(1119, '919334200381325', 'Darshika Dubey', '+918817981814', 'Civil line', '2025-01-26 22:42:21', '1313910650026035'),
-(1120, '1852722705550188', 'KALIYAN', '+919165575043', '40052', '2025-01-26 21:31:46', '1313910650026035'),
-(1121, '459453693905377', 'Anup Yadav', '+919074797777', 'Vijay mr 4 road', '2025-01-26 20:18:31', '1313910650026035'),
-(1122, '1810689499700946', 'Naresh Chhabra', '+919826922740', 'D-13 ideal hills colony infront of Sai Baba Mandir narmada road Jabalpur', '2025-01-26 19:04:42', '1313910650026035'),
-(1123, '1664720297783296', 'Rupam Vishwakarma', '+919883844143', 'Sadar Bazar', '2025-01-26 18:29:41', '1313910650026035'),
-(1124, '9032233273524503', 'Ajay Saxena', '+919300366778', 'Ranjhi', '2025-01-26 18:21:52', '1313910650026035'),
-(1125, '627191699787839', 'Swapnil Thakur', '+918349853000', 'yes', '2025-01-26 18:21:20', '1313910650026035'),
-(1126, '605539678882731', 'Ankit Singh Solanki', '+919575780566', 'G-403 Shankarshah Nagar', '2025-01-26 18:18:17', '1313910650026035'),
-(1127, '526883789747736', 'Suprit Gupta', '+919407000616', 'impress', '2025-01-26 18:15:59', '1313910650026035'),
-(1128, '1732776617571411', 'Yogendra Choubey', '7987128079', 'Goulaua gada jabalpur', '2025-01-26 18:06:52', '1313910650026035'),
-(1129, '1564234360960609', 'Ankit', '+919752725169', 'Shakti nagar', '2025-01-26 18:05:13', '1313910650026035'),
-(1130, '1136709208107143', 'aAshutosh Chaturvedi', '+917987631003', '4th street shankarshah nagar rampur', '2025-01-26 18:03:02', '1313910650026035'),
-(1131, '478877988601980', 'Bobby S Sankat', '+917987789293', 'gadi khana naya bazar 3 damoh', '2025-01-25 21:06:15', '1313910650026035'),
-(1132, '581121444915127', 'Sourabh (sid)', '+919009091485', 'Sanjeevni nagar', '2025-01-25 20:48:05', '1313910650026035'),
-(1133, '1096613452240114', 'sachin namdeo', '+917489741638', 'gali no. 2, shanti nagar, damoh naka, Jabalpur', '2025-01-25 20:46:58', '1313910650026035'),
-(1134, '9074664782655938', 'Anuj Kapoor', '+917000674359', '53kingsway sadar main road jabalpur', '2025-01-25 20:37:47', '1313910650026035'),
-(1135, '1144717547056055', 'Siddharth Chaturvedi', '+919329578671', 'First Right from JP VIDYAPEETH school Near Palan Petrol Pump Mahadeva Satna', '2025-01-25 20:37:28', '1313910650026035'),
-(1136, '900123072193482', 'Shruti Bhanot', '+918851679610', '114 New Delhi apartment Delhi 96', '2025-01-25 20:27:39', '1313910650026035'),
-(1137, '1146214977042412', 'Dr-Garima Chhabra', '+918827287557', 'Jabalpur', '2025-01-24 23:36:09', '1313910650026035'),
-(1138, '1549804049015935', 'Raghuee Sihg', '+919244208918', 'Rageehur slhgh', '2025-01-24 21:43:41', '1313910650026035'),
-(1139, '989241129685657', 'Sourabh Chanchal', '+919717509312', 'Jabalpur', '2025-01-23 18:38:19', '1313910650026035'),
-(1140, '1360180418304077', 'Soniya', '6260397270', 'Railway Colony', '2025-01-23 17:14:46', '1313910650026035'),
-(1141, '1126142282305896', 'Varun Tiwari', '+918770031458', 'Jabalpur', '2025-01-23 15:29:08', '1313910650026035'),
-(1142, '3411501962318456', 'Nitin Sharma', '+918602755418', 'kanchghar colony', '2025-01-27 21:24:28', '1313910650026035'),
-(1143, '3567222000249571', 'Pawan Kewat', '+919713008275', 'Ok', '2025-01-27 21:23:42', '1313910650026035'),
-(1144, '2949343575233708', 'Akash Thakur', '+919167717346', 'Jabalpur', '2025-01-27 21:02:11', '1313910650026035'),
-(1145, '970154144535061', 'Aakash Golhani', '+918871383744', 'Gangotri Line 13 Janki Nagar Vijaynagar Jabalpur', '2025-01-27 19:42:18', '1313910650026035'),
-(1146, '510600122055600', 'Ábhiyansh ĶesHarwani', '+917047290162', 'Garaphtak badi mahakali', '2025-01-27 19:24:27', '1313910650026035'),
-(1147, '1184120413250296', 'ਹਰਸ਼ੂ', '+917909873932', 'Bilheri', '2025-01-27 16:33:46', '1313910650026035'),
-(1148, '657598669927743', 'Rahul Sen', '+917879741361', 'Shakti nagar', '2025-01-27 16:08:10', '1313910650026035'),
-(1149, '1161874615465961', 'Sudhir Tiwari', '+918136073922', 'H no 36 suncity kanchanpur adhartal jabalpur', '2025-02-01 20:39:35', '1313910650026035'),
-(1150, '1356769405459452', 'MUKUL SHRIPAL', '+917869003045', 'Saliwada', '2025-02-01 20:38:26', '1313910650026035'),
-(1151, '1312562220060027', 'Ashwani Sharma', '+918109464494', 'D-14 samdariya adarsh cherital damohnaka', '2025-02-01 19:45:07', '1313910650026035'),
-(1152, '1153624159624802', 'Santosh Rao', '+919827174106', 'sai Homes Panchsheel Nagar Gwarighat road jabalpur', '2025-02-01 19:42:16', '1313910650026035'),
-(1153, '1132731488343717', 'Manish Parte', '+916268144340', 'Sagar', '2025-02-01 19:33:14', '1313910650026035'),
-(1154, '1612735112935983', 'Nanda Ninawe', '+919329226842', 'Gouteswwar', '2025-02-01 17:39:26', '1313910650026035'),
-(1155, '2398760687125955', 'Himanshu Modi', '+918458828798', 'Andherdeo', '2025-02-01 16:54:23', '1313910650026035'),
-(1156, '445219431891254', 'kesh@ripreeti', '+917470979777', 'Beohari', '2025-02-01 16:52:53', '1313910650026035'),
-(1157, '2094472767656846', 'Anìkèt Síngh', '+917389660753', 'Ghamapur', '2025-02-01 16:48:49', '1313910650026035'),
-(1158, '1675105699708285', 'Ranjeet Marko', '+918878658293', 'Kundam', '2025-02-01 16:29:47', '1313910650026035'),
-(1159, '1120313979598479', 'Shubhanshu Sharma', '+919111011196', 'gorighat road', '2025-01-29 17:53:31', '1313910650026035'),
-(1160, '585608444307418', 'Varsha pandya', '+917587609113', 'Near by high Court', '2025-01-29 17:19:15', '1313910650026035'),
-(1161, '1161874615465961', 'Sudhir Tiwari', '+918136073922', 'H no 36 suncity kanchanpur adhartal jabalpur', '2025-02-01 20:39:35', '1313910650026035'),
-(1162, '1356769405459452', 'MUKUL SHRIPAL', '+917869003045', 'Saliwada', '2025-02-01 20:38:26', '1313910650026035'),
-(1163, '1312562220060027', 'Ashwani Sharma', '+918109464494', 'D-14 samdariya adarsh cherital damohnaka', '2025-02-01 19:45:07', '1313910650026035'),
-(1164, '1153624159624802', 'Santosh Rao', '+919827174106', 'sai Homes Panchsheel Nagar Gwarighat road jabalpur', '2025-02-01 19:42:16', '1313910650026035'),
-(1165, '1132731488343717', 'Manish Parte', '+916268144340', 'Sagar', '2025-02-01 19:33:14', '1313910650026035'),
-(1166, '1612735112935983', 'Nanda Ninawe', '+919329226842', 'Gouteswwar', '2025-02-01 17:39:26', '1313910650026035'),
-(1167, '2398760687125955', 'Himanshu Modi', '+918458828798', 'Andherdeo', '2025-02-01 16:54:23', '1313910650026035'),
-(1168, '445219431891254', 'kesh@ripreeti', '+917470979777', 'Beohari', '2025-02-01 16:52:53', '1313910650026035'),
-(1169, '2094472767656846', 'Anìkèt Síngh', '+917389660753', 'Ghamapur', '2025-02-01 16:48:49', '1313910650026035'),
-(1170, '1675105699708285', 'Ranjeet Marko', '+918878658293', 'Kundam', '2025-02-01 16:29:47', '1313910650026035'),
-(1171, '1120313979598479', 'Shubhanshu Sharma', '+919111011196', 'gorighat road', '2025-01-29 17:53:31', '1313910650026035'),
-(1172, '585608444307418', 'Varsha pandya', '+917587609113', 'Near by high Court', '2025-01-29 17:19:15', '1313910650026035');
+(786, '1238283060819453', 'Satyendra Tiwari', '+917999996963', 'House nu 49 Ashok Vihar colony Jabalpur', '2024-10-19 22:47:46', '1935750583597667'),
+(787, '1238283060819454', 'Ravi Shukla', '+917888886964', 'Plot no 12 Shanti Nagar Bhopal', '2024-10-20 18:35:21', '1935750583597667'),
+(788, '1238283060819455', 'Anjali Verma', '+917777776965', 'Flat no 8 Sunrise Apartments Indore', '2024-10-21 10:15:34', '1935750583597667'),
+(789, '1238283060819456', 'Amit Kumar', '+917666666966', 'Building 5, MG Road Gwalior', '2024-10-22 14:55:07', '1935750583597667'),
+(790, '1238283060819457', 'Neha Singh', '+917555556967', 'House no 25, Nehru Nagar Jabalpur', '2024-10-23 09:47:52', '1935750583597667'),
+(791, '1238283060819458', 'Vikram Chauhan', '+917444446968', 'Plot 3, Industrial Area, Satna', '2024-10-24 17:03:44', '1935750583597667'),
+(792, '1238283060819459', 'Sunita Patil', '+917333336969', 'House no 65, Sector B, Ujjain', '2024-10-25 13:22:11', '1935750583597667'),
+(793, '1238283060819460', 'Rajesh Thakur', '+917222226970', 'Flat 10, Green Valley, Dewas', '2024-10-26 20:18:37', '1935750583597667'),
+(794, '1238283060819461', 'Manoj Joshi', '+917111116971', 'House no 45, Patel Nagar, Rewa', '2024-10-27 15:40:29', '1935750583597667'),
+(795, '1238283060819462', 'Priya Saxena', '+917000006972', 'Plot no 29, Shree Nagar, Sagar', '2024-10-28 11:55:18', '1935750583597667'),
+(849, '905447731177547', 'Prakash Pandey', '+918770276615', 'Gorakhpur', '2024-11-08 21:57:12', '1935750583597667'),
+(850, '393676367044210', 'sanyogita Shrivastava', '+919340384104', 'Jabalpur', '2024-11-08 21:09:22', '1935750583597667'),
+(851, '567007272549426', 'Adv Pawan Shrivastava', '+919827236339', 'H.No.1013 Shastri Nagar Colony Near Medical College Garha jabalpur', '2024-11-08 20:45:04', '1935750583597667'),
+(852, '2982149905266875', 'Abhisek', '+918109693544', '7995221', '2024-11-08 20:20:32', '1935750583597667'),
+(853, '1644922746406510', 'Deepak', '7000168165', '1307 bai ka Bagicha ghamapur', '2024-11-08 19:22:54', '1935750583597667'),
+(854, '1102624208137098', 'Tulika Tanu', '+916263988285', 'Chhoti omti jabalpur', '2024-11-07 20:46:08', '1935750583597667'),
+(855, '1241536497090053', 'Prashant Rajak', '+919300751787', 'daya nagar', '2024-11-07 20:44:20', '1935750583597667'),
+(856, '1262813061705939', 'Sumit Kasture', '+918965850379', '1441, Ganga Nagar, Garha, JBP', '2024-11-07 18:22:18', '1935750583597667'),
+(857, '574825791789436', 'Ajay Soni', '+918109081039', 'rampur', '2024-11-06 20:19:03', '1935750583597667'),
+(858, '3469281410047928', 'Nitesh Malviya', '+919111464771', 'Dewas naka', '2024-11-06 15:18:21', '1935750583597667'),
+(859, '948847300396687', 'Naveena BADKUR', '+919399221587', 'main road kandeli narshingpur', '2024-11-06 14:17:17', '1935750583597667'),
+(860, '1336161474460078', 'Sanjay Shukla', '+919098575700', 'Kundqm', '2024-11-06 12:53:37', '1935750583597667'),
+(861, '456402320349143', 'Shilpi sethiya', '+919340718557', 'Katni', '2024-11-05 20:49:32', '1935750583597667'),
+(862, '1344756813594775', 'Swatantra Pandey', '+919425824229', 'civil line', '2024-11-05 20:37:34', '1935750583597667'),
+(863, '992984739507795', 'Nitin Bachkainya', '7987114066', 'Ganga Nagar, Garha, jabalpur', '2024-11-05 20:05:04', '1935750583597667'),
+(864, '445488648575396', 'Dr-Shubh Kushwaha PT', '+919685965749', 'gwarighat', '2024-11-05 19:53:45', '1935750583597667'),
+(865, '1573437423273037', 'Sanjay Soni', '+918518075283', 'mp', '2024-11-05 18:57:38', '1935750583597667'),
+(866, '1699552000777846', 'ˢᵏᵗ-ᵐʸʷᵒʳˡᵈ', '+919827753865', 'Indore', '2024-11-05 17:01:49', '1935750583597667'),
+(867, '909655464482601', 'Rahul Bundela', '+918871495350', 'Swiss villa', '2024-11-05 15:55:33', '1935750583597667'),
+(868, '573378211850413', 'satish kumar patel', '+919522447446', 'jabalpur', '2024-11-05 14:06:14', '1935750583597667'),
+(869, '475200745566059', 'Sonamamit', '+919098892952', 'Vijay nagar', '2024-11-05 13:00:27', '1935750583597667'),
+(870, '1124799508986784', 'Rajesh Patel', '+919893049076', 'Jabalpur', '2024-11-04 23:41:20', '1935750583597667'),
+(871, '1255326728952107', 'Radhe Shyam Shrivas', '+919977254854', '2 manth', '2024-11-04 22:55:34', '1935750583597667'),
+(872, '347772928394529', 'Shailash George', '+917389210683', '800 dawarka Nagar khanchghar jabalpur', '2024-11-04 22:25:22', '1935750583597667'),
+(873, '1810383329762541', 'Shivansh Tiwari', '+916267192049', 'Sagda bypass road lamheghat', '2024-11-04 22:25:20', '1935750583597667'),
+(874, '393676367044210', 'sanyogita Shrivastava', '+919340384104', 'Jabalpur', '2024-11-08 21:09:22', '1935750583597667'),
+(875, '567007272549426', 'Adv Pawan Shrivastava', '+919827236339', 'H.No.1013 Shastri Nagar Colony Near Medical College Garha jabalpur', '2024-11-08 20:45:04', '1935750583597667'),
+(876, '2982149905266875', 'Abhisek', '+918109693544', '7995221', '2024-11-08 20:20:32', '1935750583597667'),
+(877, '1644922746406510', 'Deepak', '7000168165', '1307 bai ka Bagicha ghamapur', '2024-11-08 19:22:54', '1935750583597667'),
+(878, '1102624208137098', 'Tulika Tanu', '+916263988285', 'Chhoti omti jabalpur', '2024-11-07 20:46:08', '1935750583597667'),
+(879, '1241536497090053', 'Prashant Rajak', '+919300751787', 'daya nagar', '2024-11-07 20:44:20', '1935750583597667'),
+(880, '1262813061705939', 'Sumit Kasture', '+918965850379', '1441, Ganga Nagar, Garha, JBP', '2024-11-07 18:22:18', '1935750583597667'),
+(881, '574825791789436', 'Ajay Soni', '+918109081039', 'rampur', '2024-11-06 20:19:03', '1935750583597667'),
+(882, '3469281410047928', 'Nitesh Malviya', '+919111464771', 'Dewas naka', '2024-11-06 15:18:21', '1935750583597667'),
+(883, '948847300396687', 'Naveena BADKUR', '+919399221587', 'main road kandeli narshingpur', '2024-11-06 14:17:17', '1935750583597667'),
+(884, '1336161474460078', 'Sanjay Shukla', '+919098575700', 'Kundqm', '2024-11-06 12:53:37', '1935750583597667'),
+(885, '456402320349143', 'Shilpi sethiya', '+919340718557', 'Katni', '2024-11-05 20:49:32', '1935750583597667'),
+(886, '1344756813594775', 'Swatantra Pandey', '+919425824229', 'civil line', '2024-11-05 20:37:34', '1935750583597667'),
+(887, '992984739507795', 'Nitin Bachkainya', '7987114066', 'Ganga Nagar, Garha, jabalpur', '2024-11-05 20:05:04', '1935750583597667'),
+(888, '445488648575396', 'Dr-Shubh Kushwaha PT', '+919685965749', 'gwarighat', '2024-11-05 19:53:45', '1935750583597667'),
+(889, '1573437423273037', 'Sanjay Soni', '+918518075283', 'mp', '2024-11-05 18:57:38', '1935750583597667'),
+(890, '1699552000777846', 'ˢᵏᵗ-ᵐʸʷᵒʳˡᵈ', '+919827753865', 'Indore', '2024-11-05 17:01:49', '1935750583597667'),
+(891, '909655464482601', 'Rahul Bundela', '+918871495350', 'Swiss villa', '2024-11-05 15:55:33', '1935750583597667'),
+(892, '573378211850413', 'satish kumar patel', '+919522447446', 'jabalpur', '2024-11-05 14:06:14', '1935750583597667'),
+(893, '475200745566059', 'Sonamamit', '+919098892952', 'Vijay nagar', '2024-11-05 13:00:27', '1935750583597667'),
+(894, '1124799508986784', 'Rajesh Patel', '+919893049076', 'Jabalpur', '2024-11-04 23:41:20', '1935750583597667'),
+(895, '1255326728952107', 'Radhe Shyam Shrivas', '+919977254854', '2 manth', '2024-11-04 22:55:34', '1935750583597667'),
+(896, '347772928394529', 'Shailash George', '+917389210683', '800 dawarka Nagar khanchghar jabalpur', '2024-11-04 22:25:22', '1935750583597667'),
+(897, '1810383329762541', 'Shivansh Tiwari', '+916267192049', 'Sagda bypass road lamheghat', '2024-11-04 22:25:20', '1935750583597667'),
+(898, '3619593168184124', 'Deepak Kumar', '+919009555111', 'Jabalpur', '2024-11-09 15:44:04', '1935750583597667'),
+(899, '1644759929414864', 'HORI LAL', '+919872727858', '112G/6 Vishnapuri', '2024-11-16 16:31:20', '1935750583597667'),
+(900, '1964867277288736', 'Shakti Guppta', '+919770415141', 'Shaktiluck@gmail.com', '2024-11-15 23:33:24', '1935750583597667'),
+(901, '1267028871169237', 'Amar Sen', '+919907594007', 'jabalpur', '2024-11-15 19:03:04', '1935750583597667'),
+(902, '3411787582460499', 'Savita Saiyam Dhurvey', '+919340249759', 'in front Katanga tv tower  jabalpur', '2024-11-15 16:16:27', '1935750583597667'),
+(903, '1694768347763403', 'Govinda Ben', '+919584200503', 'civil lines', '2024-11-13 00:28:28', '1935750583597667'),
+(904, '1089231545567674', 'Vinay Kumar Singh', '+919301256870', 'katni', '2024-11-12 23:59:44', '1935750583597667'),
+(905, '551658037612410', 'Hemanshu Chakravorti', '+919713861335', 'please arrange test drive', '2024-11-12 23:58:01', '1935750583597667'),
+(906, '2011200129324601', 'Anil Kumar Gupta', '+919300531208', 'best possible rates', '2024-11-12 23:40:20', '1935750583597667'),
+(907, '1645456593071653', 'Nishant Soni', '+918719981090', 'kanchan nagar jabalpur', '2024-11-12 23:05:18', '1935750583597667'),
+(908, '1097670711719923', 'Alok Jain', '+919039381003', 'how to lone', '2024-11-12 21:39:06', '1935750583597667'),
+(909, '1944050752673884', 'Najeeb Khan 72023023069', '+919223023069', 'near bilhari petrol pump', '2024-11-12 21:18:41', '1935750583597667'),
+(910, '1941940196218234', 'Manju Dubey', '+919424955800', 'H.No. 2469 Madan Mahal Station Road, Near Anant Hospital, Wright Town, Jabalpur-482002 (M.P.)', '2024-11-12 20:45:40', '1935750583597667'),
+(911, '471725088758145', 'Yogendra Tiwari', '+919300051262', '675/1, Bhantalliya, Badikhermai Mandir Jabalpur', '2024-11-12 19:56:03', '1935750583597667'),
+(912, '912240107120228', 'Kapil Lalwani', '+919669660071', 'sr mig 289 mansarover colony madhav nagar', '2024-11-12 19:31:24', '1935750583597667'),
+(913, '3725936677645921', 'Pallavi Vishwakarma', '9302519672', 'jabalpur', '2024-11-12 19:30:30', '1935750583597667'),
+(914, '433261369577907', 'Deependra Singh', '+919721753775', 'call me', '2024-11-12 19:10:07', '1935750583597667'),
+(915, '882436270310604', 'Shivraj Singh Chauhan', '+918109093208', 'katangi', '2024-11-12 01:50:39', '1935750583597667'),
+(916, '1213047849776448', 'Ankit Jhariya', '6265060901', 'Nainpur', '2024-11-12 01:40:29', '1935750583597667'),
+(917, '560523826932200', 'abhi', '8770779612', 'jabalpur', '2024-11-12 00:52:52', '1935750583597667'),
+(918, '1301428374541872', 'Siddharth Agrawal Sid', '+918989418660', 'Hhh', '2024-11-12 00:51:33', '1935750583597667'),
+(919, '1095840135286337', 'Shreeniwas Kumar', '+919424766887', 'jabalpur', '2024-11-12 00:51:10', '1935750583597667'),
+(920, '544807238507747', 'Dr-Rajendra Singh Thakur', '+919179391442', 'qwen', '2024-11-12 00:48:48', '1935750583597667'),
+(921, '1605993990354552', 'Rohit __ sigia  _ thakur', '+919691832499', 'Xxxcxxxxcccf', '2024-11-12 00:46:09', '1935750583597667'),
+(922, '1885511818603191', 'Sanjay Yadav', '+919098303999', 'shastri nagar', '2024-11-12 00:42:25', '1935750583597667'),
+(923, '582516087619284', 'Shravan Dubey', '+917999430225', 'damoh nsks chatria bus stand', '2024-11-12 00:24:48', '1935750583597667'),
+(924, '3411787582460499', 'Savita Saiyam Dhurvey', '+919340249759', 'in front Katanga tv tower  jabalpur', '2024-11-15 16:16:27', '1935750583597667'),
+(925, '1694768347763403', 'Govinda Ben', '+919584200503', 'civil lines', '2024-11-13 00:28:28', '1935750583597667'),
+(926, '1089231545567674', 'Vinay Kumar Singh', '+919301256870', 'katni', '2024-11-12 23:59:44', '1935750583597667'),
+(927, '551658037612410', 'Hemanshu Chakravorti', '+919713861335', 'please arrange test drive', '2024-11-12 23:58:01', '1935750583597667'),
+(928, '2011200129324601', 'Anil Kumar Gupta', '+919300531208', 'best possible rates', '2024-11-12 23:40:20', '1935750583597667'),
+(929, '1645456593071653', 'Nishant Soni', '+918719981090', 'kanchan nagar jabalpur', '2024-11-12 23:05:18', '1935750583597667'),
+(930, '1097670711719923', 'Alok Jain', '+919039381003', 'how to lone', '2024-11-12 21:39:06', '1935750583597667'),
+(931, '1944050752673884', 'Najeeb Khan 72023023069', '+919223023069', 'near bilhari petrol pump', '2024-11-12 21:18:41', '1935750583597667'),
+(932, '1941940196218234', 'Manju Dubey', '+919424955800', 'H.No. 2469 Madan Mahal Station Road, Near Anant Hospital, Wright Town, Jabalpur-482002 (M.P.)', '2024-11-12 20:45:40', '1935750583597667'),
+(933, '471725088758145', 'Yogendra Tiwari', '+919300051262', '675/1, Bhantalliya, Badikhermai Mandir Jabalpur', '2024-11-12 19:56:03', '1935750583597667'),
+(934, '912240107120228', 'Kapil Lalwani', '+919669660071', 'sr mig 289 mansarover colony madhav nagar', '2024-11-12 19:31:24', '1935750583597667'),
+(935, '3725936677645921', 'Pallavi Vishwakarma', '9302519672', 'jabalpur', '2024-11-12 19:30:30', '1935750583597667'),
+(936, '433261369577907', 'Deependra Singh', '+919721753775', 'call me', '2024-11-12 19:10:07', '1935750583597667'),
+(937, '882436270310604', 'Shivraj Singh Chauhan', '+918109093208', 'katangi', '2024-11-12 01:50:39', '1935750583597667'),
+(938, '1213047849776448', 'Ankit Jhariya', '6265060901', 'Nainpur', '2024-11-12 01:40:29', '1935750583597667'),
+(939, '560523826932200', 'abhi', '8770779612', 'jabalpur', '2024-11-12 00:52:52', '1935750583597667'),
+(940, '1301428374541872', 'Siddharth Agrawal Sid', '+918989418660', 'Hhh', '2024-11-12 00:51:33', '1935750583597667'),
+(941, '1095840135286337', 'Shreeniwas Kumar', '+919424766887', 'jabalpur', '2024-11-12 00:51:10', '1935750583597667'),
+(942, '544807238507747', 'Dr-Rajendra Singh Thakur', '+919179391442', 'qwen', '2024-11-12 00:48:48', '1935750583597667'),
+(943, '1605993990354552', 'Rohit __ sigia  _ thakur', '+919691832499', 'Xxxcxxxxcccf', '2024-11-12 00:46:09', '1935750583597667'),
+(944, '1885511818603191', 'Sanjay Yadav', '+919098303999', 'shastri nagar', '2024-11-12 00:42:25', '1935750583597667'),
+(945, '582516087619284', 'Shravan Dubey', '+917999430225', 'damoh nsks chatria bus stand', '2024-11-12 00:24:48', '1935750583597667'),
+(946, '1688244455291242', 'Dharm Das Diwan', '+918871598876', 'jabalpur', '2024-10-14 04:12:04', '1564826437399879'),
+(947, '887748256662973', 'shameem.shaikhshifa.shaikh', '9770148348', 'Satna', '2024-10-14 03:06:26', '1564826437399879'),
+(948, '1019402479981029', 'Ujjwal Sharma', '9770802963', 'Mandla Madhya Pradesh', '2024-10-14 00:01:25', '1564826437399879'),
+(949, '825529499485315', 'Krishan Patel', '+919981204950', 'Jabalpur', '2024-10-13 22:28:51', '1564826437399879'),
+(950, '1107778027434890', 'Chandra Pillai', '+919340676562', 'GOPAL SADAN, DAMOH NAKA, JBP.', '2024-10-13 22:07:01', '1564826437399879'),
+(951, '2040224759729637', 'Anup Kumar', '+918085756295', 'Bhopal', '2024-10-13 19:11:48', '1564826437399879'),
+(952, '556861853409851', 'Kaushlendra', '+919990872822', 'New Resham Mill', '2024-10-13 18:23:04', '1564826437399879'),
+(953, '1214895979787159', 'Mukesh Dangode', '+917999671043', 'K', '2024-10-13 17:26:52', '1564826437399879'),
+(954, '889715196431622', 'baby_ doll_Garima', '+918818927611', 'Gwarighat jbp', '2024-10-12 01:48:26', '1564826437399879'),
+(955, '8868239409855705', 'Manish Patel', '9200872758', 'Railway station road Indraatket', '2024-10-11 03:00:01', '1564826437399879'),
+(956, '1325597994971442', 'Meenu Chadha', '+919340294171', 'Dubey colony', '2024-10-11 00:13:08', '1564826437399879'),
+(957, '1230525171431353', 'Jivika Piyush Matani', '+918103642337', 'Ukhri road', '2024-10-10 20:19:56', '1564826437399879'),
+(958, '1227341538515982', 'Shalini Khare', '+919981897440', 'Jabalpur', '2024-10-10 19:31:16', '1564826437399879'),
+(959, '1258174752031271', 'Sonu Lalwani', '9131041167', 'Katni', '2024-10-10 18:06:42', '1564826437399879'),
+(960, '1963724854127076', 'Ravi Tripathi', '+919425808444', 'Jabalpur', '2024-10-10 15:50:02', '1564826437399879'),
+(961, '867046335495332', 'Dr. Afsana Ansari physiotherapist.', '7974211441', 'Hanuman tal jabalpur', '2024-10-10 12:35:59', '1564826437399879'),
+(962, '2531840980342502', 'rk singh', '6267535802', 'Adhartal', '2024-10-10 09:33:57', '1564826437399879'),
+(963, '1224049392147166', 'Deepak Yadav', '+919806145987', 'BILHARI', '2024-10-10 01:20:07', '1564826437399879'),
+(964, '881954960547212', 'Deepak Sawlani', '+918109995629', 'NAPIER TOWN', '2024-10-10 01:19:57', '1564826437399879'),
+(965, '547053201198099', 'Awdhesh Dehariya', '+919644637424', 'seoni', '2024-10-10 00:44:35', '1564826437399879'),
+(966, '383412418171910', 'Munendra Dar', '+919669771234', 'Dewas , Madhya Pradesh', '2024-10-10 00:44:23', '1564826437399879'),
+(967, '510512291879170', 'juned mansuri', '+918109752513', 'Khajrana', '2024-10-10 00:40:38', '1564826437399879'),
+(968, '1186765509076545', 'Nitin Raja Jain', '+919827674791', 'jabalpur', '2024-10-10 00:26:51', '1564826437399879'),
+(969, '1099752775049886', 'Naveen Pandey', '+919399183862', 'xyz', '2024-10-10 00:20:03', '1564826437399879'),
+(970, '570915772030996', 'preeti Kumari singh', '+919691528205', 'hajipur', '2024-10-09 15:05:10', '1564826437399879');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leads_email`
+--
+
+CREATE TABLE `leads_email` (
+  `id` int(11) NOT NULL,
+  `lead_name` varchar(255) DEFAULT NULL,
+  `status` enum('Pending','In Progress','Completed') NOT NULL,
+  `due_date` date DEFAULT NULL,
+  `reminder_sent` tinyint(1) DEFAULT 0,
+  `last_reminder_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -635,6 +759,29 @@ INSERT INTO `payments` (`payment_id`, `month`, `received_amount`, `due_amount`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `projects`
+--
+
+CREATE TABLE `projects` (
+  `main_project_id` int(55) NOT NULL,
+  `project_name` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `total_area` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`main_project_id`, `project_name`, `location`, `total_area`) VALUES
+(21, 'nirvana homes exotica', 'JABALPUR', 500000.00),
+(22, 'SS construction', 'JABALPUR', 600000.00),
+(24, '454', '545', 45.00),
+(26, 'test', 'crmdemo.vimubds5.a2hosted.com', 0.00);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quotations_data`
 --
 
@@ -694,8 +841,7 @@ CREATE TABLE `quotations_information` (
 --
 
 INSERT INTO `quotations_information` (`id`, `customer_name`, `contact_number`, `alternate_number`, `address`, `adhaar_number`, `pan_number`, `project_name`, `unit_number`, `dimension`, `rate`, `variant`, `total_deal`, `booking_amount`, `booking_amount_words`, `payment_mode`, `finance_bank`, `duration`, `balance_amount`, `balance_amount_words`, `payment_due_date1`, `payment_due_date2`, `payment_due_date3`, `payment_due_date4`, `registry_charges`, `p1p2_charges`, `remarks`, `status`, `employeeId`, `employee_name`, `lead_id`, `created_at`) VALUES
-(40, 'Sumit Kasture', '5443455454', '8888888888', 'jabalpur', '343434343453', 'QFGGF5445G', 'qetrrt', '34', '2', 34.00, '34', 34.00, 500.00, 'Five Hundred', '34', 'th', '34', 10000.00, 'Ten Thousand', '2025-02-02', '2025-02-07', '2025-02-14', '2025-02-17', 0.00, 0.00, 's', 'Not Approved', 34, 'test', 147, '2025-02-01 12:50:32'),
-(41, 'Umer Doaguru', '5443455454', '5555555555', 'jabalpur', '343434343453', 'QFGGF5445G', 'test', '34', '2', 34.00, '34', 34.00, 500.00, 'Five Hundred', '34', 'th', '34', 10000.00, 'Ten Thousand', '2025-02-03', '2025-02-04', '2025-02-06', '2025-02-06', 0.00, 0.00, 'ww', 'Pending', 33, 'Raveena Shivhare', 149, '2025-02-03 14:22:51');
+(30, 'Prakash Pandey', '6268254252', '8888888888', 'jabalpur', '343434343453', 'QFGGF5445G', 'test', '50', '2', 34.00, '34', 34.00, 500.00, 'five hundred', '34', 'dsl;fk', '34', 10000.00, 'ten thousand', '2024-11-10', '2024-11-12', '2024-11-21', '2024-11-28', 0.00, 0.00, 'test', 'Pending', 29, 'umer', 149, '2024-11-09 06:31:24');
 
 -- --------------------------------------------------------
 
@@ -717,8 +863,10 @@ CREATE TABLE `registered_data` (
 --
 
 INSERT INTO `registered_data` (`user_id`, `user_name`, `email`, `password`, `roles`, `created_date`) VALUES
-(42, 'umer', 'umerqureshi786786@gmail.com', '$2b$10$MnlobKPTJU/AjTAbHKKhj.8iOTNrmyXLt7pKeHGDRxvOLZS81edK.', 'Super-Admin', '2024-11-02 08:33:09'),
-(44, 'Super Admin', 'hronerealty@gmail.com', '$2b$10$RaeVOMO/CmIscf7GQ2WiEuexFK.AVm0WZs9g2clNPnvdO/T4kFNwe', 'Super-Admin', '2024-11-04 07:26:17');
+(29, 'Google', 'google@gmail.com', '$2b$10$MhWoNhCxpc9cUxNS9jXEJ.AUSy3Cr4JGZYoo6NWKl84WyT4XjArXO', 'Admin', '2024-08-27 10:51:26'),
+(38, 'pathology', 'kuldeepdoauruinfosystems@gmail.com', '$2b$10$zIjaE78SedNQE4.QKpYCmeHMsZB/1AepaO.0MC4lRwlLE.LLip972', 'Admin', '2024-10-07 10:31:25'),
+(39, 'Madan Mahal', 'shadab@gmail.com', '$2b$10$IjFSjAKDMGjAW1K93iqY.Ob3mEUMNXlsf.Ojh7Fv8Q2nKghNphTNC', 'Admin', '2024-10-07 10:33:39'),
+(41, 'vinay dhariya', 'vinaydhariya21@gmail.com', '$2b$10$qtxHdyOQGDSToGsH6QWu0OXBuxzwDHOt8R97bHPb7BSH/hQnEbU5u', 'Super-Admin', '2024-10-11 12:56:40');
 
 -- --------------------------------------------------------
 
@@ -734,19 +882,18 @@ CREATE TABLE `remark` (
   `employeeId` int(255) NOT NULL,
   `remark_status` varchar(255) NOT NULL,
   `answer_remark` varchar(255) NOT NULL DEFAULT 'pending',
-  `date` varchar(255) NOT NULL
+  `date` varchar(255) NOT NULL,
+  `project_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `remark`
 --
 
-INSERT INTO `remark` (`id`, `lead_id`, `name`, `employee_name`, `employeeId`, `remark_status`, `answer_remark`, `date`) VALUES
-(17, 148, 'Sanjay Shukla', 'test', 34, 'it is said that regarding ', 'ok i will talk you', '2024-12-06'),
-(18, 148, 'Sanjay Shukla', 'test', 34, 'test the id ', 'ok call later', '2024-12-07'),
-(19, 148, 'Sanjay Shukla', 'test', 34, 'mohit sahu ji said that he will purchase plots', 'ok i will talk you', '2024-12-07'),
-(20, 147, 'Sumit Kasture', 'test', 34, 'test the id ', 'pending', '2025-02-07'),
-(21, 149, 'Umer Doaguru', 'Raveena Shivhare', 33, 'dd', 'pending', '2025-02-04');
+INSERT INTO `remark` (`id`, `lead_id`, `name`, `employee_name`, `employeeId`, `remark_status`, `answer_remark`, `date`, `project_name`) VALUES
+(17, 148, 'Sanjay Shukla', 'test', 34, 'it is said that regarding ', 'ok i will talk you', '2024-12-06', ''),
+(18, 148, 'Sanjay Shukla', 'test', 34, 'test the id ', 'ok call later', '2024-12-07', ''),
+(19, 148, 'Sanjay Shukla', 'test', 34, 'mohit sahu ji said that he will purchase plots', 'ok i will talk you', '2024-12-07', '');
 
 -- --------------------------------------------------------
 
@@ -771,287 +918,16 @@ CREATE TABLE `responses_99acres` (
 --
 
 INSERT INTO `responses_99acres` (`id`, `query_id`, `project_name`, `city_name`, `query_info`, `received_on`, `contact_name`, `email`, `phone`) VALUES
-(171, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-10-23 17:18:57', 'Santosh Kumar', 'santoshuk368@gmail.com', '+91-8619342277'),
-(172, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-10-23 16:56:36', 'Prashant', 'richapra143@gmail.com', '+91-9149686958'),
-(173, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-10-23 16:46:49', 'Nishikant singh', 'nishikantsingh12@gmail.com', '+91-9836011466'),
-(174, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-10-23 16:36:44', 'Pratul Verma', 'ballia2010@gmail.com', '+91-7776062577'),
-(175, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-10-23 16:20:29', 'Not Mentioned', 'Not Mentioned', '+91-9826949427'),
-(176, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-10-23 15:44:23', 'Shivam Dubey', 'Dubey.shivam421@gmail.com', '+91-7892905745'),
-(177, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-23 12:30:19', 'Rajul Mishra', 'rajulluck@gmail.com', '+91-7897182371'),
-(178, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-10-23 11:02:31', 'Hemant', 'hemant.markam@gmail.com', '+91-9340556593'),
-(179, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-22 02:54:36', 'arpit choudhry', 'ahirwrr099@gmail.co', '+91-9893179970'),
-(180, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-21 22:33:36', 'Raghav Singh', 'rgvsingh1995@gmail.com', '+91-9522288899'),
-(181, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-21 21:17:30', 'Ashok Katariya', 'ashokkatariya1208@gmail.com', '+91-9039136106'),
-(182, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-10-21 20:13:26', 'Maya Ram Yadav', 'mayaramy201709@gmail.com', '+91-9454003050'),
-(183, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-21 19:10:18', 'ONKAR SINGH', 'onkarsingh.210@gmail.com', '+91-9766743421'),
-(184, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-24 13:33:54', 'SANDEEP RAO', 'triwebsol@gmail.com', '+91-8959490369'),
-(185, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-23 21:55:19', 'Ajay Tamrakar', 'nimitt@gmail.com', '+91-9827671488'),
-(186, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-23 20:42:33', 'Amit Shrivastava', 'shrivaamit1977@gmail.com', '+91-8959022203'),
-(187, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-10-25 11:06:18', 'Adi', 'aditi19975635@gmail.com', '+91-9752650478'),
-(188, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-10-25 05:50:34', 'Prasadh', 'solankiprasadh@gmail.com', '+91-7410766827'),
-(189, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-25 01:25:35', 'Swatantra Pandey', 'Swatantra.hnlu@gmail.com', '+91-9425824229'),
-(190, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-24 20:11:59', 'Nitin Kothare', 'nitin.kotharee@gmail.com', '+91-9993314241'),
-(191, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-26 09:24:05', 'Harnaaz', 'bahu61810@gmail.com', '+91-8989691418'),
-(192, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-10-26 07:18:26', 'Suman Sunny', 'pooja.bscp195@gmail.com', '+91-9006822639'),
-(193, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-25 21:41:20', 'Abhishek Singh', 'kaashvis76@gmail.com', '+91-8629978059'),
-(194, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-26 14:41:35', 'Jay Kant Tiwari', 'jtiwari.09@gmail.com', '+91-7317352441'),
-(195, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-26 16:48:23', 'Solankiji S B I Pali', 'solankimithun111@gmail.com', '+91-9826656813'),
-(196, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 06:30:07', 'Abhinav Rao', 'abhinav.rao66@gmail.com', '+91-8087106771'),
-(197, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 15:21:30', 'ajay Jagwani', 'ajayjagwaniii88@gmail.com', '+91-8928079734'),
-(198, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 14:13:01', 'Naveen Pankaj', 'naveenpankaj24@gmail.com', '+91-8319654126'),
-(199, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 12:30:13', 'Vijendra Giri', 'girivijendra@gmail.com', '+91-9340993435'),
-(200, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 17:34:11', 'SHREY PATHAK', 'shreypathak278@gmail.com', '+91-7987958338'),
-(201, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 16:55:24', 'Aditya Singh Sengar', 'adityasengar1133@gmail.com', '+91-9425623095'),
-(202, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 18:05:06', 'Not Mentioned', 'Not Mentioned', '+91-8965850379'),
-(203, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-10-27 23:59:25', 'Sanjay Kumar sen', '7sanjay.sen@gmail.com', '+91-8249136046'),
-(204, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-27 22:34:19', 'Deepak KUMAR', 'deepak2244.dk@gmail.com', '+91-6266632805'),
-(205, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-28 12:07:22', 'Varun', 'varunnayyaribm2007@gmail.com', '+91-7987458441'),
-(206, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-29 11:09:21', 'AMAN KUMAR', 'amangyadav94@gmail.com', '+91-7903079471'),
-(207, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-28 17:34:15', 'Mai nahi batayunga', 'ronitsingh8762@gmail.com', '+91-9479519764'),
-(208, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-29 15:56:30', 'Si Nirbhay Singh', 'nirbhay87@gmail.com', '+91-9179011956'),
-(209, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-29 13:22:24', 'Mayank Yadav', 'mayankrajyadav668@gmail.com', '+91-7828540030'),
-(210, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2024-10-29 17:34:53', 'Dr Arvind Yadav', 'arvindbest@gmail.com', '+91-7354388302'),
-(211, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-10-29 19:50:18', 'Satyam Mishra', 'msatyam705@gmail.com', '+91-8770422546'),
-(212, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this property. Please call back.', '2024-10-29 19:42:07', 'Ramganesh yadav', 'Ramganeshy20@gmail.comR', '+91-9399799741'),
-(213, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-30 17:24:16', 'shiva', 'Not Mentioned', '+91-6266749896'),
-(214, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-10-30 14:43:56', 'deep gupta', 'cs.deepgupta@gmail.com', '+91-9131635996'),
-(215, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-31 07:49:12', 'Dr Umesh Kumar Kori', 'drumeshvet01@gmail.com', '+91-7000275146'),
-(216, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-31 04:07:33', 'Abhishek Khare', 'abhishekkhare1001@gmail.com', '+91-7000883269'),
-(217, '', 'Nirvana Homes', 'Jabalpur', '', '2024-10-30 23:09:41', 'ANKIT JAISWAL', 'jaiswalankit789@gmail.com', '+91-8982521981'),
-(218, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-01 20:26:03', 'USER', 'mohitjss2006@gmail.com', '+91-9425804640'),
-(219, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-01 15:11:58', 'Roopnath Banerjee', 'roopnathb1@rediffmail.com', '+91-9902096450'),
-(220, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-02 08:38:03', 'Mohit Verma', 'vermamohit752@gmail.com', '+91-8269973198'),
-(221, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-02 02:54:05', 'Kavita Kewat', 'kewatkavita7@gmail.com', '+91-9584938566'),
-(222, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-01 23:14:20', 'Jaya Goutam', 'goutamjaya3@gmail.com', '+91-9827722159'),
-(223, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-02 12:50:11', 'Saurabh', 'Waghmaresaurabh1986@gmail.com', '+91-7387223338'),
-(224, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-02 15:47:50', 'Mahee Shukla', 'shuklamahendra581@gmail.com', '+91-8558841163'),
-(225, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-02 17:49:54', 'Ankit Singh', 'ankitjnct1@gmail.com', '+91-8882736175'),
-(226, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-03 11:31:02', 'Neetu Singh', 'singhneetu72842@gmail.com', '+91-7622985358'),
-(227, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-03 11:18:42', 'Sourabh', 'sourabhphotos85@gmail.com', '+91-8819932392'),
-(228, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-03 09:05:43', 'Rahul Barsaiyan', 'rahul.barsaiyan@gmail.com', '+91-8770238367'),
-(229, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-03 00:22:27', 'Ratnesh', 'Not Mentioned', '+91-7974553501'),
-(230, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-03 16:17:43', 'Ajay Shrivastava', '2AJAY.SHRIVASTAVA@GMAIL.COM', '+91-7020781380'),
-(231, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-03 23:42:50', 'somil Kothare', 'nitin.kotharee@gmail.com', '+91-7999498372'),
-(232, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-03 22:49:18', 'Vivek Patel', 'b.vivek0024@gmail.com', '+91-9713828464'),
-(233, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-04 09:06:19', 'Rajahri Meshram', 'ocean.madhuraj@gmail.con', '+91-9890079173'),
-(234, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-04 08:34:53', 'Ashutosh Shrivastava shrivastava', 'pashu0900@gmail.com', '+91-7566226123'),
-(235, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-04 12:14:02', 'Abhishek shahi', 'agshahi1007@gmail.com', '+91-7987826723'),
-(236, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-04 18:17:29', 'Ashutosh Shukla', 'jai0201ee@gmail.com', '+91-7898864238'),
-(237, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-04 18:28:00', 'Devendra Surjan', 'dmsurjan@yahoo.com', '+91-9993737969'),
-(238, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-05 09:58:27', 'Hema Patel', 'hema440patel@gmail.com', '+91-8435261727'),
-(239, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2024-11-06 06:23:55', 'Chandrabhan Singh', 'cbsinghnr@gmail.com', '+91-7982039228'),
-(240, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-06 01:52:28', 'shailesh sharma', 'advshaileshsharma@gmail.com', '+91-9111511105'),
-(241, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this property. Please call back.', '2024-11-05 23:37:33', 'Aarti kataria', 'katariaaarti01@gmail.com', '+91-8889987242'),
-(242, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-07 12:45:50', 'Rohit Pandey', 'Pandeyrohit0920@gmail.com', '+91-9131358387'),
-(243, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-07 00:59:32', 'Hritik Dubey', 'hrithikdubey0103@gmail.com', '+91-9179893696'),
-(244, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-06 22:12:51', 'Monika Singh', 'monikasingh24gs@gmail.com', '+91-7067538131'),
-(245, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-06 16:35:12', 'Santosh Mishra', 'dugdug1104rudra@gmail.com', '+91-7999716596'),
-(246, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-06 16:24:25', 'Abhijeet', 'abhi_m04@yahoo.com', '+91-9999196497'),
-(247, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this property. Please call back.', '2024-11-06 15:23:02', 'Sudheer Gautam', 'sgrewa25@gmail.com', '+91-9522710703'),
-(248, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 15:54:14', 'Chatterjee Snehita', 'chatterjee92aparna@gmail.com', '+91-8518064446'),
-(249, '', '', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 15:54:14', 'Chatterjee Snehita', 'chatterjee92aparna@gmail.com', '+91-8518064446'),
-(250, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 19:28:16', 'Anmol Rao Gawande', 'anmolrao3@gmail.com', '+91-9826504015'),
-(251, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 18:42:01', 'Rahul Kashyap', 'kashyapr823@gmail.com', '+91-7489888880'),
-(252, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 18:06:25', 'Deepak Bain Bain', 'deepakbain674@gmail.com', '+91-7691935366'),
-(253, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 18:06:17', 'Not Mentioned', 'Not Mentioned', '+91-9754397058'),
-(254, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 17:58:37', 'Rakesh Awadhiya', 'rakesh_sni@rediffmail.com', '+91-9827334198'),
-(255, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 17:56:41', 'Rakesh', 'rakeshp9300@gmail.com', '+91-9300160624'),
-(256, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 17:40:47', 'Mahesh Pateriya', 'patareya1958@gmail.com', '+91-9752235010'),
-(257, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 16:37:07', 'Preeti Sanjeet Jawrey', 'preetinayak2523@gmail.com', '+91-8817485113'),
-(258, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 16:34:21', 'Pankaj Dua', 'pankajdua2600@gmail.com', '+91-9039650020'),
-(259, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this property. Please call back.', '2024-11-07 19:08:14', 'Vikas Kumar bain', 'bainvikashkumarbain@gmail.com', '+91-9174800362'),
-(260, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 07:06:13', 'Not Mentioned', 'Not Mentioned', '+91-9589408688'),
-(261, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 01:00:08', 'Not Mentioned', 'Not Mentioned', '+91-7566128255'),
-(262, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 00:05:18', 'Umesh Sahu', 'sahuu159@gmail.com', '+91-9993606384'),
-(263, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 00:04:03', 'Chanchal Singh', 'chanchal1954singh@gmail.com', '+91-9988303242'),
-(264, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 23:33:09', 'Sandeep Kumar gauntia', 'sandeepgauntia80@gmail.com', '+91-9713882251'),
-(265, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 23:00:48', 'Suman Kumar Choudhary', 'suman2103@rediff.com', '+91-9329647891'),
-(266, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 22:53:13', 'Aniket Goriya', 'er.aniketgoriya@gmail.com', '+91-8462861111'),
-(267, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 22:37:41', 'Nimish Lodhi', 'lodhinimish460@gmail.com', '+91-7999303227'),
-(268, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 22:29:02', 'Rakhi Rajput', 'rakhii30@gmail.com', '+91-8319962047'),
-(269, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 22:07:41', 'Ashit Verma', 'asit_verma2003@yahoo.co.in', '+91-7694849295'),
-(270, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 21:37:05', 'Deepali Bajpai', 'Not Mentioned', '+91-9425788032'),
-(271, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 20:35:16', 'Adv Abhishek Mishra', 'abhi98.jbp@gmail.com', '+91-9755437771'),
-(272, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-07 19:53:44', 'Jagmeet Chondok', 'jagmeetsinghchandok@gmail.com', '+91-7974124089'),
-(273, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-08 00:48:46', 'Alok Tiwari', 'aloktiwari55.in@gmail.com', '+91-7772965555'),
-(274, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 15:26:18', 'Pintu Masram', 'masrambramhanand@gmail.com', '+91-6263521325'),
-(275, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 15:16:22', 'Vikram Singh Chouhan', 'vikram3822@gmail.com', '+91-7974745013'),
-(276, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 11:37:24', 'Preyansh Mahawar', 'mpreyansh@gmail.com', '+91-9074504438'),
-(277, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this property. Please call back.', '2024-11-08 15:49:12', 'Thakur Aakash', 'Thakuraakash1320@gmail.com', '+91-9718427032'),
-(278, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-08 13:22:47', 'Pankaj Dubey', 'Pankajd1618@iiebm.com', '+91-9340575882'),
-(279, '', '', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 15:26:18', 'Pintu Masram', 'masrambramhanand@gmail.com', '+91-6263521325'),
-(280, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 17:20:05', 'Rahul deshmukh', 'attorneyrahul94@gmail.com', '+91-9637665923'),
-(281, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 17:19:33', 'Not Mentioned', 'Not Mentioned', '+91-7000875985'),
-(282, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 15:41:33', 'Liju Joseph', 'liju_jp@yahoo.co.in', '+91-9755026268'),
-(283, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-09 12:44:49', 'Akshay Upadhyay', 'aapr1307@gmail.com', '+91-9325896910'),
-(284, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 12:43:22', 'Vishal Chhetri', 'vishal.singh0410@gmail.com', '+91-9755295275'),
-(285, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 12:07:54', 'Shailesh Tiwari', 'tiwarishaileshdeo@gmail.com', '+91-9407319697'),
-(286, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-09 11:06:28', 'sachin', 'sachinkapoor21081984@gmail.com', '+91-8003673111'),
-(287, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 11:00:35', 'Divya Pillay', 'divyapillay03@gmail.com', '+91-9131872412'),
-(288, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 09:50:21', 'Jay Sen', 'jaysen715@gmail.com', '+91-7723933336'),
-(289, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-09 08:45:12', 'Manoj pandey', 'manp0761@gmail.com', '+91-9752629035'),
-(290, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 00:29:11', 'Ankush Verma', 'ankushverma85344@gmail.com', '+91-9981181071'),
-(291, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-09 00:26:37', 'Azad Khan', 'azadkhan78617@gmail.com', '+91-7000901603'),
-(292, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 18:21:36', 'Deeksha Verma', 'deeksha6981verma@gmail.com', '+91-7879720974'),
-(293, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 18:10:41', 'Sanjeet Jawrey', 'sanjeetjawrey@gmail.com', '+91-8269012578'),
-(294, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-08 17:24:01', 'Manoj Chakravarty', 'mkc06@rediffmail.com', '+91-9993216849'),
-(295, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-09 18:00:00', 'Yogeshkumar Saxena', 'yogeshvsaxena@gmail.com', '+91-9130022280'),
-(296, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-09 10:22:50', 'Raina Burman', 'raina9888@gmail.com', '+91-9811714927'),
-(297, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-08 20:11:35', 'Apoorv', 'Not Mentioned', '+91-8889161711'),
-(298, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-08 18:35:16', 'Prachi  Harjani', 'prachi.harjani@gmail.com', '+91-7304133302'),
-(299, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-08 18:32:06', 'Deeksha Verma', 'deeksha6981verma@gmail.com', '+91-8839363857'),
-(300, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 10:43:08', 'Ashok Kumar Tiwari', 'rajashok.tiwari448@gmail.com', '+91-8878815884'),
-(301, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 10:01:24', 'Shikha David', 'Shikhadavid55@gmail.com', '+91-9009377318'),
-(302, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 21:41:20', 'Sourabh Dhar', 'sourabhdhar183@gmail.com', '+91-9039421666'),
-(303, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 20:15:21', 'Akash Sapre', 'akash.sapre@rediffmai.com', '+91-8109144171'),
-(304, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 20:05:56', 'Kumar Inder', 'kinder1982@gmail.com', '+91-7893750885'),
-(305, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 17:57:32', 'Naveena BADKUR', 'Naveenabadkur64@gmail.com', '+91-9399221587'),
-(306, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 17:53:01', 'Sunny Singh', 'sunnykanvajiya143@gmail.com', '+91-6264930886'),
-(307, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 17:40:01', 'Vikendra Pandey', 'vpandey1163@gmail.com', '+91-8319704883'),
-(308, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 17:17:31', 'Not Mentioned', 'Not Mentioned', '+91-8982335407'),
-(309, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 12:26:59', 'Ashok Bathre', 'ashok_19803007@yahoo.in', '+91-7805004507'),
-(310, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 11:49:12', 'Harshit Sahu', 'harshit.sahu94@gmail.com', '+91-9424742926'),
-(311, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 10:18:49', 'Sandhya Kolhekar', 'sandhyakolhekar@gmail.com', '+91-9893364402'),
-(312, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 09:04:39', 'Harsh', 'hks123icc@gmail.com', '+91-6265034330'),
-(313, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-12 00:17:29', 'Divyanshu Dubey', 'divyanshu238@gmail.com', '+91-7000810876'),
-(314, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-11 23:13:45', 'USER', 'Not Mentioned', '+91-7999709980'),
-(315, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-11 21:56:05', 'USER', 'Not Mentioned', '+91-9770205500'),
-(316, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-11 19:05:55', 'Sukhendra Kumar Gupta', 'sukhendragupta637@gmail.com', '+91-9589322690'),
-(317, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-11 18:20:21', 'Vince Samuel', 'vincesamuel@rediffmail.com', '+91-7049795051'),
-(318, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-11 15:21:52', 'Ajay Dubey', 'dajay8230@gmail.com', '+91-8839329692'),
-(319, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-13 10:00:07', 'Hemant', 'Mail_to_tiwari@yahoo.com', '+91-8770237072'),
-(320, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-12 19:01:53', 'Preeti Solanki', 'drpsolanki@gmail.com', '+91-9999427987'),
-(321, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-12 18:52:27', 'D B Roy', 'd.b.roy1308@gmail.com', '+91-9755538287'),
-(322, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-12 17:55:10', 'Praveer Kumar', 'jhapraveer91@gmail.com', '+91-7903753594'),
-(323, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-12 06:26:32', 'Manish Telang', 'manishtelang5@gmail.com', '+91-7987521856'),
-(324, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-12 00:28:27', 'Raman Kumar', 'rkemail888@gmail.com', '+91-9687585838'),
-(325, '', 'One Realty Nirman Nagar', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-11 22:00:44', 'USER', 'Not Mentioned', '+91-6266565166'),
-(326, '', 'Nirvana Homes', 'Jabalpur', '', '2024-11-11 18:29:51', 'Bhumi', 'bhumi03chouhan@gmail.com', '+91-9111087616'),
-(327, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2024-11-11 15:18:16', 'Abhishek Shrivastava', 'rndindia09@gmail.com', '+91-9899182050'),
-(328, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 14:46:06', 'khushboo sarkar', 'k.nechlani@gmail.com', '+91-9691626556'),
-(329, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 14:17:58', 'USER', 'Not Mentioned', '+91-8989499343'),
-(330, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2024-11-13 13:15:54', 'Not Mentioned', 'Not Mentioned', '+91-9725007279'),
-(331, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 17:39:11', 'USER', 'ap552258@gmail.com', '+91-8269111078'),
-(332, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 18:15:06', 'Sangeeta Khandare', 'sangeetakhandare@gmail.com', '+91-9407021210'),
-(333, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 22:55:37', 'Nitu Rajwani', 'rajwani1313@gmail.com', '+91-9893181868'),
-(334, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 19:37:33', 'Not Mentioned', 'neetachourasia143@gmail.com', '+91-8109180465'),
-(335, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-11-13 19:01:59', 'Prashant Rajak', '1984.rajak@gmail.com', '+91-9300751787'),
-(336, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-14 09:39:09', 'ASHOK KUMAR', 'ashok081284@gmail.com', '+91-7667719737'),
-(337, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-11-14 09:27:15', 'Akash', 'akaash.gulati@gmail.com', '+91-9177831954'),
-(338, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-11-13 23:07:47', 'nitin rajwani', 'rajwani1313@gmail.com', '+91-7389824808'),
-(339, '', 'Nirvana Homes', 'Jabalpur', '', '2024-12-03 22:32:25', 'Yogesh', 'yogeshkori1624@gmail.com', '+91-8770518194'),
-(340, '', 'Nirvana Homes', 'Jabalpur', '', '2024-12-03 18:08:24', 'Prakash Shukla', 'prakashukla2@gmail.com', '+91-8827386768'),
-(341, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-12-02 22:10:14', 'Gaya Prasad Dhurwey', 'ankit.dhurwey@gmail.com', '+91-9340090529'),
-(342, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-12-02 21:31:57', 'Dinesh Shukla', 'dkjbp99@gmail.com', '+91-8319635279'),
-(343, '', 'Nirvana Homes', 'Jabalpur', '', '2024-12-02 18:19:23', 'Devendra Kumar Dharam', 'devdharam11@gmail.com', '+91-8451071574'),
-(344, '', 'Nirvana Homes', 'Jabalpur', '', '2024-12-05 21:08:47', 'Sudeep Dubey', 'sankatmochan.sudeep@gmail.com', '+91-9179454818'),
-(345, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-12-05 20:55:50', 'Seema Singh', 'seema.singh4716@gmail.com', '+91-7987364219'),
-(346, '', 'Nirvana Homes', 'Jabalpur', '', '2024-12-06 13:03:43', 'Dr Priyank', 'cheenu8884@gmail.com', '+91-9111007776'),
-(347, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-07 09:19:59', 'Deepak Meena', 'deepakmsohagpur@gmail.com', '+91-8725018132'),
-(348, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-07 08:38:39', 'Ramu singh maravi', 'ramumarawi@gmail.com', '+91-9926349091'),
-(349, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-07 01:03:49', 'Rahul Tiwari', 'rahultiwarijanu3296@gmail.com', '+91-8889301200'),
-(350, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-06 23:05:20', 'Vimee Chopra', 'vimeebunz@gmail.com', '+91-9981997095'),
-(351, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-06 20:00:15', 'Sadhan Kumar Barman', 'sadhankumar59@yahoo.com', '+91-9424722175'),
-(352, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-06 19:45:06', 'Rahul Patel', 'rp4015585@gmail.com', '+91-8815311605'),
-(353, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-06 17:53:19', 'Abhinav Tiwari', 'idolabhinav@gmail.com', '+91-7089858661'),
-(354, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-06 16:16:01', 'Prachi Mishra', 'prachi170698@gmail.com', '+91-8103051619'),
-(355, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2024-12-07 00:03:45', 'Manoj Gupta', 'mguptachem69@gmail.com', '+91-9301202800'),
-(356, '', 'Nirvana Homes', 'Jabalpur', 'I am Interested in this property.', '2024-12-06 16:39:39', 'Vishal', 'vishalarora271981@google.com', '+91-9781107999'),
-(357, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-07 13:10:23', 'Gajendra Singh Rathore', 'gajendrarathore515@gmail.com', '+91-9425865321'),
-(358, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-13 11:50:32', 'Rahul Jaiswal', 'honey.rajput11172@gmail.com', '+91-8962319325'),
-(359, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-13 00:08:36', 'Antriksh Barmaiya', 'antriksh.barmaiya@gmail.com', '+91-7999182527'),
-(360, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 21:22:19', 'Shailja Meena', 'ashokmeenafci@gmail.com', '+91-8359826807'),
-(361, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 20:45:57', 'Ankur Tripathi', 'ankurt64@gmail.com', '+91-8126625673'),
-(362, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 20:01:55', 'Shivam pathak', 'pathaksurendra1967@gmail.com', '+91-6266896541'),
-(363, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 19:30:29', 'Ritesh Malik', 'ramalik399@gmail.com', '+91-8103103207'),
-(364, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 18:33:56', 'Not Mentioned', 'Not Mentioned', '+91-8878212639'),
-(365, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 18:04:50', 'Mr Singh', 'prithvisinghnir@gmail.com', '+91-7999363726'),
-(366, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 14:01:41', 'Nidhi Tiwari', 'nidhitiwaritani@gmail.com', '+91-9691053643'),
-(367, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 11:59:30', 'Ambuj', 'Not Mentioned', '+91-7974430740'),
-(368, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-12-12 11:09:52', 'Pankaj Mishra', 'pankaj192321@gmail.com', '+91-7694967546'),
-(369, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 0BHK, Reach out to customer via Whatsapp, CX wants to call back on Sunday', '2024-12-12 11:01:39', 'Pankaj Nawathe', 'pnawathe7@gmail.com', '+91-9827608894'),
-(370, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-12-12 10:46:08', 'Gayatri Rajak', 'rajak.gayatri@gmail.com', '+91-9770946769'),
-(371, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-12 09:57:26', 'Sankalp Khare', 'sankalpkhare08@gmail.com', '+91-9301888786'),
-(372, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-11 23:20:44', 'Dinesh Chhatri', 'dchhatri@gmail.com', '+91-9753717671'),
-(373, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-11 22:33:01', 'Abhishek Singh', 'asabhisheksingh833@gmail.com', '+91-9131111752'),
-(374, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-11 20:53:57', 'Umang Khanna', 'umang05khanna@gmail.com', '+91-9516095050'),
-(375, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-11 19:55:33', 'Sushma Dubey', 'sushma.dube@gmail.com', '+91-8827351660'),
-(376, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2024-12-11 14:55:01', 'Neelesh Yadav', 'neelesh0321@gmail.com', '+91-9302990997'),
-(377, '', 'Nirvana Homes', 'Jabalpur', 'Hot Lead, Interested in 3BHK, Reach out to customer via Whatsapp', '2024-12-11 14:53:45', 'Santosh Pathariya', 'santoshpathariya.rgm@gmail.com', '+91-7909361635'),
-(378, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-12-12 19:43:50', 'Ritesh', 'ramalik399@gmail.com', '+91-9893187399'),
-(379, '', 'Nirvana Homes', 'Jabalpur', '', '2024-12-12 15:31:33', 'Sanjay Kumar', 'sanjayrkumar1969@gmail.com', '+91-9712925271'),
-(380, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-12-11 21:09:17', 'SHASWAT', 'shaswatp49@gmail.com', '+91-9424205575'),
-(381, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2024-12-11 14:46:22', 'Arvind', 'arvindverma462@gmail.com', '+91-9893818108'),
-(382, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-04 12:13:53', 'Sanjay Kumar Sanodiya', 'sanjaysanodiyajam@gmail.com', '+91-9893795154'),
-(383, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-04 11:00:30', 'anandkumar sahlam', 'anandkumarsahlam@gmail.com', '+91-9993697269'),
-(384, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-04 08:06:35', 'Shivam Kumar', 'Skshivambansal@gmail.com', '+91-9425800646'),
-(385, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-04 08:06:31', 'Amit Patel', 'amitpatel.patel02@gmail.com', '+91-9981707989'),
-(386, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-04 07:12:40', 'Ajay Narayan Tiwari', 'sgajaykr@gmail.com', '+91-8005132311'),
-(387, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-04 00:52:17', 'Shrikant Naik', 'shrikanth.teen14@gmail.com', '+91-8878755777'),
-(388, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-04 00:45:13', 'Aman Yadav', 'amanyadav7458@gmail.com', '+91-7879665106'),
-(389, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-04 00:08:37', 'Puneet Singh Sambyal', 'puneetsambyal1074@gmail.com', '+91-9826164162'),
-(390, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 22:52:08', 'Dr synapse', 'pateladarsh525@gmail.com', '+91-9479427920'),
-(391, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 22:41:23', 'Neha Tripathi', 'nehatripathi0009@gmail.com', '+91-9340127819'),
-(392, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 22:26:30', 'USER', 'ramesh86792@gmail.com', '+91-9826181471'),
-(393, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 19:56:25', 'Manoj Kumar Rai', 'manojrai859910@gmail.com', '+91-9755859910'),
-(394, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 19:55:17', 'Jay Singh Bundela', 'jaybundela01@gmail.com', '+91-7976407831'),
-(395, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 19:27:37', 'Geeta Anand', 'geetaanand2701@gmail.com', '+91-9826389847'),
-(396, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 19:13:11', 'Abhay Khare', 'abhaykhare60@gmail.com', '+91-8225918907'),
-(397, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 14:15:38', 'Rohit Maghariya', 'maghariya.rohit@gmail.com', '+91-9179105982'),
-(398, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 13:57:50', 'Hitesh Dudeja', 'shobhadudeja2020@gmail.com', '+91-8319950712'),
-(399, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-01-03 13:32:39', 'Golu Mishra', 'satishmishra6476@gmail.com', '+91-9301201648'),
-(400, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-04 12:23:48', 'Shivam', 'kc950756@gmail.com', '+91-9244776565'),
-(401, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-01-04 11:38:02', 'USER', 'sonu.nakul1991@gmail.com', '+91-8839068464'),
-(402, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-04 11:28:52', 'Not Mentioned', 'Not Mentioned', '+91-8147530414'),
-(403, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-01-04 09:02:39', 'Rohit', 'shwetapandey201194@gmail.com', '+91-8959523599'),
-(404, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-03 14:19:11', 'Rohit Maghariya', 'rohitmagharia@live.co.uk', '+91-9179105982'),
-(405, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-04 13:24:50', 'Jeet dubey', 'jitendrakumardubey999@gmail.com', '+91-9301336225'),
-(406, '', 'One Realty Nirman Nagar', 'Jabalpur', 'I am interested in this Project.', '2025-01-13 13:33:54', 'Rohit Prathyani', 'rohitprathyani1603@gmail.com', '+91-9300574777'),
-(407, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2025-01-12 16:39:37', 'User', 'mkoshtirk@gmail.com', '+91-8770684454'),
-(408, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-01-24 21:04:47', 'Anant shahi', 'anantshahi57@gmail.com', '+91-9117217757'),
-(409, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-24 15:59:46', 'Abhinav Kumar', 'abhinavkr777@gmail.com', '+91-9142388062'),
-(410, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-24 11:32:09', 'Surendra Singh Panwar', 'sspanwar94@gmail.com', '+91-9752051556'),
-(411, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-23 22:54:13', 'Nidhi Sharma', 'Not Mentioned', '+91-9034294441'),
-(412, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2025-01-23 21:33:21', 'Uday Namdev', 'udaynamdev1990@gmail.com', '+91-9630673297'),
-(413, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2025-01-25 20:07:52', 'Kamlesh Parteti', 'kamlesh.parteti@gmail.com', '+91-9893980290'),
-(414, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-01-27 09:43:44', 'SANDEEP GUPTA', 'aogsibpl@gmail.com', '+91-9039997447'),
-(415, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-26 17:47:08', 'Hemlata Singh', 'hemlatasing.2211@gmail.com', '+91-7803885303'),
-(416, '', 'Nirvana Homes', 'Jabalpur', 'I am Interested in this property.', '2025-01-26 13:44:18', 'Amar', '9835388491amar@gmail.com', '+91-9835388491'),
-(417, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-01-26 08:31:06', 'NITIN BANSAL', 'bnitin24@hotmail.com', '+91-9919011555'),
-(418, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-25 20:38:49', 'Ajay', 'ajaytiwari723@gmail.com', '+91-9691775777'),
-(419, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-01-27 16:46:53', 'Suneel sen', 'Not Mentioned', '+91-7987068504'),
-(420, '', 'Nirvana Homes', 'Jabalpur', '', '2025-01-31 15:16:11', 'Gulati Builtech', 'pankajgulatijbp@yahoo.co.in', '+91-7869882435'),
-(421, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-01-30 19:45:36', 'AMRESH KUMAR', 'amresh10022@gmail.com', '+91-8149732360'),
-(422, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2025-01-30 10:05:51', 'Subhash', 'Subhashchandra2011@gmail.com', '+91-9752418628'),
-(423, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-01-29 19:42:33', 'Akash', 'arunkujur77@gmail.com', '+91-8839106318'),
-(424, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-02-03 08:34:35', 'Neeraj Keshwani', 'chintukeshwani@gmail.com', '+91-9555707436'),
-(425, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-02-02 13:58:58', 'Roopali Rajak', 'roopalirajak91@gmail.come', '+91-7999969148'),
-(426, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this project.', '2025-02-01 20:54:34', 'devendra', 'bhartidevendra550@gmail.com', '+91-7807815596'),
-(427, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-04 00:11:12', 'Dinesh Pandey', 'sdosatna2nd@gmail.com', '+91-8305294421'),
-(428, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-02-04 11:50:22', 'Mona', 'rohitmona358@gmail.com', '+91-9301539313'),
-(429, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-18 23:58:51', 'Ayushman Singh Parihar', 'ajaysinghsatna280@gmail.com', '+91-9752310999'),
-(430, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-18 20:29:59', 'Vinay Thakur', 'vinaysinghthakur1990@gmail.com', '+91-8982443504'),
-(431, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-18 17:06:59', 'Krashna Pal', 'krashnapal9685@gmail.com', '+91-9797556408'),
-(432, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-18 15:45:27', 'king', 'naveensolankisr@gmail.com', '+91-8839868176'),
-(433, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-17 18:41:51', 'Vikas Adhikari', 'vikasadhikari251@gmail.com', '+91-8770999408'),
-(434, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-17 15:02:04', 'Arun Mudgal', 'mudgal.arun738@gmail.com', '+91-9926775497'),
-(435, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project.', '2025-02-19 13:05:25', 'Aman', 'amanvishwakarmapimr1618@gmail.com', '+91-8871000473'),
-(436, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-19 12:47:39', 'Naresh Kumar Khare', 'nareshkhare065@gmail.com', '+91-8982044486'),
-(437, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-19 10:14:31', 'Ashish', 'ashish.mishra.112am@gmail.com', '+91-9098932771'),
-(438, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-19 10:10:58', 'Karan Chandwani', 'Karancha3@gmail.com', '+91-7772981499'),
-(439, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-19 02:32:43', 'Khushi Nupu', 'szaara23shaikh@gmail.com', '+91-9630932325'),
-(440, '', '', 'Jabalpur', '', '2025-02-18 23:30:00', 'Mridul', 'mridulk240@gmail.com', '+91-7489563992'),
-(441, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-02-18 22:54:12', 'Dileep Kumar', 'Dileepkumar135280@gimail.com', '+91-8825071624'),
-(442, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-18 17:03:01', 'Vishal Verma', 'vishal_verma@live.in', '+91-8871111627'),
-(443, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-18 15:04:45', 'Manglesh Patel', 'manglesh.2009@gmail.com', '+91-9685568332'),
-(444, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-18 13:26:24', 'Swapnil Sharma', 'swapnil007526@gmail.com', '+91-9818456849'),
-(445, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-02-18 11:10:54', 'Prakhar Pandey', 'prakharpandey660@gmail.com', '+91-9685176660'),
-(446, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-20 00:57:05', 'Santosh Meena', 'skmeena9494@gmail.com', '+91-9784199494'),
-(447, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-19 22:40:07', 'Ananda Raj Goswami', 'physio_raj07@yahoo.co.in', '+91-9109063174'),
-(448, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-19 18:38:25', 'USER', 'Not Mentioned', '+91-9993488667'),
-(449, '', 'Nirvana Homes', 'Jabalpur', 'This project looks good! Please send me more details', '2025-02-19 17:40:20', 'User', 'abhishek.p005@gmail.com', '+91-9753662642'),
-(450, '', 'Nirvana Homes', 'Jabalpur', 'I am interested in this Project. Please call back.', '2025-02-20 09:39:49', 'Vivek Pathak', 'vivek.pathak1994.vp@gmail.com', '+91-9340220801'),
-(451, '', 'Nirvana Homes', 'Jabalpur', '', '2025-02-19 19:07:33', 'B L Jaiswal', 'bljaiswal2003@yahoo.com', '+91-9985306511');
+(215, '1', 'Green Meadows', 'Mumbai', 'Interested in 2BHK', '2024-11-01 00:00:00', 'Amit Shah', 'amit.shah@email.com', '9876543210'),
+(216, '2', 'Blue Horizon', 'Delhi', 'Need loan assistance', '2024-11-02 00:00:00', 'Neha Verma', 'neha.verma@email.com', '9812345678'),
+(217, '3', 'Lake View', 'Bangalore', 'Request for 3BHK price quote', '2024-11-03 00:00:00', 'Rakesh Iyer', 'rakesh.iyer@email.com', '9823456789'),
+(218, '4', 'Sunshine Heights', 'Pune', 'Availability of 1BHK', '2024-11-04 00:00:00', 'Priya Desai', 'priya.desai@email.com', '9801234567'),
+(219, '5', 'Palm Grove Villas', 'Chennai', 'Interested in site visit', '2024-11-05 00:00:00', 'Karthik Reddy', 'karthik.reddy@email.com', '9845671234'),
+(220, '6', 'Ocean Breeze', 'Goa', 'Wants floor plan details', '2024-11-06 00:00:00', 'Sneha Patil', 'sneha.patil@email.com', '9876544321'),
+(221, '7', 'Skyline Residency', 'Kolkata', 'Availability of penthouse', '2024-11-07 00:00:00', 'Ankit Ghosh', 'ankit.ghosh@email.com', '9812348765'),
+(222, '8', 'Maple Woods', 'Hyderabad', 'Request for 4BHK price quote', '2024-11-08 00:00:00', 'Swati Singh', 'swati.singh@email.com', '9823451234'),
+(223, '9', 'Golden Heights', 'Jaipur', 'Interested in down payment info', '2024-11-09 00:00:00', 'Vikas Choudhary', 'vikas.choudhary@email.com', '9856734321'),
+(224, '10', 'Green Acres', 'Ahmedabad', 'Availability of 2BHK and 3BHK', '2024-11-10 00:00:00', 'Pooja Mehta', 'pooja.mehta@email.com', '9812349987');
 
 -- --------------------------------------------------------
 
@@ -1128,9 +1004,7 @@ INSERT INTO `services_data` (`service_id`, `quotation_id`, `quotation_name`, `se
 (467, 260, 'Shekhar Kumar Birha', 'Paid', 'Leads Generation', 'test', 500.00, 400.00, '2024-10-05 06:42:25', 'Yearly'),
 (468, 261, 'Shekhar Kumar Birha', 'Paid', 'Facebook Paid Ads', 'terst', 500.00, 500.00, '2024-10-05 06:45:06', 'Yearly'),
 (469, 269, 'Dharm Das Diwan', 'Complimentary', 'Content Writing', 'testt', 5000.00, 0.00, '2024-10-16 11:53:26', 'Yearly'),
-(470, 270, 'mr sufi', 'Complimentary', 'Data Science & Engineering', 'twst', 60.00, 0.00, '2024-10-19 12:47:43', 'Half Yearly'),
-(471, 271, 'shameem.shaikhshifa.shaikh', 'Paid', 'Leads Generation', 'jiopjoljk', 4565464.00, 645645.00, '2024-10-28 13:33:07', 'Monthly'),
-(472, 272, 'Nit Suryawanshi', 'Complimentary', 'Data Science & Engineering', 'atdg', 4.00, 0.00, '2024-10-30 07:08:01', 'Half Yearly');
+(470, 270, 'mr sufi', 'Complimentary', 'Data Science & Engineering', 'twst', 60.00, 0.00, '2024-10-19 12:47:43', 'Half Yearly');
 
 -- --------------------------------------------------------
 
@@ -1154,6 +1028,66 @@ INSERT INTO `todo_items` (`id`, `title`, `time`, `date`, `status`) VALUES
 (1, 'Finish the report', '14:00:00', '2024-09-03', 'Pending'),
 (2, 'Team meeting', '11:00:00', '2024-09-03', 'Pending'),
 (3, 'Review marketing strategy', '13:00:00', '2024-09-03', 'Pending');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `units`
+--
+
+CREATE TABLE `units` (
+  `unit_id` int(55) NOT NULL,
+  `main_project_id` int(11) NOT NULL COMMENT 'Refers to the main project associated with the unit',
+  `unit_size` decimal(10,2) DEFAULT NULL COMMENT 'Size of the unit',
+  `total_units` int(11) DEFAULT NULL COMMENT 'Total number of units',
+  `unit_type` varchar(255) NOT NULL,
+  `base_price` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `units`
+--
+
+INSERT INTO `units` (`unit_id`, `main_project_id`, `unit_size`, `total_units`, `unit_type`, `base_price`) VALUES
+(5, 21, 500.00, 5, '2BHK', 5000000.00),
+(6, 22, 500.00, 50, 'Villa', 45000000.00),
+(7, 21, 300000.00, 8, '1BHK', 500000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `unit_data`
+--
+
+CREATE TABLE `unit_data` (
+  `id` int(11) NOT NULL,
+  `unit_number` int(11) NOT NULL,
+  `main_project_id` int(255) NOT NULL,
+  `unit_id` int(255) NOT NULL,
+  `unit_type` varchar(255) DEFAULT NULL,
+  `unit_size` decimal(10,2) DEFAULT NULL,
+  `base_price` decimal(10,2) DEFAULT NULL,
+  `status` varchar(255) DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `unit_data`
+--
+
+INSERT INTO `unit_data` (`id`, `unit_number`, `main_project_id`, `unit_id`, `unit_type`, `unit_size`, `base_price`, `status`) VALUES
+(1617, 1, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1618, 2, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1619, 3, 21, 7, '1BHK', 300000.00, 500000.00, 'sold'),
+(1620, 4, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1621, 5, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1733, 6, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1734, 7, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1735, 8, 21, 7, '1BHK', 300000.00, 500000.00, 'pending'),
+(1738, 1, 21, 5, '2BHK', 500.00, 5000000.00, 'pending'),
+(1739, 2, 21, 5, '2BHK', 500.00, 5000000.00, 'pending'),
+(1740, 3, 21, 5, '2BHK', 500.00, 5000000.00, 'sold'),
+(1741, 4, 21, 5, '2BHK', 500.00, 5000000.00, 'pending'),
+(1742, 5, 21, 5, '2BHK', 500.00, 5000000.00, 'pending');
 
 -- --------------------------------------------------------
 
@@ -1189,6 +1123,7 @@ INSERT INTO `user_data` (`user_id`, `user_name`, `email`, `profile_picture`, `ph
 
 CREATE TABLE `visit` (
   `id` int(255) NOT NULL,
+  `project_name` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `employee_name` varchar(255) NOT NULL,
   `lead_id` int(255) NOT NULL,
@@ -1197,6 +1132,16 @@ CREATE TABLE `visit` (
   `visit_date` varchar(255) NOT NULL,
   `report` varchar(255) NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `visit`
+--
+
+INSERT INTO `visit` (`id`, `project_name`, `name`, `employee_name`, `lead_id`, `employeeId`, `visit`, `visit_date`, `report`) VALUES
+(30, '', 'Prakash Pandey', 'umer', 149, 29, 'fresh', '2024-11-09', 'pending'),
+(31, '', 'Prakash Pandey', 'umer', 149, 29, 'repeated', '2024-11-07', 'pending'),
+(32, '', 'Prakash Pandey', 'umer', 149, 29, 'associative', '2024-11-01', 'pending'),
+(33, 'nirvana homes exotica', 'test of project name unit', 'umer', 154, 29, 'fresh', '2025-02-18', 'pending');
 
 -- --------------------------------------------------------
 
@@ -1208,6 +1153,13 @@ CREATE TABLE `website_api` (
   `id` int(255) NOT NULL,
   `api` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `website_api`
+--
+
+INSERT INTO `website_api` (`id`, `api`) VALUES
+(4, 'https://one-realty.in/api/user-data');
 
 --
 -- Indexes for dumped tables
@@ -1251,6 +1203,12 @@ ALTER TABLE `device_usage`
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`employeeId`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `employee_sold_units`
+--
+ALTER TABLE `employee_sold_units`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `follow_up_leads`
@@ -1304,6 +1262,12 @@ ALTER TABLE `leadstable`
   ADD KEY `form_id` (`form_id`);
 
 --
+-- Indexes for table `leads_email`
+--
+ALTER TABLE `leads_email`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `notes`
 --
 ALTER TABLE `notes`
@@ -1333,6 +1297,12 @@ ALTER TABLE `otpcollections`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`);
+
+--
+-- Indexes for table `projects`
+--
+ALTER TABLE `projects`
+  ADD PRIMARY KEY (`main_project_id`);
 
 --
 -- Indexes for table `quotations_data`
@@ -1384,6 +1354,20 @@ ALTER TABLE `todo_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `units`
+--
+ALTER TABLE `units`
+  ADD PRIMARY KEY (`unit_id`),
+  ADD KEY `Foreign Key` (`main_project_id`) USING BTREE;
+
+--
+-- Indexes for table `unit_data`
+--
+ALTER TABLE `unit_data`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `unit_id` (`unit_id`);
+
+--
 -- Indexes for table `user_data`
 --
 ALTER TABLE `user_data`
@@ -1410,7 +1394,7 @@ ALTER TABLE `website_api`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -1440,19 +1424,25 @@ ALTER TABLE `device_usage`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employeeId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `employeeId` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `employee_sold_units`
+--
+ALTER TABLE `employee_sold_units`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `follow_up_leads`
 --
 ALTER TABLE `follow_up_leads`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `formtable`
 --
 ALTER TABLE `formtable`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `invoice_company_proflie`
@@ -1482,13 +1472,19 @@ ALTER TABLE `invoice_services_data`
 -- AUTO_INCREMENT for table `leads`
 --
 ALTER TABLE `leads`
-  MODIFY `lead_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+  MODIFY `lead_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `leadstable`
 --
 ALTER TABLE `leadstable`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1173;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=971;
+
+--
+-- AUTO_INCREMENT for table `leads_email`
+--
+ALTER TABLE `leads_email`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -1521,34 +1517,40 @@ ALTER TABLE `payments`
   MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `projects`
+--
+ALTER TABLE `projects`
+  MODIFY `main_project_id` int(55) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
 -- AUTO_INCREMENT for table `quotations_data`
 --
 ALTER TABLE `quotations_data`
-  MODIFY `quotation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=273;
+  MODIFY `quotation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=271;
 
 --
 -- AUTO_INCREMENT for table `quotations_information`
 --
 ALTER TABLE `quotations_information`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `registered_data`
 --
 ALTER TABLE `registered_data`
-  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `remark`
 --
 ALTER TABLE `remark`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `responses_99acres`
 --
 ALTER TABLE `responses_99acres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=452;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -1560,13 +1562,25 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `services_data`
 --
 ALTER TABLE `services_data`
-  MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=473;
+  MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=471;
 
 --
 -- AUTO_INCREMENT for table `todo_items`
 --
 ALTER TABLE `todo_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `units`
+--
+ALTER TABLE `units`
+  MODIFY `unit_id` int(55) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `unit_data`
+--
+ALTER TABLE `unit_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1749;
 
 --
 -- AUTO_INCREMENT for table `user_data`
@@ -1578,13 +1592,13 @@ ALTER TABLE `user_data`
 -- AUTO_INCREMENT for table `visit`
 --
 ALTER TABLE `visit`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `website_api`
 --
 ALTER TABLE `website_api`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
