@@ -27,15 +27,16 @@ const EmployeeVisitGraph = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/employebyid-visit/${EmpId.id}`,
+          `http://localhost:9000/api/employe-leads/${EmpId.id}`,
           {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
           }}
         );
-        const leadList = response.data;
-        console.log(leadList);
+        const leadList = response.data.filter((lead) =>
+          ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
+        );
         
 
         // Get the current date and the date 28 days ago

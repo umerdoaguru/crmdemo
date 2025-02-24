@@ -622,17 +622,17 @@ const AllgetEmployeebyvisit = async (req, res) => {
 const updateOnlyVisitStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { visit } = req.body;
+    const { visit,visit_date } = req.body;
 
     console.log(visit, id);
 
     const sql = `UPDATE leads SET 
-    visit = ?
+    visit = ?, visit_date = ?
     
     WHERE lead_id = ?`;
 
     await new Promise((resolve, reject) => {
-      db.query(sql, [visit, id], (err, result) => {
+      db.query(sql, [visit,visit_date, id], (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -1170,9 +1170,9 @@ const getUnitDataByUnitId = async (req, res) => {
 const updateOnlyUnitDataStatusById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { unit_status } = req.body;
 
-    console.log(status, id);
+    
 
     const sql = `UPDATE unit_data SET 
     status = ?
@@ -1180,7 +1180,7 @@ const updateOnlyUnitDataStatusById = async (req, res) => {
     WHERE unit_number = ?`;
 
     await new Promise((resolve, reject) => {
-      db.query(sql, [status, id], (err, result) => {
+      db.query(sql, [unit_status, id], (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -1190,6 +1190,36 @@ const updateOnlyUnitDataStatusById = async (req, res) => {
     });
 
     res.status(200).json({ message: "Unit Status updated successfully" });
+  } catch (error) {
+    console.error("Database update error:", error);
+    res.status(500).json({ message: "Internal Server Error", error: err });
+  }
+};
+
+
+const updateOnlyUnitStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { unit_number,unit_status } = req.body;
+
+
+
+    const sql = `UPDATE leads SET 
+    unit_number = ?, unit_status = ?
+                    
+    WHERE lead_id = ?`;
+
+    await new Promise((resolve, reject) => {
+      db.query(sql, [unit_number,unit_status, id], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+
+    res.status(200).json({ message: "Lead of Unit Data updated successfully" });
   } catch (error) {
     console.error("Database update error:", error);
     res.status(500).json({ message: "Internal Server Error", error: err });
@@ -1219,5 +1249,5 @@ module.exports = {
   getEmployeebyidvisit,
   AllgetEmployeebyvisit,
   updateOnlyVisitStatus,
-  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById,getUnitDataByUnitId,updateOnlyUnitDataStatusById
+  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById,getUnitDataByUnitId,updateOnlyUnitDataStatusById,updateOnlyUnitStatus
 };

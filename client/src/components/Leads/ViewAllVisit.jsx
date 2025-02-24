@@ -132,6 +132,22 @@ const ViewAllVisit = () => {
         cogoToast.success("Visit updated successfully!");
         setRender(!render); // Refresh the list after updating
         closeModal(); // Close the modal
+        const updateLeadStatusResponse = await axios.put(
+          `http://localhost:9000/api/updateOnlyLeadStatus/${modalData.lead_id}`,
+          { lead_status: modalData.lead_status }
+        );
+    
+        if (updateLeadStatusResponse.status === 200) {
+          console.log(
+            "Lead status updated successfully:",
+            updateLeadStatusResponse.data
+          );
+       
+        } else {
+          console.error("Error updating lead status:", updateLeadStatusResponse.data);
+          cogoToast.error("Failed to update lead status.");
+          return;
+        }
       }
     } catch (error) {
       console.error("Error updating visit:", error);
@@ -232,9 +248,7 @@ const ViewAllVisit = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                        {visit.visit}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                       {visit.visit_date}
-                      </td>
+                      {moment(visit.visit_date).format("DD MMM YYYY").toUpperCase()}
                       <td className="px-6 py-4 whitespace-nowrap">
                        {visit.report}
                       </td>

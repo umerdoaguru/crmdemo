@@ -15,16 +15,28 @@ const ViewAllUnitSold = () => {
   const [filterText, setFilterText] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [render, setRender] = useState(false);
+  const [previousUnit, setPreviousUnit] = useState('');
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
+  const [unitdata, setUnitData] = useState([]);
   const navigate = useNavigate();
   const EmpId = useSelector((state) => state.auth.user);
 
   const token = EmpId?.token;
+  
   useEffect(() => {
     fetchEmployeeUnitSold();
+ 
   }, [id, render]);
+
+ 
+  useEffect(() => {
+    if (employeeunitsold.length > 0) {
+        fetchUnitdata();
+    }
+}, [employeeunitsold]); // Runs only when employeeunitsold updates
+
 
   const fetchEmployeeUnitSold = async () => {
     try {
@@ -34,8 +46,22 @@ const ViewAllUnitSold = () => {
       );
       setEmployeeUnitSold(response.data);
       console.log(response);
+
     } catch (error) {
       console.error("Error fetching visit:", error);
+    }
+  };
+
+  
+  const fetchUnitdata = async () => {
+    
+    try {
+      const response = await axios.get(`http://localhost:9000/api/unit-data/${employeeunitsold[0].unit_id}`);
+      setUnitData(response.data);
+      console.log(unitdata);
+      
+    } catch (error) {
+      console.error("Error fetching Unit Data:", error);
     }
   };
 
@@ -52,9 +78,31 @@ const ViewAllUnitSold = () => {
         if (response.status === 200) {
           console.log("Unit Sold deleted successfully");
           cogoToast.success("")
-          
+          const putResponse = await axios.put(
+            `http://localhost:9000/api/unit-data/${unitsold.unit_no}`,
+            { unit_status: "pending" }
+          );
+    
+          if (putResponse.status === 200) {
+            console.log("Unit Status updated successfully:", putResponse.data);
+          } else {
+            console.error("Error updating Unit Status:", putResponse.data);
+            cogoToast.error("Failed to update the lead Unit Status.");
+          }  
+          const putResponseUnit = await axios.put(
+            `http://localhost:9000/api/updateOnlyUnitStatus/${unitsold.lead_id}`,
+            { unit_number: "pending",unit_status: "pending"}
+          );
+    
+          if (putResponseUnit.status === 200) {
+            console.log("Unit of Lead Status updated successfully:", putResponseUnit.data);
+          } else {
+            console.error("Error updating Unit Status:", putResponseUnit.data);
+            cogoToast.error("Failed to update the lead Unit Status.");
+          }
 
         }
+
     
         console.log(response);
         setRender(!render);
@@ -67,6 +115,7 @@ const ViewAllUnitSold = () => {
  const openModal = (data) => {
     setModalData(data);
     console.log(data);
+    setPreviousUnit(data.unit_no)
     
     setIsModalOpen(true);
   };
@@ -90,8 +139,47 @@ const ViewAllUnitSold = () => {
       const response = await axios.put(`http://localhost:9000/api/unit-sold`, modalData);
       if (response.status === 200) {
         cogoToast.success("Unit Sold updated successfully!");
+
+        const putResponseUnit = await axios.put(
+          `http://localhost:9000/api/updateOnlyUnitStatus/${modalData.lead_id}`,
+          { unit_number: modalData.unit_no,unit_status: modalData.unit_status }
+        );
+  
+        if (putResponseUnit.status === 200) {
+          console.log("Unit of Lead Status updated successfully:", putResponseUnit.data);
+        } else {
+          console.error("Error updating Unit Status:", putResponseUnit.data);
+          cogoToast.error("Failed to update the lead Unit Status.");
+        }
+        const putResponseUnitdelete = await axios.put(
+          `http://localhost:9000/api/unit-data/${previousUnit}`,
+          { unit_status: "pending" }
+        );
+  
+        if ( putResponseUnitdelete .status === 200) {
+          console.log("Unit Status updated successfully:",  putResponseUnitdelete .data);
+        } else {
+          console.error("Error updating Unit Status:",  putResponseUnitdelete .data);
+          cogoToast.error("Failed to update the lead Unit Status.");
+        }  
+
+
+        const putResponse = await axios.put(
+          `http://localhost:9000/api/unit-data/${modalData.unit_no}`,
+          { unit_status: modalData.unit_status }
+        );
+  
+        if (putResponse.status === 200) {
+          console.log("Unit Status updated successfully:", putResponse.data);
+        } else {
+          console.error("Error updating Unit Status:", putResponse.data);
+          cogoToast.error("Failed to update the lead Unit Status.");
+        }
+
+
         setRender(!render); // Refresh the list after updating
         closeModal(); // Close the modal
+        setPreviousUnit('');
       }
     } catch (error) {
       console.error("Error updating visit:", error);
@@ -181,8 +269,9 @@ const ViewAllUnitSold = () => {
                       </td>
                       
                       <td className="px-6 py-4 whitespace-nowrap">
-                       {unitsold.date}
+                       {moment(unitsold.date).format("DD MMM YYYY").toUpperCase()}
                       </td>
+                    
                       <td className="px-6 py-4 whitespace-nowrap">
                      
                           <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded m-1"
@@ -249,14 +338,24 @@ const ViewAllUnitSold = () => {
 
           <div className="mb-4">
           <label className="block text-gray-700">Unit Number:</label>
-          <input
-            type="number"
-            name="unit_no"
-            value={modalData.unit_no || ""}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded"
-            disabled
-          />
+         
+            <select
+        name="unit_no"
+        value={modalData.unit_no || ""}
+        onChange={handleInputChange}
+        className="border rounded-2xl p-2 w-full"
+    >
+        <option value="">Select Unit Number</option>
+        {unitdata.map((unit) => (
+            <option
+                key={unit.id}
+                value={unit.unit_number}
+                disabled={unit.status === "sold"} // Disable sold units
+            >
+                {unit.status === "sold" ? `Sold ${unit.unit_number}` : `Unit ${unit.unit_number} (Available)`}
+            </option>
+        ))}
+    </select>
         </div>
       
 
@@ -268,6 +367,7 @@ const ViewAllUnitSold = () => {
             value={modalData.project_name || ""}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border border-gray-300 rounded"
+            disabled
           />
         </div>
 

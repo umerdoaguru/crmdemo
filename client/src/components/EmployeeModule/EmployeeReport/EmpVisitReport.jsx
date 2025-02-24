@@ -20,15 +20,34 @@ const EmpVisitReport = () => {
   const [duration, setDuration] = useState("all"); // Default is "all"
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedColumns, setSelectedColumns] = useState([
-    'project_name',
-      'lead_id',
-'name',
-'employee_name',
-'employeeId',
-'visit',
-'report',
-'visit_date',
-
+    "lead_no",
+    "assignedTo",
+    "name",
+    "phone",
+    "leadSource",
+    "remark_status",
+    "answer_remark",
+    "meeting_status",
+    "assignedBy",
+    "lead_status",
+    "address",
+    "booking_amount",
+    "deal_status",
+    "employeeId",
+    "follow_up_status",
+    "payment_mode",
+    "quotation",
+    "quotation_status",
+    "reason",
+    "registry",
+   
+    "subject",
+    "visit",
+    "visit_date",
+    "d_closeDate",
+    "createdTime",
+    "actual_date",
+    
   ]);
   const EmpId = useSelector((state) => state.auth.user);
 
@@ -44,7 +63,7 @@ const EmpVisitReport = () => {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employebyid-visit/${EmpId.id}`,
+        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -52,10 +71,9 @@ const EmpVisitReport = () => {
         }}
       );
       // Filter out leads where visit is "Pending"
-      const nonPendingLeads = response.data.filter(
-        (lead) => lead.visit !== "pending"
+      const nonPendingLeads = response.data.filter((lead) =>
+        ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
       );
-
       setLeads(nonPendingLeads);
       setFilteredLeads(nonPendingLeads); // Initial data set for filtering
     } catch (error) {
@@ -105,32 +123,51 @@ const EmpVisitReport = () => {
   const downloadExcel = () => {
     // Map to rename keys for export
     const columnMapping = {
-        project_name: "Project Name",
-        lead_id: "Lead ID",          
-        name: "Name",                
-        employee_name: "Employee Name", 
-        employeeId: "Employee ID",   
-        visit: "Visit",              
-        report: "Report",             
-        visit_date: "Visit Date",    
-      };
-      
+      lead_no: "Lead Number",
+      assignedTo: "Assigned To",
+      name: "Name",
+      phone: "Phone",
+      leadSource: "Lead Source",
+      remark_status: "Remark Status",
+      answer_remark: "Answer Remark",
+      meeting_status: "Meeting Status",
+      assignedBy: "Assigned By",
+      lead_status: "Lead Status",
+      address: "Address",
+      booking_amount: "Booking Amount",
+      deal_status: "Deal Status",
+      employeeId: "Employee ID",
+      follow_up_status: "Follow-up Status",
+      payment_mode: "Payment Mode",
+      quotation: "Quotation",
+      quotation_status: "Quotation Status",
+      reason: "Reason",
+      registry: "Registry",
+    
+      subject: "Project",
+      visit: "Visit",
+      visit_date: "Visit Date",
+      d_closeDate: "Close Date",
+      createdTime: "Assigned Date",
+      actual_date: "Actual Date",
+    };
   
-    const completedLeads = filteredLeads
-      .filter((lead) => lead.visit !== "pending")
-      .map((lead) => {
-        const formattedLead = {};
-  
-        // Dynamically include selected columns
-        selectedColumns.forEach((col) => {
-          const newKey = columnMapping[col] || col; // Use mapped name if available
-          formattedLead[newKey] = 
-            (col === "visit_date") && lead[col]
+    const completedLeads = filteredLeads.map((lead) => {
+      const formattedLead = {};
+    
+      selectedColumns.forEach((col) => {
+        const newKey = columnMapping[col] || col;
+    
+        if (["actual_date", "createdTime", "visit_date", "d_closeDate"].includes(col)) {
+          // Check if date exists and is valid
+          formattedLead[newKey] =
+            lead[col] && moment(lead[col], moment.ISO_8601, true).isValid()
               ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
-              : lead[col]; // Format dates or copy value
-              console.log(selectedColumns);
-              
-        });
+              : "pending"; // If invalid or missing, set as "PENDING"
+        } else {
+          formattedLead[newKey] = lead[col]; // Assign other fields normally
+        }
+      });
   
       
        
@@ -193,28 +230,22 @@ const EmpVisitReport = () => {
           <table className="min-w-full bg-white border">
             <thead>
             <tr>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       S.no
                     </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
-                     Project Name 
-                    </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                      Lead Id 
                     </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                      Name
                     </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Assigned To
                     </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Visit 
                     </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
-                      Report
-                    </th>
-                    <th className="px-6 py-3  border-b-2 border-gray-300 text-black-500">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Visit Date
                     </th>
                 
@@ -246,19 +277,16 @@ const EmpVisitReport = () => {
                       {visit.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                     {visit.employee_name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                     {visit.visit}
-                    </td>
-                  
-                    <td className="px-6 py-4 whitespace-nowrap">
-                     {visit.report}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                    
-                    {moment(visit.visit_date).format("DD MMM YYYY").toUpperCase()}
-                   </td>
+                    {visit.assignedTo}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                         {visit.visit}
+                                        </td>
+                                        <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
+                                         {visit.visit_date === "pending"
+                                           ? "pending"
+                                           : moment(visit.visit_date).format("DD MMM YYYY").toUpperCase()}
+                                       </td>
       </tr>
     ))
   )}

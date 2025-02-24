@@ -13,6 +13,7 @@ function Employee_Single_Lead_Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [leads, setLeads] = useState([]);
+  const [loading , setLoading] = useState(false)
   const [visit, setVisit] = useState([]);
   const [unitdata, setUnitData] = useState([]);
   const [unitemployeesolddata, setUnitEmployeeSoldData] = useState([]);
@@ -522,6 +523,7 @@ const token = EmpId?.token;
           return;
         }
       }
+      setLoading(true)
       // Send updated data to the backend using Axios
       const response = await axios.put(
         `http://localhost:9000/api/updateLeadStatus/${currentLead.lead_id}`,
@@ -534,12 +536,15 @@ const token = EmpId?.token;
         setRender(!render);
         closePopup(); // Close the popup on success
         fetchLeads();
+        setLoading(false)
       } else {
         console.error("Error updating:", response.data);
+        setLoading(false)
         cogoToast.error({ general: "Failed to update the lead status." });
       }
     } catch (error) {
       console.error("Request failed:", error);
+      setLoading(false)
       cogoToast.error("Failed to update the lead status.");
     }
   };
@@ -556,7 +561,7 @@ const token = EmpId?.token;
     }
   
     console.log("Visit data:", visitLead);
-  
+    setLoading(true)
     try {
       // First API call: Create a visit
       const response = await axios.post(
@@ -579,7 +584,7 @@ const token = EmpId?.token;
         // Second API call: Update visit status
         const updateResponse = await axios.put(
           `http://localhost:9000/api/updateVisitStatus/${leads[0].lead_id}`,
-          { visit: visitLead.visit }
+          { visit: visitLead.visit,visit_date:visitLead.visit_date  }
         );
   
         if (updateResponse.status === 200) {
@@ -616,12 +621,15 @@ const token = EmpId?.token;
         closePopupVisit();
         fetchVisit();
         fetchLeads();
+        setLoading(false)
       } else {
         console.error("Error creating visit:", response.data);
         cogoToast.error("Failed to create visit.");
+        setLoading(false)
       }
     } catch (error) {
       console.error("Request failed:", error);
+      setLoading(false)
       cogoToast.error("An error occurred while processing your request.");
     }
   };
@@ -650,7 +658,7 @@ const token = EmpId?.token;
       cogoToast.error("Please Enter a report.");
       return;
     }
-  
+    setLoading(true)
     try {
       // Send updated data to the backend using Axios
       const response = await axios.post(
@@ -688,13 +696,17 @@ const token = EmpId?.token;
         closePopupFollowUp();
         fetchFollowUp();
         fetchLeads();
+        setLoading(false)
       } else {
         console.error("Error creating follow-up:", response.data);
         cogoToast.error("Failed to create follow-up.");
+        setLoading(false)
+
       }
     } catch (error) {
       console.error("Request failed:", error);
       cogoToast.error("Failed to create follow-up.");
+      setLoading(false)
     }
   };
   
@@ -708,7 +720,7 @@ const token = EmpId?.token;
       cogoToast.error("Please select a date.");
       return;
     }
-  
+    setLoading(true)
     try {
 
         const response = await axios.post(`http://localhost:9000/api/remarks`,
@@ -728,11 +740,14 @@ const token = EmpId?.token;
         closePopupRemark();
         fetchRemark();
         fetchLeads();
+        setLoading(false)
       } else {
+        setLoading(false)
         cogoToast.error("Failed to create remark and update lead.");
       }
     } catch (error) {
       console.error("Request failed:", error);
+      setLoading(false)
       cogoToast.error("Failed to create remark and update lead.");
     }
   };
@@ -746,7 +761,7 @@ const token = EmpId?.token;
       cogoToast.error("Please select a date.");
       return;
     }
-  
+    setLoading(true)
     try {
 
         const response = await axios.post(`http://localhost:9000/api/unit-sold`,
@@ -767,7 +782,7 @@ const token = EmpId?.token;
       if (response.status === 201) {
 
         const putResponse = await axios.put(
-          `http://localhost:9000/api/unid-sold/${leads[0].unit_no}`,
+          `http://localhost:9000/api/unit-data/${unitsold.unit_no}`,
           { unit_status: unitsold.unit_status }
         );
   
@@ -775,6 +790,19 @@ const token = EmpId?.token;
           console.log("Unit Status updated successfully:", putResponse.data);
         } else {
           console.error("Error updating Unit Status:", putResponse.data);
+          setLoading(false)
+          cogoToast.error("Failed to update the lead Unit Status.");
+        }
+        const putResponseUnit = await axios.put(
+          `http://localhost:9000/api/updateOnlyUnitStatus/${leads[0].lead_id}`,
+          { unit_number: unitsold.unit_no,unit_status: unitsold.unit_status }
+        );
+  
+        if (putResponseUnit.status === 200) {
+          console.log("Unit of Lead Status updated successfully:", putResponseUnit.data);
+        } else {
+          console.error("Error updating Unit Status:", putResponseUnit.data);
+          setLoading(false)
           cogoToast.error("Failed to update the lead Unit Status.");
         }
 
@@ -784,9 +812,11 @@ const token = EmpId?.token;
         fetchUnitdata();
         fetchLeads();
         fetchUnitSoldEmployee();
+        setLoading(false)
       } 
     } catch (error) {
       console.error("Request failed:", error);
+      setLoading(false)
       cogoToast.error("Failed to Save Error.");
     }
   };
@@ -1021,9 +1051,11 @@ console.log(totalVisit);
       <th className="px-6 py-3 border-b-2 border-gray-300">Project Name</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Project Id</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Unit Type</th>
-      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Id</th>
+
       <th className="px-6 py-3 border-b-2 border-gray-300">Unit Number</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Status</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Visit Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Close Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Assigned Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Actual Date</th>
@@ -1056,9 +1088,15 @@ console.log(totalVisit);
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.project_name}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.main_project_id}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_type}</td>
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_id}</td>
+
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_number}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_status}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.visit}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800 ">
+                                             {lead.visit_date === "pending"
+                                               ? "pending"
+                                               : moment(lead.visit_date).format("DD MMM YYYY").toUpperCase()}
+                                           </td>
     <td className="px-6 py-4 border-b border-gray-200 font-semibold text-gray-800">
       {lead.d_closeDate === "pending"
         ? "pending"
@@ -1129,9 +1167,9 @@ console.log(totalVisit);
                 <div className="flex justify-end">
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-                    onClick={saveChanges}
+                    onClick={saveChanges} disabled = {loading}
                   >
-                    Save
+                    {loading ? 'Save...' : 'Save'}
                   </button>
                   <button
                     className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
@@ -1212,9 +1250,9 @@ console.log(totalVisit);
                 <div className="flex justify-end">
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-                    onClick={saveVisit}
+                    onClick={saveVisit} disabled = {loading}
                   >
-                    Save
+                    {loading ? 'Save...' : 'Save'}
                   </button>
                   <button
                     className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
@@ -1262,22 +1300,28 @@ console.log(totalVisit);
                   />
                 </div>
             
-                <div className="mb-4">
-                  <label className="block text-gray-700">Unit Number</label>
-                  <select
-                    name="unit_no"
-                    value={unitsold.unit_no}
-                    onChange={handleInputChangeUnitSold}
-                    className="border rounded-2xl p-2 w-full"
-                  >
-                    <option value="">Select Unit Number </option>
-                    {unitdata.map((unit) => (
-                      <option key={unit.id} value={unit.unit_number}>
-                        {unit.unit_number}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            
+<div className="mb-4">
+    <label className="block text-gray-700">Unit Number</label>
+    <select
+        name="unit_no"
+        value={unitsold.unit_no}
+        onChange={handleInputChangeUnitSold}
+        className="border rounded-2xl p-2 w-full"
+    >
+        <option value="">Select Unit Number</option>
+        {unitdata.map((unit) => (
+            <option
+                key={unit.id}
+                value={unit.unit_number}
+                disabled={unit.status === "sold"} // Disable sold units
+            >
+                {unit.status === "sold" ? `Sold ${unit.unit_number}` : `Unit ${unit.unit_number} (Available)`}
+            </option>
+        ))}
+    </select>
+</div>
+
 
             <div className="mb-4">
                   <label className="block text-gray-700">Unit Status</label>
@@ -1288,7 +1332,7 @@ console.log(totalVisit);
                     className="border rounded-2xl p-2 w-full"
                   >
                     <option value="">Select Unit Status Type</option>
-                    <option value="pending">Pending</option>
+                
                     <option value="sold">Sold</option>
                    
                   </select>
@@ -1312,7 +1356,7 @@ console.log(totalVisit);
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
                     onClick={saveUnitSold}
                   >
-                    Save
+                    {loading ? 'Save...' : 'Save'}
                   </button>
                   <button
                     className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
@@ -1402,9 +1446,9 @@ console.log(totalVisit);
                 <div className="flex justify-end">
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-                    onClick={saveFollowUp}
+                    onClick={saveFollowUp} disabled = {loading}
                   >
-                    Save
+                    {loading ? 'Save...' : 'Save'}
                   </button>
                   <button
                     className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
@@ -1484,9 +1528,9 @@ console.log(totalVisit);
       <div className="flex justify-end">
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
-          onClick={saveRemark}
+          onClick={saveRemark} disabled = {loading}
         >
-          Save
+          {loading ? 'Save...' : 'Save'}
         </button>
         <button
           className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"

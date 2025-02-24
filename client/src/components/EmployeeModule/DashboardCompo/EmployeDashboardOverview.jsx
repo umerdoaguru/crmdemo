@@ -85,7 +85,7 @@ const EmployeeOverview = () => {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employebyid-visit/${EmpId.id}`,
+        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
