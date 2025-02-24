@@ -246,6 +246,7 @@ import EmployeeSider from "./EmployeeSider";
 import EmployeeVisitData from "./EmployeeDataExport/EmployeeVisitData";
 import EmployeeCloseData from "./EmployeeDataExport/EmployeeCloseData";
 import Employee_Single_Lead_Profile from "../Leads/Employee_Single_Lead_Profile";
+import EmployeeSoldData from "./EmployeeDataExport/EmployeeSoldData";
 
 function DataExport() {
   const [leads, setLeads] = useState([]);
@@ -259,8 +260,6 @@ function DataExport() {
   const [visit, setVisit] = useState([]);
   const EmpId = useSelector((state) => state.auth.user);
   const token = EmpId?.token;
-
-
 
   const fetchLeads = async () => {
     try {
@@ -310,6 +309,7 @@ function DataExport() {
       console.error("Error fetching invoices:", error);
     }
   };
+
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
@@ -329,11 +329,27 @@ function DataExport() {
     }
   };
 
+  const SoldUnit = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/employebyid-visit/${EmpId.id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setVisit(response.data);
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+
   const leadCount = leads.filter(
     (lead) => lead.lead_status === "completed"
   ).length; 
-  // const quotationCount = quotation.length;
-  // const invoiceCount = invoice.length;
 
   const visitCount = leads.filter((lead) =>
     ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
@@ -342,13 +358,18 @@ function DataExport() {
 
   const closedCount = leads.filter(
     (lead) => lead.deal_status === "close"
-  ).length; // Get count for Closed Data
+  ).length;
+
+  const soldUnits = leads.filter(   
+    (lead) => lead.unit_status === "sold"
+  ).length;
 
   useEffect(() => {
     fetchLeads();
     fetchQuotation();
     fetchInvoice();
     fetchVisit();
+    SoldUnit();
   }, []);
   return (
     <>
@@ -403,92 +424,6 @@ function DataExport() {
               </div>
             </div>
           </div>
-
-          {/* <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
-            <div
-              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
-                selectedComponent === "QuotationData"
-                  ? "bg-blue-500 text-white"
-                  : ""
-              }`}
-              onClick={() => setSelectedComponent("QuotationData")}
-            >
-              <div className="p-4 flex flex-col items-center text-center">
-                <div
-                  className={`text-3xl ${
-                    selectedComponent === "QuotationData"
-                      ? "text-white"
-                      : "text-gray-700"
-                  }`}
-                >
-                  <MdOutlineNextWeek />
-                </div>
-                <div className="mt-2">
-                  <h5
-                    className={`text-xl font-semibold ${
-                      selectedComponent === "QuotationData"
-                        ? "text-white"
-                        : "text-gray-800"
-                    }`}
-                  >
-                    Quotation Data
-                  </h5>
-                  <p
-                    className={`${
-                      selectedComponent === "QuotationData"
-                        ? "text-white"
-                        : "text-gray-600"
-                    }`}
-                  >
-                    {quotationCount}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
-            <div
-              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
-                selectedComponent === "InvoiceData"
-                  ? "bg-blue-500 text-white"
-                  : ""
-              }`}
-              onClick={() => setSelectedComponent("InvoiceData")}
-            >
-              <div className="p-4 flex flex-col items-center text-center">
-                <div
-                  className={`text-3xl ${
-                    selectedComponent === "InvoiceData"
-                      ? "text-white"
-                      : "text-gray-700"
-                  }`}
-                >
-                  <GiMoneyStack />
-                </div>
-                <div className="mt-2">
-                  <h5
-                    className={`text-xl font-semibold ${
-                      selectedComponent === "InvoiceData"
-                        ? "text-white"
-                        : "text-gray-800"
-                    }`}
-                  >
-                    Invoice Data
-                  </h5>
-                  <p
-                    className={`${
-                      selectedComponent === "InvoiceData"
-                        ? "text-white"
-                        : "text-gray-600"
-                    }`}
-                  >
-                    {invoiceCount}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> */}
 
           {/* Card for Visit Data */}
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
@@ -577,6 +512,49 @@ function DataExport() {
               </div>
             </div>
           </div>
+
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+            <div
+              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === "SoldData"
+                  ? "bg-blue-500 text-white"
+                  : ""
+              }`}
+              onClick={() => setSelectedComponent("SoldData")}
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div
+                  className={`text-3xl ${
+                    selectedComponent === "SoldData"
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <FaCheckCircle />
+                </div>
+                <div className="mt-2">
+                  <h5
+                    className={`text-xl font-semibold ${
+                      selectedComponent === "SoldData"
+                        ? "text-white"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    Unit Sold Data
+                  </h5>
+                  <p
+                    className={`${
+                      selectedComponent === "SoldData"
+                        ? "text-white"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {soldUnits}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Conditionally render the selected component */}
@@ -588,6 +566,8 @@ function DataExport() {
           {selectedComponent === "VisitData" && <EmployeeVisitData />}
           {/* Replace with your actual Visit Data component */}
           {selectedComponent === "ClosedData" && <EmployeeCloseData />}
+          {selectedComponent === "SoldData" && <EmployeeSoldData/>}
+
           {/* Replace with your actual Closed Data component */}
         </div>
       </div>

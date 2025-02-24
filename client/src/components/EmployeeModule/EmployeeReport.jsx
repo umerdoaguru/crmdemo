@@ -12,6 +12,7 @@ import moment from "moment";
 import EmpLeadReport from "./EmployeeReport/EmpLeadReport";
 import EmpVisitReport from "./EmployeeReport/EmpVisitReport";
 import EmpClosedDealReport from "./EmployeeReport/EmpClosedDealReport";
+import EmployeeSoldUnits from "./EmployeeReport/EmployeeSoldUnits";
 
 
 const EmployeeReport = () => 
@@ -140,6 +141,42 @@ const EmployeeReport = () =>
                 </div>
               </div>
             </div>
+
+            {/* Card for Closed Data */}
+            <div className=" my-3 p-0 sm-mx-0 mx-3">
+              <div
+                className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                  selectedComponent === "SoldUnits"
+                    ? "bg-blue-500 text-white"
+                    : ""
+                }`}
+                onClick={() => setSelectedComponent("SoldUnits")}
+              >
+                <div className="p-2 flex flex-col items-center text-center">
+                  <div
+                    className={`text-3xl ${
+                      selectedComponent === "SoldUnits"
+                        ? "text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                
+                  </div>
+                  <div className="">
+                    <h5
+                      className={`text-xl font-semibold ${
+                        selectedComponent === "SoldUnits"
+                          ? "text-white"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      Sold Units
+                    </h5>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
             
           </div>
   
@@ -149,6 +186,7 @@ const EmployeeReport = () =>
           
             {selectedComponent === "VisitData" && <EmpVisitReport/> }
             {selectedComponent === "ClosedData" && <EmpClosedDealReport/> }
+            {selectedComponent === "SoldUnits" && <EmployeeSoldUnits/> }
           </div>
         </div>
       </>
