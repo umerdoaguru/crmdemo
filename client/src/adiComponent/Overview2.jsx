@@ -32,7 +32,8 @@ const Overview2 = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [project , setProjects] = useState([]);
-
+  const [employeesold, setemployeesold] = useState([]);
+  const EmpId = useSelector((state) => state.auth.user);
 
   const fetchLeads = async () => {
     try {
@@ -105,24 +106,24 @@ const Overview2 = () => {
     }
   };
 
-  // const fetchQuotation = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:9000/api/get-quotation-data`);
-  //     console.log(response.data);
-  //     setQuotation(response.data.data);
-  //   } catch (error) {
-  //     console.error("Error fetching quotations:", error);
-  //   }
-  // };
-
-  // const fetchInvoice = async () => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:9000/api/invoice-data`);
-  //     setInvoice(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching invoices:", error);
-  //   }
-  // };
+  const employeesoldunit = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/unit-sold/${EmpId.id}`,
+        
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setemployeesold(response.data);
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
 
   
   useEffect(() => {
@@ -130,13 +131,18 @@ const Overview2 = () => {
     fetchLeads();
     fetchEmployee();
   fetchVisit();
+  employeesoldunit();
   }, []);
 
   const employeeCount = employee.length;
   const leadCount = leads.length;
   const closedCount = leads.filter(
     (lead) => lead.deal_status === "close"
-  ).length; 
+  ).length;
+  
+  const soldunit = leads.filter(
+    (lead) => lead.unit_status === "sold"
+  ).length;
   
   const visitCount = visit.length;
   const projectCount = project.length
@@ -211,7 +217,7 @@ const Overview2 = () => {
           </Link>
         </div>
 
-        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
+        {/* <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/super-admin-total-employee">
             <div
               className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600" // Change background color if active
@@ -232,7 +238,8 @@ const Overview2 = () => {
               </div>
             </div>
           </Link>
-        </div>
+        </div> */}
+
          {/* Card for Closed Data */}
          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/super-admin-close-data">
@@ -278,6 +285,52 @@ const Overview2 = () => {
             </div>
           </Link>
         </div>
+
+        {/* Card for sold unit Data */}
+                <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+                  <Link to="/super-admin-Sold-Units">
+                    <div
+                      className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                        employeesold === "soldunit"
+                          ? "bg-blue-500 text-white"
+                          : ""
+                      }`}
+                      onClick={() => setSelectedComponent("soldunit")}
+                    >
+                      <div className="p-4 flex flex-col items-center text-center">
+                        <div
+                          className={`text-3xl ${
+                            employeesold === "soldunit"
+                              ? "text-white"
+                              : "text-gray-700"
+                          }`}
+                        >
+                          <FaCheckCircle />
+                        </div>
+                        <div className="mt-2">
+                          <h5
+                            className={`text-xl font-semibold ${
+                              employeesold === "soldunit"
+                                ? "text-white"
+                                : "text-gray-800"
+                            }`}
+                          >
+                            Employee Sold Units
+                          </h5>
+                          <p
+                            className={`${
+                              employeesold === "soldunit"
+                                ? "text-white"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            {soldunit}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
         
       </div>
     </>

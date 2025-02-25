@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import SuperLeadReport from "./SuperAdminReport/SuperLeadReport";
 import SuperVisitReport from "./SuperAdminReport/SuperVisitReport";
 import SuperClosedDealReport from "./SuperAdminReport/SuperClosedDealReport";
+import SoldAdminSoldUnitReport from "./SuperAdminReport/SuperAdminSoldUnitReport";
 const d_fileds = {
   // quotation: {
   //   heading: ["Id", "Quotation Name", "Employee Name", "Date"],
@@ -340,6 +341,42 @@ const SuperReports = () =>
                 </div>
               </div>
             </div>
+
+            {/* Card for sold Unit Data */}
+          <div className=" my-3 p-0 sm-mx-0 mx-3">
+              <div
+                className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                  selectedComponent === "SoldUnits"
+                    ? "bg-blue-500 text-white"
+                    : ""
+                }`}
+                onClick={() => setSelectedComponent("SoldUnits")}
+              >
+                <div className="p-2 flex flex-col items-center text-center">
+                  <div
+                    className={`text-3xl ${
+                      selectedComponent === "SoldUnits"
+                        ? "text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                
+                  </div>
+                  <div className="">
+                    <h5
+                      className={`text-xl font-semibold ${
+                        selectedComponent === "SoldUnits"
+                          ? "text-white"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      Sold Units
+                    </h5>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
             
           </div>
   
@@ -349,6 +386,7 @@ const SuperReports = () =>
           
             {selectedComponent === "VisitData" && <SuperVisitReport/> }
             {selectedComponent === "ClosedData" && <SuperClosedDealReport/> }
+            {selectedComponent === "SoldUnits" && <SoldAdminSoldUnitReport/> }
           </div>
         </div>
       </>

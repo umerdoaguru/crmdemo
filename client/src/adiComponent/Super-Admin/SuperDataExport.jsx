@@ -21,6 +21,7 @@ import SuperLeadData from "./SuperDataExport/SuperLeadData";
 import SuperEmployees from "./SuperDataExport/SuperEmployees";
 import SuperVisitData from "./SuperDataExport/SuperVisitData";
 import SuperCloseData from "./SuperDataExport/SuperCloseDateData";
+import SuperSoldnit from "./SuperDataExport/SuperSolddUnit";
 
 function SuperDataExport() {
   const [leads, setLeads] = useState([]);
@@ -122,6 +123,10 @@ function SuperDataExport() {
     (lead) => lead.deal_status === "close"
   ).length; // Get count for Closed Data
 
+  const soldUnits = leads.filter(   
+    (lead) => lead.unit_status === "sold"
+  ).length;
+
   return (
     <>
       <MainHeader />
@@ -174,7 +179,7 @@ function SuperDataExport() {
             </div>
           </div>
 
-          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+          {/* <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
                 selectedComponent === "EmployeeData"
@@ -215,7 +220,7 @@ function SuperDataExport() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
         {/* Card for Visit Data */}
         <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
@@ -304,15 +309,59 @@ function SuperDataExport() {
               </div>
             </div>
           </div>
+
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+            <div
+              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === "SoldData"
+                  ? "bg-blue-500 text-white"
+                  : ""
+              }`}
+              onClick={() => setSelectedComponent("SoldData")}
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div
+                  className={`text-3xl ${
+                    selectedComponent === "SoldData"
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <FaCheckCircle />
+                </div>
+                <div className="mt-2">
+                  <h5
+                    className={`text-xl font-semibold ${
+                      selectedComponent === "SoldData"
+                        ? "text-white"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    Unit Sold Data
+                  </h5>
+                  <p
+                    className={`${
+                      selectedComponent === "SoldData"
+                        ? "text-white"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {soldUnits}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
           
         </div>
 
         {/* Conditionally render the selected component */}
         <div className=" h-[calc(100vh-10rem)]  overflow-y-auto ">
           {selectedComponent === "LeadData" && <SuperLeadData />}
-          {selectedComponent === "EmployeeData" && <SuperEmployees />}
+          {/* {selectedComponent === "EmployeeData" && <SuperEmployees />} */}
           {selectedComponent === "VisitData" && <SuperVisitData />}
           {selectedComponent === "ClosedData" && <SuperCloseData />}
+          {selectedComponent === "SoldData" && <SuperSoldnit/>}
         </div>
       </div>
     </>

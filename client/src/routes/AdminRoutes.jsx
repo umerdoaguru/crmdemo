@@ -56,6 +56,7 @@ import SocialMediaLeads from "../components/AdminSocialMediaByProject/SocialMedi
 import ProjectDashBoard from './../components/Project/ProjectDashboard';
 import DashProject from "../components/Project/DashProject";
 import UnitDetailDash from "../components/Project/UnitsdetailDash";
+import EmployeesoldUnitCards from "../components/AdminDashBoardCards/Employeesoldcard";
 
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -153,6 +154,7 @@ function AdminRoutes() {
         <Route path="/project-units/:id" element={<Units />} />
         <Route path="/admin-project" element={<DashProject/>} />
         <Route path="/admin-unit-Detail-Dash/:id" element={<UnitDetailDash/>} />
+        <Route path="/employee-sold-units" element={<EmployeesoldUnitCards/>} />
       </Routes>
     </>
   );

@@ -14,6 +14,7 @@ import Employees from "../components/DataExport/Employees";
 import { FaCheckCircle, FaClipboardList } from "react-icons/fa";
 import VisitData from "../components/DataExport/VisitData";
 import CloseData from "../components/DataExport/CloseDateData";
+import EmployeeSoldDataDetails from "../components/DataExport/EmployeeSoldDataDetails";
 
 function DataExport() {
   const [leads, setLeads] = useState([]);
@@ -84,24 +85,7 @@ function DataExport() {
       console.error("Error fetching invoices:", error);
     }
   };
-  // const fetchVisit = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:9000/api/employe-all-visit`,
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Authorization': `Bearer ${token}`
-  //       }}
-  //     );
-  //     console.log(response.data);
-  //     setVisit(response.data);
-  //     // Ensure proper comparison with 'Created', trim any spaces and normalize the case
-    
-  //   } catch (error) {
-  //     console.error("Error fetching quotations:", error);
-  //   }
-  // };
+
 
   const leadCount = leads.filter(
     (lead) => lead.lead_status === "completed"
@@ -112,6 +96,9 @@ function DataExport() {
     ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
   ).length;
 
+  const soldUnits = leads.filter(   
+    (lead) => lead.unit_status === "sold"
+  ).length;
 
 
   const closedCount = leads.filter(
@@ -261,7 +248,7 @@ function DataExport() {
           </div>
 
 
-              <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+              {/* <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
                 selectedComponent === "EmployeeData"
@@ -302,15 +289,63 @@ function DataExport() {
                 </div>
               </div>
             </div>
+          </div> */}
+
+          {/* Card for Sold Data */}
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+            <div
+              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === "SoldData"
+                  ? "bg-blue-500 text-white"
+                  : ""
+              }`}
+              onClick={() => setSelectedComponent("SoldData")}
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div
+                  className={`text-3xl ${
+                    selectedComponent === "SoldData"
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <FaCheckCircle />
+                </div>
+                <div className="mt-2">
+                  <h5
+                    className={`text-xl font-semibold ${
+                      selectedComponent === "SoldData"
+                        ? "text-white"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    Unit Sold Data
+                  </h5>
+                  <p
+                    className={`${
+                      selectedComponent === "SoldData"
+                        ? "text-white"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {soldUnits}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
+
+        
 
         {/* Conditionally render the selected component */}
         <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
           {selectedComponent === "LeadData" && <LeadData />}
           {selectedComponent === "VisitData" && <VisitData />}
           {selectedComponent === "ClosedData" && <CloseData />}
-          {selectedComponent === "EmployeeData" && <Employees />}
+          {/* {selectedComponent === "EmployeeData" && <Employees />} */}
+          {selectedComponent === "SoldData" && <EmployeeSoldDataDetails/>}
         </div>
       </div>
     </>

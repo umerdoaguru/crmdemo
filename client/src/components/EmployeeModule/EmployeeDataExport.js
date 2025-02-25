@@ -512,7 +512,8 @@ function DataExport() {
               </div>
             </div>
           </div>
-
+          
+          {/* Card for Sold Data */}
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${

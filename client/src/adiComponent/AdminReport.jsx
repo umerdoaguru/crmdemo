@@ -635,6 +635,7 @@ import { useSelector } from "react-redux";
 import LeadReport from "../components/AdminReport/LeadReport";
 import VisitReport from "../components/AdminReport/VisitReport";
 import ClosedDealReport from "../components/AdminReport/ClosedDealReport";
+import SoldUnitsReport from "../components/AdminReport/SoldUnitsReport";
 
 
 
@@ -656,6 +657,7 @@ const AdminReport = () =>  {
     fetchQuotation();
     fetchInvoice();
     fetchVisit();
+    unitsolds()
   }, []);
 
   const fetchLeads = async () => {
@@ -702,6 +704,7 @@ const AdminReport = () =>  {
       console.error("Error fetching invoices:", error);
     }
   };
+
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
@@ -715,6 +718,24 @@ const AdminReport = () =>  {
       console.log(response.data);
       setVisit(response.data);
       // Ensure proper comparison with 'Created', trim any spaces and normalize the case
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+
+  const unitsolds = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api//unit-sold`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setVisit(response.data);
     
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -851,6 +872,42 @@ const AdminReport = () =>  {
               </div>
             </div>
           </div>
+
+           {/* Card for sold Unit Data */}
+          <div className=" my-3 p-0 sm-mx-0 mx-3">
+              <div
+                className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                  selectedComponent === "SoldUnits"
+                    ? "bg-blue-500 text-white"
+                    : ""
+                }`}
+                onClick={() => setSelectedComponent("SoldUnits")}
+              >
+                <div className="p-2 flex flex-col items-center text-center">
+                  <div
+                    className={`text-3xl ${
+                      selectedComponent === "SoldUnits"
+                        ? "text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                
+                  </div>
+                  <div className="">
+                    <h5
+                      className={`text-xl font-semibold ${
+                        selectedComponent === "SoldUnits"
+                          ? "text-white"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      Sold Units
+                    </h5>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
           
         </div>
 
@@ -860,6 +917,7 @@ const AdminReport = () =>  {
         
           {selectedComponent === "VisitData" && <VisitReport/> }
           {selectedComponent === "ClosedData" && <ClosedDealReport/> }
+          {selectedComponent === "SoldUnits" && <SoldUnitsReport/> }
         </div>
       </div>
     </>

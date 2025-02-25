@@ -13,7 +13,7 @@ import { GiFiles } from "react-icons/gi";
 import { AiOutlineProject } from "react-icons/ai";
 // import { FaProjectDiagram } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FaCheckCircle, FaProjectDiagram } from "react-icons/fa";
+import { FaCheckCircle} from "react-icons/fa";
 import { logoutUser } from "../store/UserSlice";
 import cogoToast from "cogo-toast";
 
@@ -29,6 +29,8 @@ const AdminOverviewDash = () =>  {
   const [selectedComponent, setSelectedComponent] = useState("LeadData"); // Set 'LeadData' as default
   const [visit , setVisit] = useState([]);
   const [project , setProjects] = useState([]);
+  const [employeesold, setemployeesold] = useState([]);
+  const EmpId = useSelector((state) => state.auth.user);
 
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
@@ -107,6 +109,22 @@ const AdminOverviewDash = () =>  {
     }
   };
 
+  const employeesoldunit = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/unit-sold`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+        }}
+      );
+      console.log(response.data);
+      setemployeesold(response.data);
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
 
   // const fetchQuotation = async () => {
   //   try {
@@ -133,6 +151,7 @@ const AdminOverviewDash = () =>  {
     fetchLeads();
     fetchEmployee();
   fetchVisit();
+  employeesoldunit();
   }, []);
 
   const employeeCount = employee.length;
@@ -142,6 +161,7 @@ const AdminOverviewDash = () =>  {
   ).length; 
   const visitCount = visit.length;
   const projectCount = project.length
+  const soldunit = employeesold.length;
 
   return (
     <>
@@ -213,7 +233,7 @@ const AdminOverviewDash = () =>  {
           </Link>
         </div>
 
-        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
+        {/* <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/admin-total-employees">
             <div
               className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600" // Change background color if active
@@ -234,7 +254,7 @@ const AdminOverviewDash = () =>  {
               </div>
             </div>
           </Link>
-        </div>
+        </div> */}
 
          {/* Card for Closed Data */}
          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/6 my-3 p-0 sm-mx-0 mx-3">
@@ -275,6 +295,52 @@ const AdminOverviewDash = () =>  {
                     }`}
                   >
                     {closedCount}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Card for sold unit Data */}
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+          <Link to="/employee-sold-units">
+            <div
+              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                employeesold === "solddata"
+                  ? "bg-blue-500 text-white"
+                  : ""
+              }`}
+              onClick={() => setSelectedComponent("solddata")}
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div
+                  className={`text-3xl ${
+                    employeesold === "solddata"
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <FaCheckCircle />
+                </div>
+                <div className="mt-2">
+                  <h5
+                    className={`text-xl font-semibold ${
+                      employeesold === "solddata"
+                        ? "text-white"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    Employee Sold Units
+                  </h5>
+                  <p
+                    className={`${
+                      employeesold === "solddata"
+                        ? "text-white"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {soldunit}
                   </p>
                 </div>
               </div>
