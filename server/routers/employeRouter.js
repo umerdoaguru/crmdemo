@@ -90,9 +90,9 @@ router.post("/unit-sold", createEmployeeUnitSold);
 router.put("/unit-sold", updateEmployeeUnitSold);
 router.delete("/unit-sold/:id", deleteEmployeeUnitSold);
 router.get("/unit-sold", getEmployeeUnitSold);
-router.get("/unit-sold/:id", getEmployeeUnitSoldById);
+router.get("/unit-sold/:id",authenticateEmployee, getEmployeeUnitSoldById);
 
-router.get("/unit-data/:id", getUnitDataByUnitId);
+router.get("/unit-data/:id",authenticateEmployee, getUnitDataByUnitId);
 router.put("/unit-data/:id", updateOnlyUnitDataStatusById);
 
 router.put("/updateOnlyUnitStatus/:id", updateOnlyUnitStatus);

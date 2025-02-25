@@ -42,6 +42,11 @@ const ViewAllUnitSold = () => {
     try {
       const response = await axios.get(
         `http://localhost:9000/api/unit-sold/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
         
       );
       setEmployeeUnitSold(response.data);
@@ -56,7 +61,12 @@ const ViewAllUnitSold = () => {
   const fetchUnitdata = async () => {
     
     try {
-      const response = await axios.get(`http://localhost:9000/api/unit-data/${employeeunitsold[0].unit_id}`);
+      const response = await axios.get(`http://localhost:9000/api/unit-data/${employeeunitsold[0].unit_id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setUnitData(response.data);
       console.log(unitdata);
       

@@ -138,7 +138,10 @@ const Overview2 = () => {
     (lead) => lead.deal_status === "close"
   ).length; 
   
-  const visitCount = visit.length;
+  const visitCount = leads.filter((lead) =>
+    ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
+  ).length;
+
   const projectCount = project.length
 
   return (

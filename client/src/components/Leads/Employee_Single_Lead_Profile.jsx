@@ -313,6 +313,11 @@ const token = EmpId?.token;
     try {
       const response = await axios.get(
         `http://localhost:9000/api/unit-sold/${leads[0].employeeId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
        
       );
 
@@ -345,7 +350,12 @@ const token = EmpId?.token;
   const fetchUnitdata = async () => {
     
     try {
-      const response = await axios.get(`http://localhost:9000/api/unit-data/${leads[0].unit_id}`);
+      const response = await axios.get(`http://localhost:9000/api/unit-data/${leads[0].unit_id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setUnitData(response.data);
       console.log(unitdata);
       

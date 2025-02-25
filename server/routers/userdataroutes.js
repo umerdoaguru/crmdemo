@@ -308,7 +308,16 @@ router.delete("/delete-unit/:id", deleteUnit);
 router.put("/edit-unit/:id", updateUnit);
 router.put('/updateUnitmanualy/:unit_id', updateUnitmanualy);
 router.get('/project-unit/:id', getUnitByProjectId);
-
 router.get('/getUntitsDetailById/:id', getUnitDetailsById);
 
+
+router.get("/all-project", getAllProjects);
+router.get('/units', getUnits);
+router.get('/units/:id', getUnitById);
+router.get('/getUnitsdistributeById/:id', getUnitsdistributeById);
+router.get('/units/project', getUnitsByProject);
+router.get('/project-unit/:id', getUnitByProjectId);
+router.get('/getUntitsDetailById/:id', getUnitDetailsById);
+
+          
 module.exports = router;

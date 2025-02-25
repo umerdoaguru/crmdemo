@@ -14,33 +14,35 @@ function SuperLeadReport() {
     const [selectedEmployee, setSelectedEmployee] = useState("");
     const [duration, setDuration] = useState("all"); // Default is "all"
     const [selectedColumns, setSelectedColumns] = useState([
-        "lead_no",
-        "assignedTo",
-        "name",
-        "phone",
-        "leadSource",
-        "remark_status",
-        "answer_remark",
-        "meeting_status",
-        "assignedBy",
-        "lead_status",
-        "address",
-        "booking_amount",
-        "deal_status",
-        "employeeId",
-        "follow_up_status",
-        "payment_mode",
+      "lead_no",
+      "assignedTo",
+      "name",
+      "phone",
+      "leadSource",
+      "remark_status",
+      "answer_remark",
+      "meeting_status",
+      "assignedBy",
+      "lead_status",
+      "address",
+      "booking_amount",
+      "deal_status",
+      "employeeId",
+      "follow_up_status",
+      "payment_mode",
+      "quotation",
+      "quotation_status",
+      "reason",
+      "registry",
+    
+      "subject",
+      "visit",
+      "visit_date",
+      "d_closeDate",
+      "createdTime",
+      "actual_date",
       
-        "reason",
-        "registry",
-      
-        "project_name",
-        "visit",
-        "d_closeDate",
-        "createdTime",
-        "actual_date",
-        
-      ]);
+    ]);
     const [currentPage, setCurrentPage] = useState(0);
     const leadsPerPage = 6;
     const superadminuser = useSelector((state) => state.auth.user);
@@ -124,63 +126,60 @@ function SuperLeadReport() {
   
     // Excel download function
     const downloadExcel = () => {
-        const columnMapping = {
-            lead_no: "Lead Number",
-            assignedTo: "Assigned To",
-            name: "Name",
-            phone: "Phone",
-            leadSource: "Lead Source",
-            remark_status: "Remark Status",
-            answer_remark: "Answer Remark",
-            meeting_status: "Meeting Status",
-            assignedBy: "Assigned By",
-            lead_status: "Lead Status",
-            address: "Address",
-            booking_amount: "Booking Amount",
-            deal_status: "Deal Status",
-            employeeId: "Employee ID",
-            follow_up_status: "Follow-up Status",
-            payment_mode: "Payment Mode",
-          
-            reason: "Reason",
-            registry: "Registry",
-           
-            project_name: "Project",
-            visit: "Visit",
-            d_closeDate: "Close Date",
-            createdTime: "Assigned Date",
-            actual_date: "Actual Date",
-          };
-  
-      const completedLeads = filteredLeads.map((lead) => {
-        const formattedLead = {};
-  
-        selectedColumns.forEach((col) => {
-          const newKey = columnMapping[col] || col;
-          formattedLead[newKey] =
-            (col === "actual_date" || col === "createdTime") && lead[col]
-              ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
-              : lead[col];
+      const columnMapping = {
+          lead_no: "Lead Number",
+          assignedTo: "Assigned To",
+          name: "Name",
+          phone: "Phone",
+          leadSource: "Lead Source",
+          remark_status: "Remark Status",
+          answer_remark: "Answer Remark",
+          meeting_status: "Meeting Status",
+          assignedBy: "Assigned By",
+          lead_status: "Lead Status",
+          address: "Address",
+          booking_amount: "Booking Amount",
+          deal_status: "Deal Status",
+          employeeId: "Employee ID",
+          follow_up_status: "Follow-up Status",
+          payment_mode: "Payment Mode",
+          quotation: "Quotation",
+          quotation_status: "Quotation Status",
+          reason: "Reason",
+          registry: "Registry",
+         
+          subject: "Project",
+          visit: "Visit",
+          visit_date: "Visit Date",
+          d_closeDate: "Close Date",
+          createdTime: "Assigned Date",
+          actual_date: "Actual Date",
+        };
+
+        const completedLeads = filteredLeads.map((lead) => {
+          const formattedLead = {};
+        
+          selectedColumns.forEach((col) => {
+            const newKey = columnMapping[col] || col;
+        
+            if (["actual_date", "createdTime", "visit_date", "d_closeDate"].includes(col)) {
+              // Check if date exists and is valid
+              formattedLead[newKey] =
+                lead[col] && moment(lead[col], moment.ISO_8601, true).isValid()
+                  ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
+                  : "pending"; // If invalid or missing, set as "PENDING"
+            } else {
+              formattedLead[newKey] = lead[col]; // Assign other fields normally
+            }
+          });
+        
+          return formattedLead;
         });
-  
-        formattedLead["Actual Date"] = lead["actual_date"]
-          ? moment(lead["actual_date"]).format("DD MMM YYYY").toUpperCase()
-          : "";
-        formattedLead["Assigned Date"] = lead["createdTime"]
-          ? moment(lead["createdTime"]).format("DD MMM YYYY").toUpperCase()
-          : "";
-        formattedLead["Close Date"] = lead["d_closeDate"]
-          ? moment(lead["d_closeDate"]).format("DD MMM YYYY").toUpperCase()
-          : "pending";
-  
-        return formattedLead;
-      });
-  
-      const worksheet = XLSX.utils.json_to_sheet(completedLeads);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, `Lead of ${duration} Report`);
-      XLSX.writeFile(workbook,`Lead of ${duration} Report.xlsx`);
-    };
+    const worksheet = XLSX.utils.json_to_sheet(completedLeads);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, `Lead of ${duration} Report`);
+    XLSX.writeFile(workbook,`Lead of ${duration} Report.xlsx`);
+  };
   
     // Pagination logic
     const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
@@ -309,23 +308,27 @@ function SuperLeadReport() {
           </div>
   
           {/* Pagination */}
-          {pageCount > 1 && (
-            <div className="mt-4">
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                breakLabel={"..."}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                activeClassName={"active"}
-                previousClassName={"prev"}
-                nextClassName={"next"}
-              />
-            </div>
-          )}
+          <div className="mt-3 mb-2 flex justify-center">
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          nextClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+        />
+</div>  
         </div>
       </>
     );

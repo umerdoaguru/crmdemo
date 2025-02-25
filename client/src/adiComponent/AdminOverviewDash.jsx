@@ -69,25 +69,7 @@ const AdminOverviewDash = () =>  {
     }
   };
 
-  const fetchVisit = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:9000/api/employe-all-visit-admin`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }}
-      );
-      console.log(response.data);
-      setVisit(response.data);
-      // Ensure proper comparison with 'Created', trim any spaces and normalize the case
-    
-    } catch (error) {
-      console.error("Error fetching quotations:", error);
-    }
-  };
-
+ 
   const fetchProjects = async () => {
     try {
       const response = await axios.get(
@@ -132,7 +114,7 @@ const AdminOverviewDash = () =>  {
     fetchProjects();
     fetchLeads();
     fetchEmployee();
-  fetchVisit();
+
   }, []);
 
   const employeeCount = employee.length;
@@ -140,7 +122,10 @@ const AdminOverviewDash = () =>  {
   const closedCount = leads.filter(
     (lead) => lead.deal_status === "close"
   ).length; 
-  const visitCount = visit.length;
+  const visitCount = leads.filter((lead) =>
+    ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
+  ).length;
+
   const projectCount = project.length
 
   return (

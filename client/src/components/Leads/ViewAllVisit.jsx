@@ -131,22 +131,21 @@ const ViewAllVisit = () => {
       if (response.status === 200) {
         cogoToast.success("Visit updated successfully!");
         setRender(!render); // Refresh the list after updating
-        closeModal(); // Close the modal
-        const updateLeadStatusResponse = await axios.put(
-          `http://localhost:9000/api/updateOnlyLeadStatus/${modalData.lead_id}`,
-          { lead_status: modalData.lead_status }
-        );
     
-        if (updateLeadStatusResponse.status === 200) {
-          console.log(
-            "Lead status updated successfully:",
-            updateLeadStatusResponse.data
-          );
-       
+        closeModal(); // Close the modal
+         // Second API call: Update visit status
+         const updateResponse = await axios.put(
+          `http://localhost:9000/api/updateVisitStatus/${modalData.lead_id}`,
+          { visit: modalData.visit,visit_date:modalData.visit_date }
+        );
+  
+        if (updateResponse.status === 200) {
+          console.log("Visit status updated successfully:", updateResponse.data);
+          cogoToast.success("Visit status updated successfully");
         } else {
-          console.error("Error updating lead status:", updateLeadStatusResponse.data);
-          cogoToast.error("Failed to update lead status.");
-          return;
+          console.error("Error updating visit status:", updateResponse.data);
+          cogoToast.error("Failed to update visit status.");
+          return; // Exit if this step fails
         }
       }
     } catch (error) {
@@ -248,7 +247,9 @@ const ViewAllVisit = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                        {visit.visit}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
                       {moment(visit.visit_date).format("DD MMM YYYY").toUpperCase()}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                        {visit.report}
                       </td>
