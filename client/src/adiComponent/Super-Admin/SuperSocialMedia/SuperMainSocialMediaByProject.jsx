@@ -16,7 +16,7 @@ function SuperMainSocialMediaByProject() {
   useEffect(() => {
     const fetchProjectDetail = async () => {
       try {
-        const response = await axios.get('http://localhost:9000/api/all-project',
+        const response = await axios.get('http://localhost:9000/api/super-admin-all-project',
           {
             headers: {
               'Content-Type': 'application/json',

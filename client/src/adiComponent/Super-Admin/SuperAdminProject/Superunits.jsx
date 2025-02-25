@@ -7,6 +7,7 @@ import { FaTrash, FaEdit} from "react-icons/fa";
 import MainHeader from './../../../components/MainHeader';
 import SuperAdminSider from './../SuperAdminSider';
 import { useNavigate} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Superunits = () => {
   const { id  } = useParams();
@@ -18,6 +19,8 @@ const Superunits = () => {
   const [addform, setaddunit] = useState(false);
   const [units, setUnits] = useState([]);
   const navigate = useNavigate();
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   const [unitData, setUnitData] = useState({
     main_project_id: id  || "", 
@@ -32,7 +35,12 @@ const Superunits = () => {
   const fetchUnits = async () => {
     if (!id) return;
     try {
-      const response = await axios.get(`http://localhost:9000/api/getUnitsdistributeById/${id}`);
+      const response = await axios.get(`http://localhost:9000/api/super-admin-getUnitsdistributeById/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       if (response.data && response.data.data) {
         setUnits(response.data.data); 
         

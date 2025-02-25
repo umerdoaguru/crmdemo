@@ -13,8 +13,8 @@ const SuperDashProject = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [projectsPerPage, setProjectsPerPage] = useState(7);
   const navigate = useNavigate();
-  const adminuser = useSelector((state) => state.auth.user);
-  const token = adminuser.token;
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   useEffect(() => {
     fetchProjects();
@@ -22,7 +22,7 @@ const SuperDashProject = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/all-project", {
+      const response = await axios.get("http://localhost:9000/api/super-admin-all-project", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

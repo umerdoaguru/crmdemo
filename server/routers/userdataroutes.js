@@ -295,29 +295,30 @@ router.get("/get-quotation-byLead-super-admin/:id",authenticateSuperAdmin, getLe
 
 // Project Related routes
 router.post("/project-add", addProject);
-router.get("/all-project", getAllProjects);
+router.get("/all-project",authenticateAdmin, getAllProjects);
 router.delete("/delete-project/:id", deleteProject);
 router.put("/edit-project/:id", editProject);
 
 router.post("/add-unit", addUnit);
-router.get('/units', getUnits);
-router.get('/units/:id', getUnitById);
-router.get('/getUnitsdistributeById/:id', getUnitsdistributeById);
-router.get('/units/project', getUnitsByProject);
+router.get('/units',authenticateAdmin, getUnits);
+router.get('/units/:id',authenticateAdmin, getUnitById);
+router.get('/getUnitsdistributeById/:id',authenticateAdmin, getUnitsdistributeById);
+router.get('/units/project',authenticateAdmin, getUnitsByProject);
 router.delete("/delete-unit/:id", deleteUnit);
 router.put("/edit-unit/:id", updateUnit);
 router.put('/updateUnitmanualy/:unit_id', updateUnitmanualy);
-router.get('/project-unit/:id', getUnitByProjectId);
-router.get('/getUntitsDetailById/:id', getUnitDetailsById);
+router.get('/project-unit/:id',authenticateAdmin, getUnitByProjectId);
+router.get('/getUntitsDetailById/:id',authenticateAdmin, getUnitDetailsById);
 
 
-router.get("/all-project", getAllProjects);
-router.get('/units', getUnits);
-router.get('/units/:id', getUnitById);
-router.get('/getUnitsdistributeById/:id', getUnitsdistributeById);
-router.get('/units/project', getUnitsByProject);
-router.get('/project-unit/:id', getUnitByProjectId);
-router.get('/getUntitsDetailById/:id', getUnitDetailsById);
+router.get("/super-admin-all-project",authenticateSuperAdmin, getAllProjects);
+router.get('/super-admin-units',authenticateSuperAdmin, getUnits);
+router.get('/super-admin-units/:id',authenticateSuperAdmin, getUnitById);
+router.get('/super-admin-getUnitsdistributeById/:id',authenticateSuperAdmin, getUnitsdistributeById);
+router.get('/super-admin-units/project',authenticateSuperAdmin, getUnitsByProject);
+router.get('/super-admin-project-unit/:id',authenticateSuperAdmin, getUnitByProjectId);
+router.get('/super-admin-getUntitsDetailById/:id',authenticateSuperAdmin, getUnitDetailsById);
+
 
           
 module.exports = router;

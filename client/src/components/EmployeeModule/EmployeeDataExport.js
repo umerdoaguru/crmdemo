@@ -329,23 +329,7 @@ function DataExport() {
     }
   };
 
-  const SoldUnit = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:9000/api/employebyid-visit/${EmpId.id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }}
-      );
-      console.log(response.data);
-      setVisit(response.data);
-    
-    } catch (error) {
-      console.error("Error fetching quotations:", error);
-    }
-  };
+
 
   const leadCount = leads.filter(
     (lead) => lead.lead_status === "completed"
@@ -369,7 +353,7 @@ function DataExport() {
     fetchQuotation();
     fetchInvoice();
     fetchVisit();
-    SoldUnit();
+
   }, []);
   return (
     <>

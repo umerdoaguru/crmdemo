@@ -54,7 +54,7 @@ const EmployeeSoldData = () => {
 
     if (startDate && endDate) {
       filtered = filtered.filter((lead) => {
-        const visitDate = moment(lead.visit_date, "YYYY-MM-DD");
+        const visitDate = moment(lead.date, "YYYY-MM-DD");
         return visitDate.isBetween(startDate, endDate, undefined, "[]");
       });
     }
@@ -81,7 +81,7 @@ const EmployeeSoldData = () => {
       selectedColumns.forEach((col) => {
         const newKey = columnMapping[col] || col;
     
-        if (["actual_date", "createdTime", "visit_date", "d_closeDate"].includes(col)) {
+        if (["actual_date", "createdTime", "visit_date", "d_closeDate","date"].includes(col)) {
           formattedLead[newKey] =
             lead[col] && moment(lead[col], moment.ISO_8601, true).isValid()
               ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
@@ -211,7 +211,7 @@ const EmployeeSoldData = () => {
                     {sold.unit_status}
                   </td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                    {sold.date}
+                          {moment(sold.date).format("DD MMM YYYY").toUpperCase()}
                   </td>
       </tr>
     ))

@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 import MainHeader from "../MainHeader";
 import Sider from "../Sider";
 import { useNavigate} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 const UnitDetailDash = () => {
@@ -30,12 +31,20 @@ const UnitDetailDash = () => {
   //   total_units: "",
   //   base_price: "",
   // });
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
+
 
 
   const fetchUnits = async () => {
     if (!id) return;
     try {
-      const response = await axios.get(`http://localhost:9000/api/getUntitsDetailById/${id}`);
+      const response = await axios.get(`http://localhost:9000/api/getUntitsDetailById/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       if (response.data && response.data) {
         setUnits(response.data); 
         

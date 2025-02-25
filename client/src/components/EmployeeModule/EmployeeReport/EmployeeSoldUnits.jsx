@@ -56,15 +56,15 @@ function EmployeeSoldUnits() {
     switch (duration) {
       case "week":
         return leads.filter((lead) =>
-          moment(lead.createdTime).isSame(today, "week")
+          moment(lead.date).isSame(today, "week")
         );
       case "month":
         return leads.filter((lead) =>
-          moment(lead.createdTime).isSame(today, "month")
+          moment(lead.date).isSame(today, "month")
         );
       case "year":
         return leads.filter((lead) =>
-          moment(lead.createdTime).isSame(today, "year")
+          moment(lead.date).isSame(today, "year")
         );
       case "all":
       default:
@@ -96,7 +96,7 @@ function EmployeeSoldUnits() {
 
       selectedColumns.forEach((col) => {
         const newKey = columnMapping[col] || col;
-        if (["actual_date", "createdTime", "visit_date", "d_closeDate"].includes(col)) {
+        if (["actual_date", "createdTime", "visit_date", "d_closeDate","date"].includes(col)) {
           formattedLead[newKey] =
             lead[col] && moment(lead[col], moment.ISO_8601, true).isValid()
               ? moment(lead[col]).format("DD MMM YYYY").toUpperCase()
@@ -209,7 +209,8 @@ function EmployeeSoldUnits() {
                     {lead.unit_status}
                   </td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                    {lead.date}
+                    
+                      {moment(lead.date).format("DD MMM YYYY").toUpperCase()}
                   </td>
                 </tr>
               ))

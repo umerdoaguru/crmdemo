@@ -24,6 +24,7 @@ function EmployeeLead() {
   const [statusFilter, setStatusFilter] = useState("");
   const [visitFilter, setVisitFilter] = useState("");
   const [dealFilter, setDealFilter] = useState("");
+  const [soldunitFilter, setSoldUnitFilter] = useState("");
   const [leadStatusFilter, setLeadStatusFilter] = useState("");
   const [leadnotInterestedStatusFilter, setLeadnotInterestedStatusFilter] = useState("");
   const [meetingStatusFilter, setMeetingStatusFilter] = useState("");
@@ -196,6 +197,12 @@ function EmployeeLead() {
       );
     }
   
+    if (soldunitFilter) {
+      filtered = filtered.filter(
+        (lead) => lead.unit_status === soldunitFilter    
+      );
+    }
+  
   
     if (monthFilter) {
       filtered = filtered.filter((lead) => {
@@ -234,7 +241,7 @@ function EmployeeLead() {
     leadStatusFilter,
     leadnotInterestedStatusFilter,
     meetingStatusFilter,
-    
+    soldunitFilter,
     monthFilter,
     yearFilter,
     visitmonthFilter,
@@ -387,6 +394,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                   <option value="cancelled">Cancelled</option>
                 </select>
               </div>
+          
 
 
             
@@ -514,6 +522,21 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
          </select>
        </div>
       )}
+
+<div>
+                <label htmlFor="">Unit Sold Filter</label>
+                <select
+                  value={soldunitFilter}
+                  onChange={(e) => setSoldUnitFilter(e.target.value)}
+                  className={`border rounded-2xl p-2 w-full ${
+                    soldunitFilter ? "bg-blue-500 text-white" : "bg-white"
+                  }`}
+                >
+                  <option value="">All Deal</option>
+                  <option value="sold">Sold</option>
+               
+                </select>
+              </div>
             
             </div>
             
@@ -585,6 +608,9 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                     Lead Status
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Unit Status
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Visit
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
@@ -653,6 +679,9 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                     
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.lead_status}
+                        </td>
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold">
+                          {lead.unit_status}
                         </td>
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.visit}

@@ -4,6 +4,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import MainHeader from "../../../components/MainHeader";
 import SuperAdminSider from "../SuperAdminSider";
+import { useSelector } from "react-redux";
 
 const SuperUnitsDetails = () => {
   const { id } = useParams();
@@ -11,11 +12,19 @@ const SuperUnitsDetails = () => {
   const [units, setUnits] = useState([]);
   const [statusFilter, setStatusFilter] = useState("");
   const navigate = useNavigate();
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
+
     
   const fetchUnits = async () => {
     if (!id) return;
     try {
-      const response = await axios.get(`http://localhost:9000/api/getUntitsDetailById/${id}`);
+      const response = await axios.get(`http://localhost:9000/api/super-admin-getUntitsDetailById/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       if (response.data) {
         setUnits(response.data); 
       } else {

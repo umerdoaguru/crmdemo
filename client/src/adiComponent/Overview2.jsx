@@ -89,7 +89,7 @@ const Overview2 = () => {
   const fetchProjects = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/all-project`,
+        `http://localhost:9000/api/super-admin-all-project`,
         {
           headers: {
             'Content-Type': 'application/json',

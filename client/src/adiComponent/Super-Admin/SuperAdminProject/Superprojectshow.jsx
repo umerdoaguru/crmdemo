@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import cogoToast from "cogo-toast";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Superprojectshow = () => {
   const [projects, setProjects] = useState([]);
@@ -15,75 +16,19 @@ const Superprojectshow = () => {
 
   const [addunits, setUnits] = useState(false);
 
-  // const [unitData, setUnitData] = useState({
-  //   main_project_id: '',
-  //   unit_type: '',
-  //   unit_size: '',
-  //   total_units: '',
-  //   base_price: '',
-  //   additional_costs: '',
-  //   amenities: '',
-  // });
-  
-  // const handleUnitChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setUnitData((prevData) => ({ ...prevData, [name]: value }));
-  // };
-  
-  // const handleUnitSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:9000/api/project-add", unitData);
-  
-  //     if (response.status === 200) {
-  //       cogoToast.success("Unit added successfully!", { position: "top-right" });
-  //       setUnits(false); // Modal ko band karne ke liye
-  //     } else {
-  //       cogoToast.error("Failed to add unit.", { position: "top-right" });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submitting the form:", error);
-  //     cogoToast.error("An error occurred while submitting the form.", { position: "top-right" });
-  //   }
-  // };
-
-  // const handleAddUnits = () => {
-  //   setUnits(true);
-  // };
-
-  // const handleCloseUnits = () => {
-  //   setUnits(false);
-  // };
-
   const [formData, setFormData] = useState({
     projectName: "",
     // projectId: "",
     location: "",
     total_area: "",
   });
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:9000/api/project-add", formData);
-
-  //     if (response.status === 200) {
-  //       cogoToast.success("Project added successfully!", { position: "top-right" });
-  //       setAddProject(false);
-  //       fetchProjects();
-  //     } else {
-  //       cogoToast.error("Failed to add project.", { position: "top-right" });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submitting the form:", error);
-  //     cogoToast.error("An error occurred while submitting the form.", { position: "top-right" });
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -117,7 +62,12 @@ const Superprojectshow = () => {
 
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get("http://localhost:9000/api/all-project");
+      const { data } = await axios.get("http://localhost:9000/api/super-admin-all-project",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);

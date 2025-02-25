@@ -31,7 +31,7 @@ function SuperEmployeeLeads() {
   const [meetingStatusFilter, setMeetingStatusFilter] = useState("");
   const [employees, setEmployees] = useState([]);
   const [employeeFilter, setEmployeeFilter] = useState("");
-
+  const [soldunitFilter, setSoldUnitFilter] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
 
@@ -68,7 +68,7 @@ function SuperEmployeeLeads() {
   const [projectunit, setProjectUnit] = useState([]);
   const [visitmonthFilter, setVisitMonthFilter] = useState("");
   const [yearFilter, setYearFilter] = useState("");
-  const adminuser = useSelector((state) => state.auth.user);
+
  
 const uniqueYears = [
     ...new Set(leads.map((lead) => moment(lead.createdTime).format("YYYY")))
@@ -150,7 +150,12 @@ const uniqueYears = [
   };
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get("http://localhost:9000/api/all-project");
+      const { data } = await axios.get("http://localhost:9000/api/super-admin-all-project",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }} );
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -165,7 +170,12 @@ const uniqueYears = [
             return;
         }
 
-        const response = await axios.get(`http://localhost:9000/api/project-unit/${main_project_id}`);
+        const response = await axios.get(`http://localhost:9000/api/super-admin-project-unit/${main_project_id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }});
 
         if (response.data.length > 0) {
             setProjectUnit(response.data);  // Store fetched unit types
@@ -314,6 +324,11 @@ const uniqueYears = [
         return visitleadMonth === visitmonthFilter;
       });
     }
+    if (soldunitFilter) {
+      filtered = filtered.filter(
+        (lead) => lead.unit_status === soldunitFilter    
+      );
+    }
   
     return filtered;
   };
@@ -338,6 +353,7 @@ const uniqueYears = [
     sortOrder,
     yearFilter,
     visitmonthFilter,
+    soldunitFilter,
   ]);
   
   // Total Leads
@@ -850,6 +866,21 @@ const closeModalLead = () => {
                   ))}
                 </select>
               </div>
+              <div>
+                <label htmlFor="">Unit Sold Filter</label>
+                <select
+                  value={soldunitFilter}
+                  onChange={(e) => setSoldUnitFilter(e.target.value)}
+                  className={`border rounded-2xl p-2 w-full ${
+                    soldunitFilter ? "bg-blue-500 text-white" : "bg-white"
+                  }`}
+                >
+                  <option value="">All Deal</option>
+                  <option value="sold">Sold</option>
+               
+                </select>
+              </div>
+         
             
             </div>
         
@@ -928,6 +959,9 @@ const closeModalLead = () => {
                     Lead Status
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Unit Status
+                  </th>
+                  <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Visit
                   </th>
                   <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
@@ -997,7 +1031,9 @@ const closeModalLead = () => {
           <td className="px-6 py-4 border-b border-gray-200 font-semibold">
             {lead.lead_status}
           </td>
-      
+          <td className="px-6 py-4 border-b border-gray-200 font-semibold">
+                          {lead.unit_status}
+                        </td>
           <td className="px-6 py-4 border-b border-gray-200 font-semibold">
             {lead.visit}
           </td>

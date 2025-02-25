@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import { FaTrash, FaEdit} from "react-icons/fa";
 import cogoToast from "cogo-toast";
 import { Link} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Projectshow = () => {
   const [projects, setProjects] = useState([]);
@@ -12,9 +13,10 @@ const Projectshow = () => {
   const [showModal, setShowModal] = useState(false);
   const [editProject, setEditProject] = useState({});
   const [addProject, setAddProject] = useState();
+  const adminuser = useSelector((state) => state.auth.user);
+  const token = adminuser.token;
+
   
-
-
   const [formData, setFormData] = useState({
     projectName: "",
     location: "",
@@ -59,7 +61,12 @@ const Projectshow = () => {
 
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get("http://localhost:9000/api/all-project");
+      const { data } = await axios.get("http://localhost:9000/api/all-project",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
