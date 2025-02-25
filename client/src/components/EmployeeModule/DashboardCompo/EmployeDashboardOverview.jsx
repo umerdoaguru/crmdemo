@@ -16,7 +16,7 @@ const EmployeeOverview = () => {
   const [invoice, setInvoice] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState("LeadData"); // Set 'LeadData' as default
   const [visit, setVisit] = useState([]);
-
+  const [employeesold, setemployeesold] = useState([]);
   const EmpId = useSelector((state) => state.auth.user);
 
   const token = EmpId?.token;
@@ -45,7 +45,6 @@ const EmployeeOverview = () => {
             }
     }
   };
-
 
   const fetchQuotation = async () => {
     try {
@@ -100,11 +99,32 @@ const EmployeeOverview = () => {
       console.error("Error fetching quotations:", error);
     }
   };
+
+  const employeesoldunit = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9000/api/unit-sold/${EmpId.id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setemployeesold(response.data);
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+  
+
   useEffect(() => {
     fetchLeads();
   fetchVisit();
     fetchQuotation();
     fetchInvoice();
+    employeesoldunit();
   }, []);
 
 
@@ -112,6 +132,7 @@ const EmployeeOverview = () => {
   const leadCount = leads.length;
   //   const employeeCount = employee.length;
 
+  const soldunit = employeesold.length;
 
   const closedCount = leads.filter(
     (lead) => lead.deal_status === "close"
@@ -236,6 +257,52 @@ const EmployeeOverview = () => {
                     }`}
                   >
                     {closedCount}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Card for Visit Data */}
+        <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+          <Link to="/employee-sold">
+            <div
+              className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                employeesold === "VisitData"
+                  ? "bg-blue-500 text-white"
+                  : ""
+              }`}
+              onClick={() => setSelectedComponent("VisitData")}
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div
+                  className={`text-3xl ${
+                    employeesold === "VisitData"
+                      ? "text-white"
+                      : "text-gray-700"
+                  }`}
+                >
+                  <FaClipboardList />
+                </div>
+                <div className="mt-2">
+                  <h5
+                    className={`text-xl font-semibold ${
+                      employeesold === "VisitData"
+                        ? "text-white"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    Employee Sold Units
+                  </h5>
+                  <p
+                    className={`${
+                      employeesold === "VisitData"
+                        ? "text-white"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {soldunit}
                   </p>
                 </div>
               </div>

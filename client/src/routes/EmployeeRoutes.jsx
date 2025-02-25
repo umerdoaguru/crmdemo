@@ -73,6 +73,7 @@ import Final_Quotation_All from "../pages/Quotation/Final_Quotation_All";
 import ViewAllFollowUp from "../components/Leads/ViewAllFollowUp";
 import ViewAllRemark from "../components/Leads/ViewAllRemark";
 import ViewAllUnitSold from "../components/Leads/ViewAllUnitSold";
+import Employeesoldunit from "../components/EmployeeModule/employeesoldunits";
 
 function EmployeeRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -92,6 +93,7 @@ function EmployeeRoutes() {
           <Route path="/employees-visit-data" element={<EmployeeVisitData />} />
           {/* <Route path="/employees-visit-data" element={<EmployeeVisitData />} /> */}
           <Route path="/visit-data" element={<VisitTable />} />
+          <Route path="/employee-sold" element={<Employeesoldunit/>} />
           <Route path="/close-data" element={<CloseTable />} />
           <Route
             path="/employees-total-quotations"
