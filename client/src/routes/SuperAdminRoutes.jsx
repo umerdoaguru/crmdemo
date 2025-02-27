@@ -36,6 +36,7 @@ import SuperProjectDashBoard from './../adiComponent/Super-Admin/SuperAdminProje
 import Superunits from './../adiComponent/Super-Admin/SuperAdminProject/Superunits';
 import SuperDashProject from "../adiComponent/Super-Admin/SuperAdminProject/SuperDashProject";
 import SuperUnitsDetails from "../adiComponent/Super-Admin/SuperAdminProject/SuperUnitsDetails";
+import SuperAdminSoldUnits from "../adiComponent/Super-Admin/SuperAdminSoldunit";
 
 function SuperAdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -114,7 +115,7 @@ function SuperAdminRoutes() {
         <Route path="/super-admin-project-units/:id" element={<Superunits/>} />
         <Route path="/Super-admin-project" element={<SuperDashProject/>} />
         <Route path="/Super-admin-unit-Detail-Dash/:id" element={<SuperUnitsDetails/>} />
-
+        <Route path="/super-admin-Sold-Units" element={<SuperAdminSoldUnits/>} />
       </Routes>
     </>
   );

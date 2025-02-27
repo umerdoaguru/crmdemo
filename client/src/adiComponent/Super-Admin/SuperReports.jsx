@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import SuperLeadReport from "./SuperAdminReport/SuperLeadReport";
 import SuperVisitReport from "./SuperAdminReport/SuperVisitReport";
 import SuperClosedDealReport from "./SuperAdminReport/SuperClosedDealReport";
+import SoldAdminSoldUnitReport from "./SuperAdminReport/SuperAdminSoldUnitReport";
 const d_fileds = {
   // quotation: {
   //   heading: ["Id", "Quotation Name", "Employee Name", "Date"],
@@ -159,7 +160,7 @@ const SuperReports = () =>
   
     const fetchLeads = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/api/leads");
+        const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads");
         setLeads(response.data);
       } catch (error) {
         console.error("Error fetching leads:", error);
@@ -168,7 +169,7 @@ const SuperReports = () =>
   
     const fetchEmployee = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/employee`);
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employee`);
         setEmployee(response.data);
       } catch (error) {
         console.error("Error fetching employee data:", error);
@@ -178,7 +179,7 @@ const SuperReports = () =>
     const fetchQuotation = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/quotation-data`
+          `https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`
         );
         setQuotation(response.data);
       } catch (error) {
@@ -189,7 +190,7 @@ const SuperReports = () =>
     const fetchInvoice = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/invoice-data`
+          `https://crmdemo.vimubds5.a2hosted.com/api/invoice-data`
         );
         setInvoice(response.data);
       } catch (error) {
@@ -199,7 +200,7 @@ const SuperReports = () =>
     const fetchVisit = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/employe-all-visit`
+          `https://crmdemo.vimubds5.a2hosted.com/api/employe-all-visit`
         );
         console.log(response.data);
         setVisit(response.data);
@@ -340,6 +341,42 @@ const SuperReports = () =>
                 </div>
               </div>
             </div>
+
+            {/* Card for sold Unit Data */}
+          <div className=" my-3 p-0 sm-mx-0 mx-3">
+              <div
+                className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                  selectedComponent === "SoldUnits"
+                    ? "bg-blue-500 text-white"
+                    : ""
+                }`}
+                onClick={() => setSelectedComponent("SoldUnits")}
+              >
+                <div className="p-2 flex flex-col items-center text-center">
+                  <div
+                    className={`text-3xl ${
+                      selectedComponent === "SoldUnits"
+                        ? "text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                
+                  </div>
+                  <div className="">
+                    <h5
+                      className={`text-xl font-semibold ${
+                        selectedComponent === "SoldUnits"
+                          ? "text-white"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      Sold Units
+                    </h5>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
             
           </div>
   
@@ -349,6 +386,7 @@ const SuperReports = () =>
           
             {selectedComponent === "VisitData" && <SuperVisitReport/> }
             {selectedComponent === "ClosedData" && <SuperClosedDealReport/> }
+            {selectedComponent === "SoldUnits" && <SoldAdminSoldUnitReport/> }
           </div>
         </div>
       </>

@@ -9,6 +9,7 @@ import Super_view_remarks from "./Super_view_remaks";
 import Super_view_followup from "./Super_view_followup";
 import Super_view_visit from "./Super_view_visit";
 import { useSelector } from "react-redux";
+import Super_view_unit_sold from "./Super_view_unit_sold";
 
 function Super_Single_Lead_Profile({id,closeModalLead }) {
 
@@ -19,9 +20,11 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const [visitCreated, setVisitCreated] = useState(false);
   const [followCreated, setFollowCreated] = useState(false);
   const [remarksCreated, setRemarksCreated] = useState(false);
+  const [employeeunitsoldCreated, setemployeeunitsoldCreated] = useState(false);
   const [isModalOpenRemarks, setIsModalOpenRemarks] = useState(false);
   const [isModalOpenFollowUp, setIsModalOpenFollowUp] = useState(false);
   const [isModalOpenVisit, setIsModalOpenVisit] = useState(false);
+  const [isModalOpenUnitSold, setIsModalOpenUnitSold] = useState(false);
 
   const superadminuser = useSelector((state) => state.auth.user);
   const token = superadminuser.token;
@@ -29,7 +32,7 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
    
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/leads-super-admin/${id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads-super-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -53,7 +56,7 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const fetchFollowUp = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-follow-up-super-admin/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up-super-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +74,7 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const fetchRemark = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/remarks-super-admin/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/remarks-super-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -86,7 +89,25 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
     }
   };
 
-  
+  const fetchUnitSoldEmployee = async () => {
+    try {
+      const response = await axios.get(
+        `https://crmdemo.vimubds5.a2hosted.com/api/super-admin-unit-sold-lead-id/${leads[0].lead_id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+       
+      );
+
+    
+      // Ensure proper comparison with 'Created', trim any spaces and normalize the case
+      setemployeeunitsoldCreated(response.data[0]);
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
   
 
   const handleBackClick = () => {
@@ -95,7 +116,7 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-visit-super-admin/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit-super-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -142,6 +163,10 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
     
       setIsModalOpenVisit(true);
     };
+    const handleClickUnitSold = () => {
+    
+      setIsModalOpenUnitSold(true);
+    };
     
     // Function to close the modal
     const closeModalRemark = () => {
@@ -152,17 +177,26 @@ function Super_Single_Lead_Profile({id,closeModalLead }) {
       setIsModalOpenFollowUp(false);
       
   };
-    const closeModalVisit = () => {
-      setIsModalOpenVisit(false);
+  
+  const closeModalVisit = () => {
+    setIsModalOpenVisit(false);
 
-  };
+};
+  const closeModalUnitSold = () => {
+    setIsModalOpenUnitSold(false);
 
+};
   useEffect(() => {
     fetchLeads();
 fetchFollowUp();
     fetchVisit();
     fetchRemark();
   }, [id]);
+  useEffect(() => {
+    if (leads.length > 0) {
+      fetchUnitSoldEmployee();
+    }
+}, [leads]); 
 
   return (
     <>
@@ -247,30 +281,30 @@ fetchFollowUp();
         <div className="mt-2">
         <div className="">
               {/* Conditionally render the View Quotation button */}
-              <div className="flex">
+              <div className="flex flex-wrap gap-2">
                
                 {/* Conditionally render the View Quotation button */}
                 {visitCreated ? (
                   <button
                     onClick={handleClickVisit}
-                    className="bg-green-500 text-white px-4 py-2 mx-1 rounded"
+                    className="bg-green-500 text-white px-4 py-2 w-full rounded"
                   >
                     View Visit
                   </button>
                 ) : (
-                  <p className="text-white bg-red-400 text-center px-4 py-2 rounded">
+                  <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full">
                     Visit not yet created
                   </p>
                 )}
                 {followCreated ? (
   <button
     onClick={handleClickFollowUp}
-    className="bg-yellow-500 text-white px-4 py-2 mx-1 rounded"
+    className="bg-yellow-500 text-white px-4 py-2 w-full rounded"
   >
     View Follow Up
   </button>
 ) : (
-  <p className="text-white bg-red-400 text-center px-4 py-2 mx-2 rounded">
+  <p className="text-white bg-red-400 text-center px-4 py-2 w-full rounded">
     Follow Up not yet created
   </p>
 )}
@@ -287,6 +321,19 @@ fetchFollowUp();
         Remark not yet created
       </p>
     )}
+     {employeeunitsoldCreated ? (
+      <button
+        onClick={handleClickUnitSold}
+        className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+      >
+        View Unit Sold
+      </button>
+    ) : (
+      <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full sm:w-auto ">
+        Unit not yet sold
+      </p>
+    )}
+
               </div>
             </div>
         </div>
@@ -296,7 +343,7 @@ fetchFollowUp();
         <table className="min-w-full whitespace-nowrap bg-white border">
   <thead>
     <tr>
-      <th className="px-6 py-3 border-b-2 border-gray-300">Lead Number</th>
+    <th className="px-6 py-3 border-b-2 border-gray-300">Lead Number</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Assigned To</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Name</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Phone</th>
@@ -317,12 +364,16 @@ fetchFollowUp();
       <th className="px-6 py-3 border-b-2 border-gray-300">Registry</th>
     
       <th className="px-6 py-3 border-b-2 border-gray-300">Project</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Project Id</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Type</th>
+
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Number</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Status</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Close Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Assigned Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Actual Date</th>
-    
     </tr>
   </thead>
   <tbody>
@@ -344,11 +395,16 @@ fetchFollowUp();
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.employeeId}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.follow_up_status}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.payment_mode}</td>
- 
+
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.reason}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.registry}</td>
 
-    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.subject}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.project_name}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.main_project_id}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_type}</td>
+
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_number}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_status}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.visit}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800 ">
                                              {lead.visit_date === "pending"
@@ -411,6 +467,19 @@ fetchFollowUp();
               <Super_view_visit
         id={leads[0].lead_id}
         closeModalVisit ={closeModalVisit} 
+     
+      />
+            
+    </div>
+  </div>
+)}
+          {isModalOpenUnitSold && (
+       <div className=" fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mx-2">
+              <div className="w-75 bg-white p-6 rounded-lg shadow-lg max-h-[80vh] overflow-auto mx-4 my-5">
+     
+              <Super_view_unit_sold
+        id={leads[0].lead_id}
+        closeModalUnitSold ={closeModalUnitSold} 
      
       />
             

@@ -36,7 +36,7 @@
 //   const fetchLeads = async () => {
 //     try {
 //       const response = await axios.get(
-//         `http://localhost:9000/api/employe-leads/${EmpId}`
+//         `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId}`
 //       );
 //       setLeads(response.data);
 //     } catch (error) {
@@ -46,7 +46,7 @@
 
 //   // const fetchEmployee = async () => {
 //   //   try {
-//   //     const response = await axios.get(`http://localhost:9000/api/employee`);
+//   //     const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employee`);
 //   //     setEmployee(response.data);
 //   //   } catch (error) {
 //   //     console.error("Error fetching employee data:", error);
@@ -56,7 +56,7 @@
 //   const fetchQuotation = async () => {
 //     try {
 //       const response = await axios.get(
-//         `http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`
+//         `https://crmdemo.vimubds5.a2hosted.com/api/get-quotation-byEmploye/${EmpId}`
 //       );
 //       setQuotation(response.data);
 //     } catch (error) {
@@ -67,7 +67,7 @@
 //   const fetchInvoice = async () => {
 //     try {
 //       const response = await axios.get(
-//         `http://localhost:9000/api/get-employee-invoice/${EmpId}`
+//         `https://crmdemo.vimubds5.a2hosted.com/api/get-employee-invoice/${EmpId}`
 //       );
 //       setInvoice(response.data);
 //     } catch (error) {
@@ -264,7 +264,7 @@ function DataExport() {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ function DataExport() {
   const fetchQuotation = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/get-quotation-byEmploye/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/get-quotation-byEmploye/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ function DataExport() {
   const fetchInvoice = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/get-employee-invoice/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/get-employee-invoice/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -313,7 +313,7 @@ function DataExport() {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employebyid-visit/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employebyid-visit/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -496,7 +496,8 @@ function DataExport() {
               </div>
             </div>
           </div>
-
+          
+          {/* Card for Sold Data */}
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${

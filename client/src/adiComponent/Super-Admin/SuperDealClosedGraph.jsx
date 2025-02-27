@@ -61,7 +61,7 @@ const SuperDealClosedGraph = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/leads-super-admin`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/leads-super-admin`,
         {
           headers: {
             'Content-Type': 'application/json',

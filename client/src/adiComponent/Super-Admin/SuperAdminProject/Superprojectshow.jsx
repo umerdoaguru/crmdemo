@@ -32,7 +32,7 @@ const Superprojectshow = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:9000/api/project-add", formData);
+      const response = await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/project-add", formData);
 
       if (response.status === 200) {
         cogoToast.success("Project added successfully!", { position: "top-right" });
@@ -62,7 +62,7 @@ const Superprojectshow = () => {
 
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get("http://localhost:9000/api/super-admin-all-project",
+      const { data } = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/super-admin-all-project",
         {
           headers: {
             'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const Superprojectshow = () => {
     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
     if (!isConfirmed) return;
     try {
-      const { data } = await axios.delete(`http://localhost:9000/api/delete-project/${id}`);
+      const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-project/${id}`);
       cogoToast.success(data.message || "Project deleted successfully!");
       setProjects((prev) => prev.filter((project) => project.main_project_id !== id));
     } catch (error) {
@@ -96,7 +96,7 @@ const Superprojectshow = () => {
 
   const handleUpdate = async () => {
     try {
-      const { data } = await axios.put(`http://localhost:9000/api/edit-project/${editProject.main_project_id}`, editProject);
+      const { data } = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/edit-project/${editProject.main_project_id}`, editProject);
       cogoToast.success(data.message || "Project updated successfully!");
       setProjects((prev) => prev.map((project) => (project.main_project_id === editProject.main_project_id ? editProject : project)));
       setShowModal(false);
@@ -172,7 +172,7 @@ const Superprojectshow = () => {
         </table>
       </div>
       <div className="mt-4 flex justify-center">
-        <ReactPaginate
+       <ReactPaginate
           previousLabel={"Previous"}
           nextLabel={"Next"}
           breakLabel={"..."}
@@ -182,6 +182,14 @@ const Superprojectshow = () => {
           onPageChange={handlePageClick}
           containerClassName={"pagination"}
           activeClassName={"active"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          nextClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
         />
       </div>
 

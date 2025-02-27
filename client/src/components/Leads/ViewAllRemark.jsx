@@ -29,7 +29,7 @@ const ViewAllRemark = () => {
 
   const fetchRemarks = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/remarks/${id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/remarks/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -48,19 +48,19 @@ const ViewAllRemark = () => {
   
     try {
       // Delete the remark
-      const deleteResponse = await axios.delete(`http://localhost:9000/api/remarks/${remark.id}`);
+      const deleteResponse = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/remarks/${remark.id}`);
       if (deleteResponse.status === 200) {
         console.log("Remark deleted successfully");
   
         // Update remark_status in the leads table
         const updateResponse = await axios.put(
-          `http://localhost:9000/api/updateOnlyRemarkStatus/${remark.lead_id}`,
+          `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyRemarkStatus/${remark.lead_id}`,
           { remark_status: "pending" }
         );
   
         // Update answer_remark in the leads table
         const updateAnswerResponse = await axios.put(
-          `http://localhost:9000/api/updateOnlyRemarkAnswerStatus/${remark.lead_id}`,
+          `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyRemarkAnswerStatus/${remark.lead_id}`,
           { answer_remark: "pending" }
         );
   
@@ -102,7 +102,7 @@ const ViewAllRemark = () => {
 
   const updateRemark = async () => {
     try {
-      const response = await axios.put(`http://localhost:9000/api/remarks`, modalData);
+      const response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/remarks`, modalData);
       if (response.status === 200) {
         cogoToast.success("Remark updated successfully!");
         const updateResponse = await axios.put(
@@ -152,7 +152,7 @@ const ViewAllRemark = () => {
         <div className="w-full px-2 mx-auto p-4">
           <div className="w-full px-2 mt-4">
             <h2 className="text-2xl font-bold mb-4 text-center">All Remarks</h2>
-            <div>
+            <div className=" overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>

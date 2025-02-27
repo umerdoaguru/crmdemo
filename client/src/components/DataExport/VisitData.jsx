@@ -62,7 +62,7 @@ const token = adminuser.token;
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/leadst`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/leadst`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const token = adminuser.token;
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/employee");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);

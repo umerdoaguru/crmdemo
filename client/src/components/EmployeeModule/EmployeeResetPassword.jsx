@@ -21,7 +21,7 @@ const EmployeeResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.post(
-        "http://localhost:9000/api/sendOtp-employee",
+        "https://crmdemo.vimubds5.a2hosted.com/api/sendOtp-employee",
         {
           email,
         }
@@ -44,7 +44,7 @@ const EmployeeResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.post(
-        "http://localhost:9000/api/verifyOtp-employee",
+        "https://crmdemo.vimubds5.a2hosted.com/api/verifyOtp-employee",
         {
           email,
           otp,
@@ -67,7 +67,7 @@ const EmployeeResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.put(
-        "http://localhost:9000/api/resetPassword-employee",
+        "https://crmdemo.vimubds5.a2hosted.com/api/resetPassword-employee",
         {
           email,
           password: newPassword,

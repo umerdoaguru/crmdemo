@@ -38,7 +38,7 @@ const Units = () => {
   const fetchUnits = async () => {
     if (!id) return;
     try {
-      const response = await axios.get(`http://localhost:9000/api/getUnitsdistributeById/${id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/getUnitsdistributeById/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const Units = () => {
       const payload = { ...unitData, unit_type: unitTypeToSend };
       delete payload.custom_unit_type;
 
-      await axios.post("http://localhost:9000/api/add-unit", payload, {
+      await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/add-unit", payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -123,7 +123,7 @@ const Units = () => {
     try {
       console.log("Updating unit:", editProject);
       const { data } = await axios.put(
-        `http://localhost:9000/api/edit-unit/${editProject.unit_id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/edit-unit/${editProject.unit_id}`,
         editProject
       );
       cogoToast.success(data.message || "Unit updated successfully!");
@@ -146,7 +146,7 @@ const Units = () => {
     if (!isConfirmed) return;
   
     try {
-      const { data } = await axios.delete(`http://localhost:9000/api/delete-unit/${id}`);
+      const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
       cogoToast.success(data.message || "Unit deleted successfully!");
       fetchUnits();
       // Corrected filtering
@@ -194,9 +194,8 @@ const Units = () => {
       
 
       {/* Units Table */}
-      <div className="overflow-x-auto mt-4">
       <div className="flex justify-between items-center">
-      <h3 className="mb-4 text-lg font-semibold mt-2">All units associated with Project ID {id}</h3>
+      <h3 className="mb-4 text-lg font-semibold mt-2 mx-1">All units associated with Project ID {id}</h3>
       <button
         onClick={() => handleaddunit()}
         className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
@@ -204,6 +203,7 @@ const Units = () => {
         Add Unit
       </button>
     </div>
+      <div className="overflow-x-auto mt-4">
       
   <table className="min-w-full bg-white border rounded-lg shadow-md mt-1">
     <thead>

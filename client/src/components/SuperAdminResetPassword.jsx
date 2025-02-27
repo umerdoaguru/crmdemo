@@ -24,7 +24,7 @@ const SuperAdminResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.post(
-        "http://localhost:9000/api/sendOtp-superadmin",
+        "https://crmdemo.vimubds5.a2hosted.com/api/sendOtp-superadmin",
         {
           email,
         }
@@ -47,7 +47,7 @@ const SuperAdminResetPassword = () => {
     try {
         setLoading(true)
       const response = await axios.post(
-        "http://localhost:9000/api/verifyOtp-superadmin",
+        "https://crmdemo.vimubds5.a2hosted.com/api/verifyOtp-superadmin",
         {
           email,
           otp,
@@ -70,7 +70,7 @@ const SuperAdminResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.put(
-        "http://localhost:9000/api/resetPassword-superadmin",
+        "https://crmdemo.vimubds5.a2hosted.com/api/resetPassword-superadmin",
         {
           email,
           password: newPassword,

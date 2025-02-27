@@ -29,7 +29,7 @@ console.log(id);
 
   const fetchRemarks = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/remarks-super-admin/${id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/remarks-super-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ console.log(id);
         <div className="w-full px-2 mx-auto p-4">
           <div className="w-full px-2 mt-4">
             <h2 className="text-2xl font-bold mb-4 text-center">All Remarks</h2>
-            <div>
+            <div className=" overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>

@@ -24,7 +24,7 @@ const AdminResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.post(
-        "http://localhost:9000/api/sendOtp-admin",
+        "https://crmdemo.vimubds5.a2hosted.com/api/sendOtp-admin",
         {
           email,
         }
@@ -47,7 +47,7 @@ const AdminResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.post(
-        "http://localhost:9000/api/verifyOtp-admin",
+        "https://crmdemo.vimubds5.a2hosted.com/api/verifyOtp-admin",
         {
           email,
           otp,
@@ -70,7 +70,7 @@ const AdminResetPassword = () => {
     try {
       setLoading(true)
       const response = await axios.put(
-        "http://localhost:9000/api/resetPassword-admin",
+        "https://crmdemo.vimubds5.a2hosted.com/api/resetPassword-admin",
         {
           email,
           password: newPassword,

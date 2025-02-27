@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import MainHeader from "./../MainHeader";
 import EmployeeeSider from "./EmployeeSider";
 import ReactPaginate from "react-paginate";
+import moment from "moment";
 
 const Employeesoldunit = () => {
   const [leads, setLeads] = useState([]);
@@ -26,7 +27,7 @@ const Employeesoldunit = () => {
   const fetchEmployeeSoldUnits = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/unit-sold/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/unit-sold/${EmpId.id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -80,7 +81,7 @@ const Employeesoldunit = () => {
     <>
       <MainHeader />
       <EmployeeeSider />
-      <div className="mt-[5rem] 2xl:ml-40">
+      <div className="mt-[6rem] 2xl:ml-40">
         <button
           onClick={() => navigate(-1)}
           className="bg-blue-500 text-white px-3 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
@@ -94,7 +95,6 @@ const Employeesoldunit = () => {
             Employee Sold Units
           </h2>
           <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
-          <div className="overflow-x-auto">
             <div className="flex justify-between mb-3">
               <input
                 type="text"
@@ -114,6 +114,7 @@ const Employeesoldunit = () => {
                 <option value="All">All</option>
               </select>
             </div>
+          <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
               <thead className="bg-gray-100">
                 <tr>
@@ -145,33 +146,33 @@ const Employeesoldunit = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {currentLeads.length > 0 ? (
-                  currentLeads.map((visit, index) => (
-                    <tr key={visit.id}>
+                  currentLeads.map((employeesoldunit, index) => (
+                    <tr key={employeesoldunit.id}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {leadsPerPage === Infinity
                           ? index + 1
                           : index + 1 + currentPage * leadsPerPage}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.lead_id}
+                        {employeesoldunit.lead_id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.project_name}
+                        {employeesoldunit.project_name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.name}
+                        {employeesoldunit.name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.unit_no}
+                        {employeesoldunit.unit_no}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.employee_name}
+                        {employeesoldunit.employee_name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.unit_status}
+                        {employeesoldunit.unit_status}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {visit.date}
+                  {moment(employeesoldunit.date).format("DD MMM YYYY").toUpperCase()}
                       </td>
                     </tr>
                   ))

@@ -27,7 +27,7 @@ const VisitTable = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/employe-leads/${EmpId.id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const VisitTable = () => {
     <>
       <MainHeader />
       <EmployeeeSider />
-      <div className="mt-[5rem] 2xl:ml-40 ">
+      <div className="mt-[6rem] 2xl:ml-40 ">
           <button
             onClick={() => navigate(-1)}
             className="bg-blue-500 text-white px-3 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
@@ -98,7 +98,6 @@ const VisitTable = () => {
             Total Visits
           </center>
           <center className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></center>
-          <div className="overflow-x-auto">
           <div className="flex justify-between mb-3" >
                
                <input
@@ -121,6 +120,7 @@ const VisitTable = () => {
           </select>
 
              </div>
+          <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
               <thead className="bg-gray-100">
               <tr>

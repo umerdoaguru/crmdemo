@@ -64,7 +64,7 @@ const VisitReport = () => {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/leads`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/leads`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const VisitReport = () => {
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/employee",
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee",
         {
           headers: {
             'Content-Type': 'application/json',

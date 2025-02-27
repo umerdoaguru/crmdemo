@@ -28,7 +28,7 @@ const EmployeeOverview = () => {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const EmployeeOverview = () => {
   const fetchQuotation = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/get-quotation-byEmploye/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/get-quotation-byEmploye/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const EmployeeOverview = () => {
   const fetchInvoice = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/get-employee-invoice/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/get-employee-invoice/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const EmployeeOverview = () => {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const EmployeeOverview = () => {
   const employeesoldunit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/unit-sold/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/unit-sold/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -264,21 +264,21 @@ const EmployeeOverview = () => {
           </Link>
         </div>
 
-        {/* Card for Visit Data */}
+        {/* Card for sold unit Data */}
         <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
           <Link to="/employee-sold">
             <div
               className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
-                employeesold === "VisitData"
+                employeesold === "solddata"
                   ? "bg-blue-500 text-white"
                   : ""
               }`}
-              onClick={() => setSelectedComponent("VisitData")}
+              onClick={() => setSelectedComponent("solddata")}
             >
               <div className="p-4 flex flex-col items-center text-center">
                 <div
                   className={`text-3xl ${
-                    employeesold === "VisitData"
+                    employeesold === "solddata"
                       ? "text-white"
                       : "text-gray-700"
                   }`}
@@ -288,7 +288,7 @@ const EmployeeOverview = () => {
                 <div className="mt-2">
                   <h5
                     className={`text-xl font-semibold ${
-                      employeesold === "VisitData"
+                      employeesold === "solddata"
                         ? "text-white"
                         : "text-gray-800"
                     }`}
@@ -297,7 +297,7 @@ const EmployeeOverview = () => {
                   </h5>
                   <p
                     className={`${
-                      employeesold === "VisitData"
+                      employeesold === "solddata"
                         ? "text-white"
                         : "text-gray-600"
                     }`}

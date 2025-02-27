@@ -27,7 +27,7 @@ const TotalVisit = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/leads`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const TotalVisit = () => {
     <>
       <MainHeader />
       <Sider />
-      <div className="mt-[7rem] 2xl:ml-40 ">
+      <div className="mt-[6rem] 2xl:ml-40 ">
           <button
             onClick={() => navigate(-1)}
             className="bg-blue-500 text-white px-3 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
@@ -93,12 +93,11 @@ const TotalVisit = () => {
           </button>
         </div>
       <div className="flex flex-col 2xl:ml-40 ">
-        <div className="flex-grow p-4 m  sm:ml-0">
+        <div className="flex-grow p-4   sm:ml-0">
           <center className="text-2xl text-center mt-2 font-medium">
             Total Visits
           </center>
           <center className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></center>
-          <div className="overflow-x-auto">
           <div className="flex justify-between mb-3" >
                
                <input
@@ -120,6 +119,7 @@ const TotalVisit = () => {
             <option value="All">All</option>
           </select>
              </div>
+          <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
               <thead className="bg-gray-100">
               <tr>

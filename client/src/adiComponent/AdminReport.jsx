@@ -347,15 +347,15 @@
   
 
 //   const leadsAxios = axios.create({
-//     baseURL: "http://localhost:9000/api",
+//     baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
 //   });
 
 //   const visitAxios = axios.create({
-//     baseURL: "http://localhost:9000/api",
+//     baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
 //   });
 
 //   const closedAxios = axios.create({
-//     baseURL: "http://localhost:9000/api",
+//     baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
 //   });
 
 //   const formatData = (data) => {
@@ -635,6 +635,7 @@ import { useSelector } from "react-redux";
 import LeadReport from "../components/AdminReport/LeadReport";
 import VisitReport from "../components/AdminReport/VisitReport";
 import ClosedDealReport from "../components/AdminReport/ClosedDealReport";
+import SoldUnitsReport from "../components/AdminReport/SoldUnitsReport";
 
 
 
@@ -655,12 +656,13 @@ const AdminReport = () =>  {
     fetchEmployee();
     fetchQuotation();
     fetchInvoice();
-    // fetchVisit();
+    fetchVisit();
+    unitsolds()
   }, []);
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/leads",
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads",
         {
           headers: {
             'Content-Type': 'application/json',
@@ -674,7 +676,7 @@ const AdminReport = () =>  {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/employee`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employee`);
       setEmployee(response.data);
     } catch (error) {
       console.error("Error fetching employee data:", error);
@@ -684,7 +686,7 @@ const AdminReport = () =>  {
   const fetchQuotation = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/quotation-data`
+        `https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`
       );
       setQuotation(response.data);
     } catch (error) {
@@ -695,14 +697,51 @@ const AdminReport = () =>  {
   const fetchInvoice = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/invoice-data`
+        `https://crmdemo.vimubds5.a2hosted.com/api/invoice-data`
       );
       setInvoice(response.data);
     } catch (error) {
       console.error("Error fetching invoices:", error);
     }
   };
- 
+
+  const fetchVisit = async () => {
+    try {
+      const response = await axios.get(
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-all-visit-admin`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setVisit(response.data);
+      // Ensure proper comparison with 'Created', trim any spaces and normalize the case
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+
+  const unitsolds = async () => {
+    try {
+      const response = await axios.get(
+        `https://crmdemo.vimubds5.a2hosted.com/api/admin-unit-sold`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      console.log(response.data);
+      setVisit(response.data);
+    
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+
   const leadCount = leads.filter(
     (lead) => lead.lead_status === "completed"
   ).length; 
@@ -833,6 +872,42 @@ const AdminReport = () =>  {
               </div>
             </div>
           </div>
+
+           {/* Card for sold Unit Data */}
+          <div className=" my-3 p-0 sm-mx-0 mx-3">
+              <div
+                className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                  selectedComponent === "SoldUnits"
+                    ? "bg-blue-500 text-white"
+                    : ""
+                }`}
+                onClick={() => setSelectedComponent("SoldUnits")}
+              >
+                <div className="p-2 flex flex-col items-center text-center">
+                  <div
+                    className={`text-3xl ${
+                      selectedComponent === "SoldUnits"
+                        ? "text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                
+                  </div>
+                  <div className="">
+                    <h5
+                      className={`text-xl font-semibold ${
+                        selectedComponent === "SoldUnits"
+                          ? "text-white"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      Sold Units
+                    </h5>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
           
         </div>
 
@@ -842,6 +917,7 @@ const AdminReport = () =>  {
         
           {selectedComponent === "VisitData" && <VisitReport/> }
           {selectedComponent === "ClosedData" && <ClosedDealReport/> }
+          {selectedComponent === "SoldUnits" && <SoldUnitsReport/> }
         </div>
       </div>
     </>

@@ -105,7 +105,7 @@ const uniqueYears = [
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:9000/api/leads",
+        "https://crmdemo.vimubds5.a2hosted.com/api/leads",
         {
           headers: {
             'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const uniqueYears = [
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/employee",
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee",
         {
           headers: {
             'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const uniqueYears = [
   };
   const fetchProjects = async () => {
     try {
-      const { data } = await axios.get("http://localhost:9000/api/all-project",
+      const { data } = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/all-project",
         {
           headers: {
             'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ const uniqueYears = [
             return;
         }
 
-        const response = await axios.get(`http://localhost:9000/api/project-unit/${main_project_id}`,
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/project-unit/${main_project_id}`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -348,7 +348,7 @@ const uniqueYears = [
         if (isEditing) {
           // Update existing lead
           await axios.put(
-            `http://localhost:9000/api/leads/${currentLead.lead_id}`,
+            `https://crmdemo.vimubds5.a2hosted.com/api/leads/${currentLead.lead_id}`,
             leadData
           );
           
@@ -356,7 +356,7 @@ const uniqueYears = [
           closePopup();
         } else {
           // Create new lead
-          await axios.post("http://localhost:9000/api/leads", leadData);
+          await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", leadData);
   
           // Construct WhatsApp message link with encoded parameters
           const whatsappLink = `https://wa.me/${currentLead.employeephone}?text=Hi%20${currentLead.assignedTo},%20you%20have%20been%20assigned%20a%20new%20lead%20with%20the%20following%20details:%0A%0A1)%20Lead%20No.%20${currentLead.lead_no}%0A2)%20Name:%20${currentLead.name}%0A3)%20Phone%20Number:%20${currentLead.phone}%0A4)%20Lead%20Source:%20${currentLead.leadSource}%0A5)%20Address:%20${currentLead.address}%0A6)%20Project Name:%20${currentLead.project_name}%0A%0APlease%20check%20your%20dashboard%20for%20details.`;
@@ -382,7 +382,7 @@ const uniqueYears = [
     );
     if (isConfirmed) {
       try {
-        await axios.delete(`http://localhost:9000/api/leads/${id}`);
+        await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/leads/${id}`);
         fetchLeads(); // Refresh the list after deletion
       } catch (error) {
         console.error("Error deleting lead:", error);

@@ -24,7 +24,7 @@ const AdminTotalLead = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/leads`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -91,8 +91,7 @@ const AdminTotalLead = () => {
         <h1 className="text-2xl text-center ">Total Leads </h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
       </div>
-
-      <div className="overflow-x-auto mt-4 px-12 2xl:ml-40">
+      <div className="px-6 2xl:ml-40">
       <div className="flex justify-between mb-3" >
                
                <input
@@ -114,6 +113,8 @@ const AdminTotalLead = () => {
             <option value="All">All</option>
           </select>
              </div>
+</div>
+      <div className="overflow-x-auto mt-4 px-6 2xl:ml-40">
         <table className="container bg-white border">
           <thead>
             <tr>

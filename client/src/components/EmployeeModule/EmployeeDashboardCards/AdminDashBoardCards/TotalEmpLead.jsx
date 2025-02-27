@@ -34,7 +34,7 @@ function TotalEmpLead() {
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-leads/${EmpId.id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ function TotalEmpLead() {
       <MainHeader />
       <EmployeeSider />
       <div className="flex flex-col 2xl:ml-44 ">
-      <div className="mt-[5rem] ">
+      <div className="mt-[6rem] ">
           <button
             onClick={() => navigate(-1)}
             className="bg-blue-500 text-white px-3 mx-1 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
@@ -107,7 +107,6 @@ function TotalEmpLead() {
           </center>
           <center className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></center>
 
-          <div className="overflow-x-auto mt-4">
           <div className="flex justify-between mb-3" >
                
                <input
@@ -128,6 +127,7 @@ function TotalEmpLead() {
             <option value="All">All</option>
           </select>
              </div>
+          <div className="overflow-x-auto mt-4">
             <table className="container bg-white border">
               <thead>
                 <tr>

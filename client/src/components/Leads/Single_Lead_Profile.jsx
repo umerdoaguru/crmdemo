@@ -15,13 +15,14 @@ function Single_Lead_Profile() {
   const [visitCreated, setVisitCreated] = useState(false);
   const [followCreated, setFollowCreated] = useState(false);
   const [remarksCreated, setRemarksCreated] = useState(false);
-
+  const [employeeunitsoldCreated, setemployeeunitsoldCreated] = useState(false);
+  
   const adminuser = useSelector((state) => state.auth.user);
   const token = adminuser.token;
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/leads/${id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ function Single_Lead_Profile() {
   const fetchFollowUp = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-follow-up-admin/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-follow-up-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -69,11 +70,31 @@ function Single_Lead_Profile() {
       console.error("Error fetching quotations:", error);
     }
   };
+  const fetchUnitSoldEmployee = async () => {
+    try {
+      const response = await axios.get(
+        `https://crmdemo.vimubds5.a2hosted.com/api/admin-unit-sold-lead-id/${leads[0].lead_id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+       
+      );
+
+    
+      // Ensure proper comparison with 'Created', trim any spaces and normalize the case
+      setemployeeunitsoldCreated(response.data[0]);
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+  
 
   const fetchRemark = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/remarks-admin/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/remarks-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +117,7 @@ function Single_Lead_Profile() {
   const fetchVisit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-visit-admin/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit-admin/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -138,14 +159,25 @@ function Single_Lead_Profile() {
   const handleViewRemark = () => {
     navigate(`/admin_view_remark/${leads[0].lead_id}`);
   };
+  const handleViewEmployeeUnitSold = () => {
+    navigate(`/admin_view_unit_sold/${leads[0].lead_id}`);
+    
+    
+  };
 
   useEffect(() => {
     fetchLeads();
     fetchFollowUp();
     fetchVisit();
     fetchRemark();
-  }, [id]);
 
+  }, [id]);
+ 
+  useEffect(() => {
+    if (leads.length > 0) {
+      fetchUnitSoldEmployee();
+    }
+}, [leads]); 
 
   return (
     <>
@@ -230,11 +262,11 @@ function Single_Lead_Profile() {
         <div className="2xl:ml-44 mt-2">
         <div className="">
               {/* Conditionally render the View Quotation button */}
-              <div className="flex">
+              <div className="flex flex-wrap gap-2">
                 {/* {quotationCreated ? (
                   <button
                     onClick={() => handleViewQuotation(leads[0])}
-                    className="bg-blue-500 text-white px-4 py-2 mx-1 rounded"
+                    className="bg-blue-500 text-white px-4 py-2  rounded"
                   >
                     View Quotation
                   </button>
@@ -248,12 +280,12 @@ function Single_Lead_Profile() {
                 {visitCreated ? (
                   <button
                     onClick={handleViewVisit}
-                    className="bg-green-500 text-white px-4 py-2  rounded"
+                    className="bg-green-500 text-white px-4 py-2 w-full  rounded"
                   >
                     View Visit
                   </button>
                 ) : (
-                  <p className="text-white bg-red-400 text-center px-4 py-2 rounded">
+                  <p className="text-white bg-red-400 text-center px-4 py-2 w-full rounded">
                     Visit not yet created
                   </p>
                 )}
@@ -261,12 +293,12 @@ function Single_Lead_Profile() {
 {followCreated ? (
   <button
     onClick={handleViewFollowUp}
-    className="bg-yellow-500 text-white px-4 py-2 mx-1 rounded"
+    className="bg-yellow-500 text-white px-4 py-2 w-full  rounded"
   >
     View Follow Up
   </button>
 ) : (
-  <p className="text-white bg-red-400 text-center px-4 py-2 mx-2 rounded">
+  <p className="text-white bg-red-400 text-center px-4 py-2 w-full  rounded">
     Follow Up not yet created
   </p>
 )}
@@ -280,6 +312,18 @@ function Single_Lead_Profile() {
     ) : (
       <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full sm:w-auto">
         Remark not yet created
+      </p>
+    )}
+     {employeeunitsoldCreated ? (
+      <button
+        onClick={handleViewEmployeeUnitSold}
+        className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto "
+      >
+        View Unit Sold
+      </button>
+    ) : (
+      <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full sm:w-auto">
+        Unit not yet sold
       </p>
     )}
 
@@ -314,6 +358,11 @@ function Single_Lead_Profile() {
       <th className="px-6 py-3 border-b-2 border-gray-300">Registry</th>
     
       <th className="px-6 py-3 border-b-2 border-gray-300">Project</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Project Id</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Type</th>
+
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Number</th>
+      <th className="px-6 py-3 border-b-2 border-gray-300">Unit Status</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Visit Date</th>
       <th className="px-6 py-3 border-b-2 border-gray-300">Close Date</th>
@@ -346,6 +395,12 @@ function Single_Lead_Profile() {
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.registry}</td>
 
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.project_name}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.main_project_id}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_type}</td>
+
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_number}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.unit_status}</td>
+    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.visit}</td>
     <td className="px-6 py-4 border-b border-gray-200 text-gray-800 ">
                                              {lead.visit_date === "pending"
                                                ? "pending"

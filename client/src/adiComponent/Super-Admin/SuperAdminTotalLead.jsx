@@ -26,7 +26,7 @@ const SuperAdminTotalLead = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/leads-super-admin`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads-super-admin`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const SuperAdminTotalLead = () => {
     <>
       <MainHeader />
       <SuperAdminSider />
-      <div className="container px-5 mt-[4rem]">.
+      <div className="container  mt-[6rem]">.
       <div className="2xl:ml-40 ">
           <button
             onClick={() => navigate(-1)}
@@ -99,10 +99,7 @@ const SuperAdminTotalLead = () => {
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
       
       </div>
-   
-
-      <div className="main overflow-x-auto mt-4 px-12 2xl:ml-40">
-
+      <div className=" px-6 2xl:ml-40">
       <div className="flex justify-between mb-3" >
                
                <input
@@ -126,6 +123,10 @@ const SuperAdminTotalLead = () => {
             <option value="All">All</option>
           </select>
              </div>
+             </div>
+
+      <div className="main overflow-x-auto mt-4 px-6 2xl:ml-40">
+
         <table className="bg-white border w-100">
           <thead>
             <tr>

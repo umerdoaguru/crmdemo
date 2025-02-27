@@ -29,7 +29,7 @@ const ViewAllVisit = () => {
   const fetchvisit = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/employe-visit/${id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const ViewAllVisit = () => {
     try {
       // Delete the visit
       const deleteResponse = await axios.delete(
-        `http://localhost:9000/api/employe-visit/${visit.id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-visit/${visit.id}`
       );
   
       if (deleteResponse.status === 200) {
@@ -67,7 +67,7 @@ const ViewAllVisit = () => {
   
       // Update visit status
       const updateVisitResponse = await axios.put(
-        `http://localhost:9000/api/updateVisitStatus/${visit.lead_id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/updateVisitStatus/${visit.lead_id}`,
         { visit: "pending" }
       );
   
@@ -81,7 +81,7 @@ const ViewAllVisit = () => {
   
       // Update lead status
       const updateLeadStatusResponse = await axios.put(
-        `http://localhost:9000/api/updateOnlyLeadStatus/${visit.lead_id}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyLeadStatus/${visit.lead_id}`,
         { lead_status: "pending" }
       );
   
@@ -127,7 +127,7 @@ const ViewAllVisit = () => {
   // Function to send the PUT request to update the visit data
   const updateVisit = async () => {
     try {
-      const response = await axios.put(`http://localhost:9000/api/employe-visit`, modalData);
+      const response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/employe-visit`, modalData);
       if (response.status === 200) {
         cogoToast.success("Visit updated successfully!");
         setRender(!render); // Refresh the list after updating
@@ -135,7 +135,7 @@ const ViewAllVisit = () => {
         closeModal(); // Close the modal
          // Second API call: Update visit status
          const updateResponse = await axios.put(
-          `http://localhost:9000/api/updateVisitStatus/${modalData.lead_id}`,
+          `https://crmdemo.vimubds5.a2hosted.com/api/updateVisitStatus/${modalData.lead_id}`,
           { visit: modalData.visit,visit_date:modalData.visit_date }
         );
   
@@ -180,7 +180,7 @@ const ViewAllVisit = () => {
       <MainHeader />
       <EmployeeeSider />
       <div className="container mt-4 2xl:w-[91%] 2xl:ml-36">
-      <div className="mt-[7rem] ">
+      <div className="mt-[6rem] ">
           <button
             onClick={() => navigate(-1)}
             className="bg-blue-500 text-white px-3 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
@@ -193,7 +193,7 @@ const ViewAllVisit = () => {
             <h2 className="text-2xl font-bold mb-4 text-center">
               All Leads visit
             </h2>
-            <div className="">
+            <div className=" overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                 <thead className="bg-gray-100">
                   <tr>

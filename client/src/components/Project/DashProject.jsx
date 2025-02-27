@@ -22,7 +22,7 @@ const DashProject = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/all-project", {
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/all-project", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ const DashProject = () => {
       <MainHeader />
       <Sider />
       <div className="container">
-        <div className="mt-[7rem] 2xl:ml-40">
+        <div className="mt-[6rem] 2xl:ml-40">
           <button
             onClick={() => navigate(-1)}
             className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors"
@@ -89,9 +89,8 @@ const DashProject = () => {
         </div>
         <h1 className="text-2xl text-center">Project List</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
-
-        <div className="overflow-x-auto mt-4 px-12 2xl:ml-40">
-        <div className="flex justify-between mb-3" >
+        <div className="  px-6 2xl:ml-40">
+        <div className="flex justify-between mb-1" >
           <input
             type="text"
             placeholder="Search by Project Name, ID, or Location"
@@ -111,6 +110,8 @@ const DashProject = () => {
             <option value="All">All</option>
           </select>
           </div>
+          </div>
+        <div className="overflow-x-auto mt-1 px-6 2xl:ml-40">
 
           <table className="container bg-white border">
             <thead>

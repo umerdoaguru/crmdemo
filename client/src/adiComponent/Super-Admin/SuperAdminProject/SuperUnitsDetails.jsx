@@ -19,7 +19,7 @@ const SuperUnitsDetails = () => {
   const fetchUnits = async () => {
     if (!id) return;
     try {
-      const response = await axios.get(`http://localhost:9000/api/super-admin-getUntitsDetailById/${id}`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/super-admin-getUntitsDetailById/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',

@@ -26,7 +26,7 @@ const SuperAdminVisit = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/leads-super-admin`,
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/leads-super-admin`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const SuperAdminVisit = () => {
     <>
       <MainHeader />
       <SuperAdminSider />
-      <div className="mt-[7rem] 2xl:ml-40 ">
+      <div className="mt-[6rem] 2xl:ml-40 ">
           <button
             onClick={() => navigate(-1)}
             className="bg-blue-500 text-white px-3 py-1 max-sm:hidden rounded-lg hover:bg-blue-600 transition-colors"
@@ -98,7 +98,6 @@ const SuperAdminVisit = () => {
             Total Visits
           </center>
           <center className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></center>
-          <div className="overflow-x-auto mt-2">
           <div className="flex justify-between mb-3" >
                
                <input
@@ -120,6 +119,7 @@ const SuperAdminVisit = () => {
             <option value="All">All</option>
           </select>
              </div>
+          <div className="overflow-x-auto mt-2">
             <table className="min-w-full  border border-gray-300">
               <thead className="bg-gray-100">
               <tr>

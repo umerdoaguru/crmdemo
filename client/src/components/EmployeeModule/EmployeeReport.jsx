@@ -142,7 +142,7 @@ const EmployeeReport = () =>
               </div>
             </div>
 
-            {/* Card for Closed Data */}
+            {/* Card for Sold Unit Data */}
             <div className=" my-3 p-0 sm-mx-0 mx-3">
               <div
                 className={`shadow-lg rounded-lg overflow-hidden cursor-pointer ${

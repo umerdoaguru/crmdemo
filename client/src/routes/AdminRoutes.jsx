@@ -56,6 +56,8 @@ import SocialMediaLeads from "../components/AdminSocialMediaByProject/SocialMedi
 import ProjectDashBoard from './../components/Project/ProjectDashboard';
 import DashProject from "../components/Project/DashProject";
 import UnitDetailDash from "../components/Project/UnitsdetailDash";
+import EmployeesoldUnitCards from "../components/AdminDashBoardCards/Employeesoldcard";
+import Admin_ViewAll_Unit_Sold from "../components/Leads/Admin_view_unit_sold";
 
 function AdminRoutes() {
   const user = useSelector((state) => state.auth.user);
@@ -130,6 +132,10 @@ function AdminRoutes() {
           element={<Admin_view_visit />}
         />
          <Route
+          path="/admin_view_unit_sold/:id"
+          element={<Admin_ViewAll_Unit_Sold />}
+        />
+         <Route
           path="/admin_view_follow_up/:id"
           element={<Admin_FollowUpView />}
         />
@@ -153,6 +159,7 @@ function AdminRoutes() {
         <Route path="/project-units/:id" element={<Units />} />
         <Route path="/admin-project" element={<DashProject/>} />
         <Route path="/admin-unit-Detail-Dash/:id" element={<UnitDetailDash/>} />
+        <Route path="/employee-sold-units" element={<EmployeesoldUnitCards/>} />
       </Routes>
     </>
   );
