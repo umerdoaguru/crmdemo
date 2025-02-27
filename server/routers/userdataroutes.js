@@ -124,7 +124,7 @@ const {
 } = require("../controllers/InvoiceController");
 const authenticateEmployee = require("../Middleware/authenticateEmployee");
 const authenticateAdmin = require("../Middleware/authenticateAdmin");
-const { AllgetEmployeebyvisit, getEmployeeLeads, employeeProfile, getEmployeeFollow_Up, getEmployeeRemark, getEmployeeVisit, getLeadQuotation } = require("../controllers/employeController");
+const { AllgetEmployeebyvisit, getEmployeeLeads, employeeProfile, getEmployeeFollow_Up, getEmployeeRemark, getEmployeeVisit, getLeadQuotation, getEmployeeUnitSold, getEmployeeUnitSoldById, getUnitDataByUnitId, getEmployeeUnitSoldByLeadId } = require("../controllers/employeController");
 const authenticateSuperAdmin = require("../Middleware/authenticateSuperAdmin");
 const { getAllEmployees } = require("../controllers/OrgsnizationActions");
 
@@ -310,6 +310,10 @@ router.put('/updateUnitmanualy/:unit_id', updateUnitmanualy);
 router.get('/project-unit/:id',authenticateAdmin, getUnitByProjectId);
 router.get('/getUntitsDetailById/:id',authenticateAdmin, getUnitDetailsById);
 
+router.get("/admin-unit-sold",authenticateAdmin, getEmployeeUnitSold);
+router.get("/admin-unit-sold/:id",authenticateAdmin, getEmployeeUnitSoldById);
+router.get("/admin-unit-data/:id",authenticateAdmin, getUnitDataByUnitId);
+router.get("/admin-unit-sold-lead-id/:id",authenticateAdmin, getEmployeeUnitSoldByLeadId);
 
 router.get("/super-admin-all-project",authenticateSuperAdmin, getAllProjects);
 router.get('/super-admin-units',authenticateSuperAdmin, getUnits);
@@ -319,6 +323,9 @@ router.get('/super-admin-units/project',authenticateSuperAdmin, getUnitsByProjec
 router.get('/super-admin-project-unit/:id',authenticateSuperAdmin, getUnitByProjectId);
 router.get('/super-admin-getUntitsDetailById/:id',authenticateSuperAdmin, getUnitDetailsById);
 
-
+router.get("/super-admin-unit-sold",authenticateSuperAdmin, getEmployeeUnitSold);
+router.get("/super-admin-unit-sold/:id",authenticateSuperAdmin, getEmployeeUnitSoldById);
+router.get("/super-admin-unit-data/:id",authenticateSuperAdmin, getUnitDataByUnitId);
+router.get("/super-admin-unit-sold-lead-id/:id",authenticateSuperAdmin, getEmployeeUnitSoldByLeadId);
           
 module.exports = router;

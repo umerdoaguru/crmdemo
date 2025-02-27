@@ -32,7 +32,8 @@ const {
   getEmployeeUnitSoldById,
   getUnitDataByUnitId,
   updateOnlyUnitDataStatusById,
-  updateOnlyUnitStatus
+  updateOnlyUnitStatus,
+  getEmployeeUnitSoldByLeadId
 } = require("../controllers/employeController");
 const authenticateEmployee = require("../Middleware/authenticateEmployee");
 const { getleadbyid } = require("../controllers/UserController");
@@ -91,11 +92,15 @@ router.put("/unit-sold", updateEmployeeUnitSold);
 router.delete("/unit-sold/:id", deleteEmployeeUnitSold);
 router.get("/unit-sold", getEmployeeUnitSold);
 router.get("/unit-sold/:id",authenticateEmployee, getEmployeeUnitSoldById);
+router.get("/unit-sold-lead-id/:id",authenticateEmployee, getEmployeeUnitSoldByLeadId);
 
 router.get("/unit-data/:id",authenticateEmployee, getUnitDataByUnitId);
 router.put("/unit-data/:id", updateOnlyUnitDataStatusById);
 
 router.put("/updateOnlyUnitStatus/:id", updateOnlyUnitStatus);
+
+
+
 
 
 module.exports = router;
