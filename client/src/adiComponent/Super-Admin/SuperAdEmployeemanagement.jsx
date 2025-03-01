@@ -306,6 +306,7 @@ const SuperAdEmployeemanagement = () => {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* Name Input */}
               <div className="flex flex-col">
+              <label htmlFor="name" className="block mb-1 text-sm font-medium">Name</label>
                 <input
                   required
                   type="text"
@@ -329,6 +330,7 @@ const SuperAdEmployeemanagement = () => {
 
               {/* Email Input */}
               <div className="flex flex-col">
+              <label htmlFor="email" className="block mb-1 text-sm font-medium">Email</label>
                 <input
                   required
                   type="email"
@@ -354,6 +356,7 @@ const SuperAdEmployeemanagement = () => {
 
               {/* Password Input */}
               <div className="flex flex-col">
+              <label htmlFor="password" className="block mb-1 text-sm font-medium">Password</label>
                 <input
                   required
                   type="text"
@@ -381,6 +384,7 @@ const SuperAdEmployeemanagement = () => {
 
               {/* Position Input */}
               <div className="flex flex-col">
+              <label htmlFor="position" className="block mb-1 text-sm font-medium">Position</label>
                 <input
                   required
                   type="text"
@@ -408,6 +412,7 @@ const SuperAdEmployeemanagement = () => {
 
               {/* Phone Input */}
               <div className="flex flex-col">
+              <label htmlFor="phone" className="block mb-1 text-sm font-medium"> Phone</label>
                 <input
                   required
                   type="text"

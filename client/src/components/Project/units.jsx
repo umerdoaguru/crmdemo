@@ -352,9 +352,15 @@ const Units = () => {
               name="unit_size"
               value={unitData.unit_size}
               onChange={handleChange}
-              placeholder="Unit Area"
+              placeholder="e.g., 500sqft, 400sqft"
               className="p-3 border rounded-lg w-full"
               required
+              min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
             />
           </div>
 
@@ -369,6 +375,12 @@ const Units = () => {
               placeholder="Total Units"
               className="p-3 border rounded-lg w-full"
               required
+              min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
             />
           </div>
 
@@ -383,6 +395,12 @@ const Units = () => {
               placeholder="Base Price"
               className="p-3 border rounded-lg w-full"
               required
+              min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
             />
           </div>
 
@@ -405,7 +423,7 @@ const Units = () => {
       {showModal && editProject && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="text-xl font-semibold mb-4 text-gray-700">Edit Unit</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-700">Edit Total Unit</h2>
 
       {/* Unit Type */}
       <div className="mb-3">
@@ -415,7 +433,8 @@ const Units = () => {
           value={editProject.unit_type || ""} 
           onChange={(e) => setEditProject({ ...editProject, unit_type: e.target.value })} 
           className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-          placeholder="Enter unit type" 
+          placeholder="Enter unit type"
+          disabled 
         />
       </div>
 
@@ -427,7 +446,8 @@ const Units = () => {
           value={editProject.unit_size || ""} 
           onChange={(e) => setEditProject({ ...editProject, unit_size: e.target.value })} 
           className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-          placeholder="Enter unit size" 
+          placeholder="Enter unit size"
+          disabled 
         />
       </div>
 
@@ -459,11 +479,18 @@ const Units = () => {
       <div className="mb-3">
         <label className="block text-gray-600 mb-1">Base Price</label>
         <input 
-          type="text" 
+          type="number" 
           value={editProject.base_price || ""} 
           onChange={(e) => setEditProject({ ...editProject, base_price: e.target.value })} 
           className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-          placeholder="Enter base price" 
+          placeholder="Enter base price"
+          disabled 
+          min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
         />
       </div>
 

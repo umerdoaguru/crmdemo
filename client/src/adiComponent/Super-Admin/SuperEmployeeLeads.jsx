@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import styled from "styled-components";
@@ -108,18 +108,21 @@ const uniqueYears = [
 
   // Fetch leads from the API
   useEffect(() => {
-    fetchLeads();
+    
     fetchEmployees();
     // fetchVisit();
     fetchProjects();
     fetchProjectsUnit();
   }, []);
 
+  useEffect(()=>{
+    fetchLeads();
+  }, [token])
+
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
 
-          //  `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${id}`
             "https://crmdemo.vimubds5.a2hosted.com/api/leads-super-admin",
             {
               headers: {
@@ -128,7 +131,8 @@ const uniqueYears = [
             }}
       );
       const data = response.data;
-      console.log(data);
+      const sources = data.map(lead => lead.leadSource).filter(source => source);
+      setDynamicLeadSources(Array.from(new Set(sources)));
       setLeads(data);
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -497,7 +501,7 @@ const handleCreateClick = () => {
     name: "",
     phone: "",
     leadSource: "",
-    createdTime: "", // Clear out createdTime for new lead
+    createdTime: "",
     project_name: "",
     address: "",
     actual_date: "",
@@ -524,8 +528,6 @@ const saveChanges = async () => {
 
     try {
       setLoading(true)
-    
-     
         // Create new lead
         await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", leadData);
 
@@ -534,7 +536,7 @@ const saveChanges = async () => {
 
         // Open WhatsApp link in a new tab
         window.open(whatsappLink, "_blank");
-      
+        fetchLeads();
         closePopup();
      
       setLoading(false)
@@ -549,8 +551,6 @@ const closePopup = () => {
   setShowPopup(false);
   setErrors({});
 };
-
-
 
 
 
@@ -593,6 +593,51 @@ const closeModalLead = () => {
     setSortOrder((prevOrder) => (prevOrder === "desce" ? "asce" : "desce"));
   };
 
+    const handleEditClick = (lead) => {
+      console.log(lead);
+      fetchProjectsUnit(lead.main_project_id)
+      setCurrentLead({
+        ...lead,
+        createdTime: moment(lead.createdTime).format("YYYY-MM-DD"), // Format the createdTime
+        actual_date: moment(lead.createdTime).format("YYYY-MM-DD"), // Format the createdTime
+      });
+      setShowPopup(true);
+    };
+
+    const handleDeleteClick = async (id) => {
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this data?"
+      );
+      if (isConfirmed) {
+        try {
+          await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/leads/${id}`);
+          fetchLeads(); // Refresh the list after deletion
+        } catch (error) {
+          console.error("Error deleting lead:", error);
+        }
+      }
+    };
+
+
+    const hardCodedLeadSources = [
+      "Referrals",
+      "Cold Calling",
+      "Email Campaigns",
+      "Networking Events",
+      "Paid Advertising",
+      "Content Marketing",
+      "SEO",
+      "Trade Shows", 
+      "Affiliate Marketing",
+      "Direct Mail",
+      "Online Directories"
+    ];
+
+    const [dynamicLeadSources, setDynamicLeadSources] = useState([]);
+
+    const combinedLeadSources = [
+      ...new Set([...hardCodedLeadSources, ...dynamicLeadSources])
+    ];
 
   return (
     <>
@@ -988,7 +1033,9 @@ const closeModalLead = () => {
   <span className="text-blue-900 mx-2">{sortOrder === "desce" ? "▲" : "▼" }</span>
 </th>
 
-                
+<th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
+                    Action
+                  </th>  
                 
                
                 </tr>
@@ -1062,7 +1109,20 @@ const closeModalLead = () => {
         <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold">
           {moment(lead.createdTime).format("DD MMM YYYY").toUpperCase()}
         </td>
-      
+        <td className="px-6 py-4 border-b border-gray-200 text-gray-800 font-semibold text-nowrap">
+                                <button
+                                  className="text-blue-500 hover:text-blue-700"
+                                  onClick={() => handleEditClick(lead)}
+                                >
+                                  <BsPencilSquare size={20} />
+                                </button>
+                                <button
+                                  className="text-red-500 hover:text-red-700 mx-2"
+                                  onClick={() => handleDeleteClick(lead.lead_id)}
+                                >
+                                  <BsTrash size={20} />
+                                </button>
+                              </td>
       
        
       </tr>
@@ -1248,48 +1308,40 @@ const closeModalLead = () => {
                     <span className="text-red-500">{errors.phone}</span>
                   )}
                 </div>
+
                 <div className="mb-4">
                   <label className="block text-gray-700">Lead Source</label>
                   <select
-                    name="leadSource"
-                    id="leadSource"
-                    value={currentLead.leadSource}
-                    onChange={handleInputChangelead}
-                    className="w-full p-2 border rounded"
-                  >
-                    <option value="">Select Lead Source</option>
-
-                    <option value="Referrals">Referrals</option>
-                    <option value="Cold Calling">Cold Calling</option>
-                    <option value="Email Campaigns">Email Campaigns</option>
-                    <option value="Networking Events">Networking Events</option>
-                    <option value="Paid Advertising">Paid Advertising</option>
-                    <option value="Content Marketing">Content Marketing</option>
-                    <option value="SEO">Search Engine Optimization</option>
-                    <option value="Trade Shows">Trade Shows</option>
-
-                    <option value="Affiliate Marketing">
-                      Affiliate Marketing
-                    </option>
-                    <option value="Direct Mail">Direct Mail</option>
-                    <option value="Online Directories">
-                      Online Directories
-                    </option>
-                    <option value="Other">Other</option>
-                  </select>
-                  {currentLead.leadSource === "Other" && (
-                    <input
-                      type="text"
-                      value={customLeadSource}
-                      onChange={handleCustomLeadSourceChange}
-                      placeholder="Enter custom lead source"
-                      className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
-                    />
-                  )}
+  name="leadSource"
+  value={currentLead.leadSource}
+  onChange={handleInputChangelead}
+  className="w-full p-2 border rounded"
+>
+  <option value="">Select Lead Source</option>
+  {combinedLeadSources.map(source => (
+    <option key={source} value={source}>
+      {source}
+    </option>
+  ))}
+  <option value="Other">Other</option>
+</select>
+{currentLead.leadSource === "Other" && (
+  <input
+    type="text"
+    value={customLeadSource}
+    onChange={handleCustomLeadSourceChange}
+    placeholder="Enter custom lead source"
+    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
+  />
+)}
+                  
                   {errors.leadSource && (
                     <p className="text-red-500 text-xs">{errors.leadSource}</p>
                   )}
                 </div>
+
+                
+
                 <div className="mb-4">
                   <label className="block text-gray-700">Project Name</label>
                   <select

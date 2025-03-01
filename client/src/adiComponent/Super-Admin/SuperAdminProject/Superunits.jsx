@@ -337,9 +337,15 @@ const Superunits = () => {
               name="unit_size"
               value={unitData.unit_size}
               onChange={handleChange}
-              placeholder="Unit Area"
+              placeholder="e.g., 500sqft, 4000sqft"
               className="p-3 border rounded-lg w-full"
               required
+              min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
             />
           </div>
 
@@ -354,6 +360,12 @@ const Superunits = () => {
               placeholder="Total Units"
               className="p-3 border rounded-lg w-full"
               required
+              min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
             />
           </div>
 
@@ -368,6 +380,12 @@ const Superunits = () => {
               placeholder="Base Price"
               className="p-3 border rounded-lg w-full"
               required
+              min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
             />
           </div>
 
@@ -401,6 +419,7 @@ const Superunits = () => {
           onChange={(e) => setEditProject({ ...editProject, unit_type: e.target.value })} 
           className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
           placeholder="Enter unit type" 
+          disabled
         />
       </div>
 
@@ -413,6 +432,7 @@ const Superunits = () => {
           onChange={(e) => setEditProject({ ...editProject, unit_size: e.target.value })} 
           className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
           placeholder="Enter unit size" 
+          disabled
         />
       </div>
 
@@ -449,6 +469,7 @@ const Superunits = () => {
           onChange={(e) => setEditProject({ ...editProject, base_price: e.target.value })} 
           className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
           placeholder="Enter base price" 
+          disabled
         />
       </div>
 
