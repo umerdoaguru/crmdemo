@@ -1144,6 +1144,27 @@ const getEmployeeUnitSoldById = async (req, res) => {
     res.status(500).json({ message: "Internal Server Erro, error: errr" });
   }
 };
+const getEmployeeUnitSoldByLeadId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sql = "SELECT * FROM  employee_sold_units WHERE lead_id = ?";
+
+    const result = await new Promise((resolve, reject) => {
+      db.query(sql, [id], (err, results) => {
+        if (err) {
+          reject(err); 
+        } else {
+          resolve(results); 
+        }
+      });
+    });
+    // Send the result as a response
+    res.status(200).json(result);
+  } catch (err) {
+    console.error("Database query error:", err); // Log the error for debugging
+    res.status(500).json({ message: "Internal Server Erro, error: errr" });
+  }
+};
 
 
 const getUnitDataByUnitId = async (req, res) => {
@@ -1249,5 +1270,6 @@ module.exports = {
   getEmployeebyidvisit,
   AllgetEmployeebyvisit,
   updateOnlyVisitStatus,
-  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById,getUnitDataByUnitId,updateOnlyUnitDataStatusById,updateOnlyUnitStatus
+  updateOnlyFollowUpStatus,createRemark,updateRemark,deleteRemark,getEmployeeRemark,updateOnlyRemarkStatus,updateOnlyRemarkAnswer,updateOnlyRemarkAnswerStatus,createEmployeeUnitSold,updateEmployeeUnitSold,deleteEmployeeUnitSold,getEmployeeUnitSold,getEmployeeUnitSoldById,getUnitDataByUnitId,updateOnlyUnitDataStatusById,updateOnlyUnitStatus,getEmployeeUnitSoldByLeadId,
+
 };
