@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const SuperFormInput = ({ setShowForm,onFormSubmit }) => {
+const SuperFormInput = ({ setShowForm,onFormSubmit,id }) => {
   const [formId, setFormId] = useState('');
   const [formName, setFormName] = useState('');
   const [success, setSuccess] = useState('');
@@ -15,7 +15,7 @@ const SuperFormInput = ({ setShowForm,onFormSubmit }) => {
       // Make POST request to save form ID and form name
       const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/forms', {
         formId,
-        formName
+        formName,project_id:id
       });
 
       if (response.status === 200) {
