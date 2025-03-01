@@ -82,25 +82,27 @@ const uniqueYears = [
       leads
         .filter(
           (lead) =>
-            lead.visit === visitFilter && 
+           
             lead.visit !== "pending" && 
             lead.visit_date && moment(lead.visit_date, moment.ISO_8601, true).isValid() 
         )
         .map((lead) => moment(lead.visit_date).format("MMMM"))
     ),
   ].sort((a, b) => monthOrder.indexOf(a) - monthOrder.indexOf(b)); // Sort months in order
-  
 
 
 
 
   // Fetch leads and employees from the API
   useEffect(() => {
-    fetchLeads();
     fetchEmployees();
     fetchProjects();
     fetchProjectsUnit();
   }, []);
+
+  useEffect(()=>{
+    fetchLeads();
+  },[token]);
 
   const fetchLeads = async () => {
     try {
@@ -113,6 +115,9 @@ const uniqueYears = [
         }}
       );
       setLeads(response.data);
+      const data =response.data 
+      const sources = data.map(lead => lead.leadSource).filter(source => source);
+      setDynamicLeadSources(Array.from(new Set(sources)));
       console.log(leads);
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -568,6 +573,26 @@ const handleLeadsPerPageChange = (e) => {
 const toggleSortOrder = () => {
   setSortOrder((prevOrder) => (prevOrder === "desce" ? "asce" : "desce"));
 };
+
+const hardCodedLeadSources = [
+  "Referrals",
+  "Cold Calling",
+  "Email Campaigns",
+  "Networking Events",
+  "Paid Advertising",
+  "Content Marketing",
+  "SEO",
+  "Trade Shows", 
+  "Affiliate Marketing",
+  "Direct Mail",
+  "Online Directories"
+];
+
+const [dynamicLeadSources, setDynamicLeadSources] = useState([]);
+
+const combinedLeadSources = [
+  ...new Set([...hardCodedLeadSources, ...dynamicLeadSources])
+];
   
 
   return (
@@ -748,7 +773,6 @@ const toggleSortOrder = () => {
                 </select>
               </div>
              
-              {visitFilter && (
               <div>
   <label htmlFor="" className=" fw-semibold text-[blue]">Visit Month Filter</label>
   <select
@@ -767,11 +791,31 @@ const toggleSortOrder = () => {
   </select>
 </div>
 
-    )}
+   
+
+{visitmonthFilter && (
+<div>
+                <label htmlFor="">Visit Filter</label>
+                <select
+                  value={visitFilter}
+                  onChange={(e) => setVisitFilter(e.target.value)}
+                  className={`border rounded-2xl p-2 w-full ${
+                    visitFilter ? "bg-blue-500 text-white" : "bg-white"
+                  }`}
+                >
+                  <option value="">All visit</option>
+                  <option value="fresh">Fresh Visit</option>
+                  <option value="re-visit">Re-Visit</option>
+                  <option value="associative">Associative Visit</option>
+                  <option value="self">Self Visit</option>
+                </select>
+              </div>
+
+)}
 
 
 <div>
-    <label htmlFor="yearFilter">Year Filter</label>
+    <label htmlFor="yearFilter">Leads Year Filter</label>
     <select
       value={yearFilter}
       onChange={(e) => setYearFilter(e.target.value)}
@@ -791,7 +835,7 @@ const toggleSortOrder = () => {
 
   {yearFilter && (
          <div>
-         <label htmlFor="">Month Filter</label>
+    <label htmlFor="yearFilter">Leads Month Filter</label>
          <select
            value={monthFilter}
            onChange={(e) => setMonthFilter(e.target.value)}
@@ -809,6 +853,8 @@ const toggleSortOrder = () => {
          </select>
        </div>
       )}
+            
+
             
 <div>
                 <label htmlFor="">Employee Filter</label>
@@ -1017,9 +1063,7 @@ const toggleSortOrder = () => {
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.reason}
                         </td>
-                        <td className="px-6 py-4 border-b border-gray-200 font-semibold">
-                          {lead.deal_status}
-                        </td>
+
                         <td className="px-6 py-4 border-b border-gray-200 font-semibold">
                           {lead.meeting_status}
                         </td>
@@ -1178,7 +1222,7 @@ const toggleSortOrder = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Lead Source</label>
-                  <select
+                  {/* <select
                     name="leadSource"
                     id="leadSource"
                     value={currentLead.leadSource}
@@ -1204,8 +1248,8 @@ const toggleSortOrder = () => {
                       Online Directories
                     </option>
                     <option value="Other">Other</option>
-                  </select>
-                  {currentLead.leadSource === "Other" && (
+                  </select> */}
+                  {/* {currentLead.leadSource === "Other" && (
                     <input
                       type="text"
                       value={customLeadSource}
@@ -1213,7 +1257,31 @@ const toggleSortOrder = () => {
                       placeholder="Enter custom lead source"
                       className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
                     />
-                  )}
+                  )} */}
+
+<select
+  name="leadSource"
+  value={currentLead.leadSource}
+  onChange={handleInputChange}
+  className="w-full p-2 border rounded"
+>
+  <option value="">Select Lead Source</option>
+  {combinedLeadSources.map(source => (
+    <option key={source} value={source}>
+      {source}
+    </option>
+  ))}
+  <option value="Other">Other</option>
+</select>
+{currentLead.leadSource === "Other" && (
+  <input
+    type="text"
+    value={customLeadSource}
+    onChange={handleCustomLeadSourceChange}
+    placeholder="Enter custom lead source"
+    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
+  />
+)}
                   {errors.leadSource && (
                     <p className="text-red-500 text-xs">{errors.leadSource}</p>
                   )}

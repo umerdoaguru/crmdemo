@@ -36,6 +36,8 @@ const Projectshow = () => {
       if (response.status === 200) {
         cogoToast.success("Project added successfully!", { position: "top-right" });
         setAddProject(false);
+        const newProject = response.data;
+        setProjects((prevProjects) => [newProject, ...prevProjects]);
         fetchProjects();
         setFormData({
           projectName: "",
@@ -67,7 +69,7 @@ const Projectshow = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }});
-      setProjects(data);
+      setProjects(data.reverse());
     } catch (error) {
       console.error("Error fetching projects:", error);
       cogoToast.error("An error occurred while fetching the projects.");
@@ -272,7 +274,12 @@ const handlePageClick = ({ selected }) => {
           </div>
           <div>             
           <label className="block text-gray-600 mb-1">Total Area</label>
-          <input type="text" value={editProject.total_area} onChange={(e) => setEditProject({ ...editProject, total_area: e.target.value })} className="border p-2 w-full mb-2" placeholder="Total Area" />
+          <input type="text" value={editProject.total_area} onChange={(e) => setEditProject({ ...editProject, total_area: e.target.value })} className="border p-2 w-full mb-2" placeholder="Total Area" min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}/>
           </div>
 
           <div className="flex justify-end">

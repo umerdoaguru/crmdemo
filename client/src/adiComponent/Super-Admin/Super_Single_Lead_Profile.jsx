@@ -287,24 +287,24 @@ fetchFollowUp();
                 {visitCreated ? (
                   <button
                     onClick={handleClickVisit}
-                    className="bg-green-500 text-white px-4 py-2 w-full rounded"
+                    className="bg-green-500 text-white px-4 py-2 w-full sm:w-auto   rounded"
                   >
                     View Visit
                   </button>
                 ) : (
-                  <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full">
+                  <p className="text-white bg-red-400 text-center px-4 py-2 rounded w-full sm:w-auto">
                     Visit not yet created
                   </p>
                 )}
                 {followCreated ? (
   <button
     onClick={handleClickFollowUp}
-    className="bg-yellow-500 text-white px-4 py-2 w-full rounded"
+    className="bg-yellow-500 text-white px-4 py-2 w-full sm:w-auto rounded"
   >
     View Follow Up
   </button>
 ) : (
-  <p className="text-white bg-red-400 text-center px-4 py-2 w-full rounded">
+  <p className="text-white bg-red-400 text-center px-4 py-2 w-full sm:w-auto rounded">
     Follow Up not yet created
   </p>
 )}

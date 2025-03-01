@@ -6,10 +6,11 @@ const FormInput = ({ setShowForm,onFormSubmit,id }) => {
   const [formName, setFormName] = useState('');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
-
+  const project_id = id
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     try {
       // Make POST request to save form ID and form name

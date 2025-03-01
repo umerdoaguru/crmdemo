@@ -302,6 +302,8 @@ const EmployeeManagement = () => {
               {editingIndex !== null ? "Edit Employee" : "Add Employee"}
             </h3>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              
+            <label htmlFor="name" className="block mb-1 text-sm font-medium">Name</label>
               <input
                 type="text"
                 name="name"
@@ -315,7 +317,7 @@ const EmployeeManagement = () => {
               {validationErrors.name && (
                 <p className="text-sm text-red-500">{validationErrors.name}</p>
               )}
-
+              <label htmlFor="email" className="block mb-1 text-sm font-medium">Email</label>
               <input
                 type="email"
                 name="email"
@@ -329,7 +331,7 @@ const EmployeeManagement = () => {
               {validationErrors.email && (
                 <p className="text-sm text-red-500">{validationErrors.email}</p>
               )}
-
+              <label htmlFor="password" className="block mb-1 text-sm font-medium">Password</label>
               <input
                 type="text"
                 name="password"
@@ -342,7 +344,7 @@ const EmployeeManagement = () => {
                     : "border-gray-300"
                 }`}
               />
-
+             <label htmlFor="position" className="block mb-1 text-sm font-medium">Position</label>
               <input
                 type="text"
                 name="position"
@@ -360,7 +362,7 @@ const EmployeeManagement = () => {
                   {validationErrors.position}
                 </p>
               )}
-
+              <label htmlFor="phone" className="block mb-1 text-sm font-medium"> Phone</label>
               <input
                 type="text"
                 name="phone"

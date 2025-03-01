@@ -14,7 +14,7 @@ const Superprojectshow = () => {
   const [editProject, setEditProject] = useState({});
   const [addProject, setAddProject] = useState();
 
-  const [addunits, setUnits] = useState(false);
+  // const [addunits, setUnits] = useState(false);
 
   const [formData, setFormData] = useState({
     projectName: "",
@@ -37,6 +37,8 @@ const Superprojectshow = () => {
       if (response.status === 200) {
         cogoToast.success("Project added successfully!", { position: "top-right" });
         setAddProject(false);
+        const newProject = response.data;
+        setProjects((prevProjects) => [newProject, ...prevProjects]);
         fetchProjects();
         setFormData({
           projectName: "",
@@ -68,7 +70,7 @@ const Superprojectshow = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }});
-      setProjects(data);
+      setProjects(data.reverse());
     } catch (error) {
       console.error("Error fetching projects:", error);
       cogoToast.error("An error occurred while fetching the projects.");
@@ -151,7 +153,6 @@ const Superprojectshow = () => {
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                     <button onClick={() => handleEdit(project)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
                     <button onClick={() => handleDelete(project.main_project_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
-                    {/* <button onClick={handleAddUnits} className="ml-2 text-green-600 hover:text-green-800"><FaBoxOpen /></button> */}
                   </td>
                   <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                   <Link to={`/super-admin-project-units/${project.main_project_id}`} className="inline-block">
@@ -194,7 +195,7 @@ const Superprojectshow = () => {
       </div>
 
       {addProject && (
-       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
+       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-[9999]">
        <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl p-8 transition-all transform scale-95 hover:scale-100">
          <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Add Real Estate Project</h1>
          <form onSubmit={handleSubmit} className="space-y-6">
@@ -231,6 +232,12 @@ const Superprojectshow = () => {
                onChange={handleChange}
                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
                placeholder="e.g., 5000sqft, 40000sqft"
+               min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}
              />
            </div>
      
@@ -255,51 +262,8 @@ const Superprojectshow = () => {
            
       )}
 
-      {addunits && (
-        <div> </div>
-        // <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        //   <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
-        //     <h1 className="text-2xl font-bold text-gray-800 mb-4">Add Real Estate Unit</h1>
-        //     <form onSubmit={handleUnitSubmit} className="bg-white p-6 shadow-lg rounded-lg">
-        //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        //         <input type="number" name="main_project_id" value={unitData.main_project_id} onChange={handleUnitChange} placeholder="Project ID" className="p-3 border rounded-lg w-full" required />
-        //         <select name="unit_type" value={unitData.unit_type} onChange={handleUnitChange} className="p-3 border rounded-lg w-full" required>
-        //           <option value="">Select Unit Type</option>
-        //           <option value="1BHK">1BHK</option>
-        //           <option value="2BHK">2BHK</option>
-        //           <option value="3BHK">3BHK</option>
-        //           <option value="Bungalow">Bungalow</option>
-        //           <option value="Commercial">Commercial</option>
-        //           <option value="Plot">Plot</option>
-        //         </select>
-        //       </div>
-
-        //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-        //         <input type="number" name="unit_size" value={unitData.unit_size} onChange={handleUnitChange} placeholder="Unit Size" className="p-3 border rounded-lg w-full" required />
-        //         <input type="number" name="total_units" value={unitData.total_units} onChange={handleUnitChange} placeholder="Total Units" className="p-3 border rounded-lg w-full" required />
-        //       </div>
-
-        //       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-        //         <input type="number" name="base_price" value={unitData.base_price} onChange={handleUnitChange} placeholder="Base Price" className="p-3 border rounded-lg w-full" required />
-        //         <input type="number" name="additional_costs" value={unitData.additional_costs} onChange={handleUnitChange} placeholder="Additional Costs" className="p-3 border rounded-lg w-full" />
-        //       </div>
-
-        //       <textarea name="amenities" value={unitData.amenities} onChange={handleUnitChange} placeholder="Amenities" className="w-full p-3 mt-4 border rounded-lg" rows="3" />
-              
-        //       <div className="flex justify-center items-center gap-4 mt-4">
-        //       <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"> Add Unit </button>
-        //       <button type="button" onClick={handleCloseUnits} className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition">Close Unit</button>
-        //       </div>
-        //     </form>
-
-        //     {/* Close Button */}
-            
-        //   </div>
-        // </div>
-      )}
-
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
           <div className="bg-white p-6 rounded-lg">
             <h2 className="text-xl mb-4">Edit Project</h2>
             
@@ -307,19 +271,18 @@ const Superprojectshow = () => {
             <label className="block text-gray-600 mb-1">Projct Name</label>
             <input type="text" value={editProject.project_name} onChange={(e) => setEditProject({ ...editProject, project_name: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project Name" />
             </div>
-
-            {/* <div> 
-            <label className="block text-gray-600 mb-1">Total Area</label>
-            <input type="text" value={editProject.project_id} onChange={(e) => setEditProject({ ...editProject, project_id: e.target.value })} className="border p-2 w-full mb-2" placeholder="Project ID" />
-            </div> */}
-
             <div>
             <label className="block text-gray-600 mb-1">Location</label>
             <input type="text" value={editProject.location} onChange={(e) => setEditProject({ ...editProject, location: e.target.value })} className="border p-2 w-full mb-2" placeholder="Location" />
             </div>
             <div>             
             <label className="block text-gray-600 mb-1">Total Area</label>
-            <input type="text" value={editProject.total_area} onChange={(e) => setEditProject({ ...editProject, total_area: e.target.value })} className="border p-2 w-full mb-2" placeholder="Total Area" />
+            <input type="text" value={editProject.total_area} onChange={(e) => setEditProject({ ...editProject, total_area: e.target.value })} className="border p-2 w-full mb-2" placeholder="Total Area" min={0}
+              onKeyDown={(e) => {
+                if (e.key === '-' || e.key === 'Subtract') {
+                  e.preventDefault();
+                }
+              }}/>
             </div>
 
             <div className="flex justify-end">
