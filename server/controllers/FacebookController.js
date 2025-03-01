@@ -5,9 +5,8 @@ const axios = require('axios');
 const saveForm = (req, res) => {
   const { formId, formName,project_id } = req.body;
 
-  if (!formId || !formName) {
-    return res.status(400).json({ error: 'Form ID and Form Name are required' });
-  }
+console.log( formId, formName,project_id);
+
 
   db.query(
     'INSERT INTO formtable (form_id, form_name,project_id) VALUES (?, ?,?)',

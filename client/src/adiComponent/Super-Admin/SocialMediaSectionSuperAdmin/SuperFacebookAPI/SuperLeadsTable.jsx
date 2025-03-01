@@ -300,7 +300,7 @@ setLoadingsave(false)
       </div>
 
       {/* Conditional rendering for forms */}
-      {showForm && <SuperFormInput setShowForm={setShowForm} onFormSubmit={handleRefreshLeads} />}
+      {showForm && <SuperFormInput setShowForm={setShowForm} onFormSubmit={handleRefreshLeads} id = {id} />}
       {showUpdateForm && <SuperUpdateForm setShowUpdateForm={setShowUpdateForm}  id = {id}/>}
     </div>
       

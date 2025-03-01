@@ -82,14 +82,13 @@ const uniqueYears = [
       leads
         .filter(
           (lead) =>
-            lead.visit === visitFilter && 
+           
             lead.visit !== "pending" && 
             lead.visit_date && moment(lead.visit_date, moment.ISO_8601, true).isValid() 
         )
         .map((lead) => moment(lead.visit_date).format("MMMM"))
     ),
   ].sort((a, b) => monthOrder.indexOf(a) - monthOrder.indexOf(b)); // Sort months in order
-  
 
 
 
@@ -748,7 +747,6 @@ const toggleSortOrder = () => {
                 </select>
               </div>
              
-              {visitFilter && (
               <div>
   <label htmlFor="" className=" fw-semibold text-[blue]">Visit Month Filter</label>
   <select
@@ -767,11 +765,31 @@ const toggleSortOrder = () => {
   </select>
 </div>
 
-    )}
+   
+
+{visitmonthFilter && (
+<div>
+                <label htmlFor="">Visit Filter</label>
+                <select
+                  value={visitFilter}
+                  onChange={(e) => setVisitFilter(e.target.value)}
+                  className={`border rounded-2xl p-2 w-full ${
+                    visitFilter ? "bg-blue-500 text-white" : "bg-white"
+                  }`}
+                >
+                  <option value="">All visit</option>
+                  <option value="fresh">Fresh Visit</option>
+                  <option value="re-visit">Re-Visit</option>
+                  <option value="associative">Associative Visit</option>
+                  <option value="self">Self Visit</option>
+                </select>
+              </div>
+
+)}
 
 
 <div>
-    <label htmlFor="yearFilter">Year Filter</label>
+    <label htmlFor="yearFilter">Leads Year Filter</label>
     <select
       value={yearFilter}
       onChange={(e) => setYearFilter(e.target.value)}
@@ -791,7 +809,7 @@ const toggleSortOrder = () => {
 
   {yearFilter && (
          <div>
-         <label htmlFor="">Month Filter</label>
+    <label htmlFor="yearFilter">Leads Month Filter</label>
          <select
            value={monthFilter}
            onChange={(e) => setMonthFilter(e.target.value)}
@@ -809,6 +827,8 @@ const toggleSortOrder = () => {
          </select>
        </div>
       )}
+            
+
             
 <div>
                 <label htmlFor="">Employee Filter</label>
