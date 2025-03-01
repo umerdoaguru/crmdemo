@@ -1,15 +1,23 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const SuperFormSelector = ({  setLoading, setMe, setError,id, onFormSelect  }) => {
   const [forms, setForms] = useState([]);
   const [selectedFormId, setSelectedFormId] = useState('');
   const [selectedFormName, setSelectedFormName] = useState('');
+  const superadminuser = useSelector((state) => state.auth.user);
+  const token = superadminuser.token;
 
   // Fetch forms from backend
   const fetchForms = async () => {
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/forms/${id}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/forms/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
       setForms(response.data.reverse());
     } catch (err) {
       console.error('Error fetching forms:', err);
