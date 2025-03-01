@@ -1543,6 +1543,37 @@ const addUnit = async (req, res) => {
   }
 };
 
+const editUnitdetails = (req, res) => {
+  const id = req.params.id;
+  console.log("Request received for id:", req.params.id);
+  const { base_price, unit_size } = req.body;
+
+  const sql = `
+    UPDATE unit_data
+    SET base_price = ?, unit_size = ?
+    WHERE id = ?
+  `;
+
+  db.query(sql, [base_price, unit_size, req.params.id], (err, result) => {
+    if (err) {
+      console.error("Error updating unit:", err);
+      return res.status(500).json({ message: "Server error", error: err });
+    }
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Unit not found for update" });
+    }
+
+    res.status(200).json({
+      message: "Unit updated successfully",
+      data: {
+        base_price,
+        unit_size,
+      },
+    });
+  });
+};
+
 // const deleteUnit = async (req, res) => {
 //   const unit_id = req.params.id;
 
@@ -1863,7 +1894,6 @@ const getUnitDetailsById = async (req, res) => {
 }
 
 
-
 module.exports = {
   Quotation,
   GetQuotation,
@@ -1907,4 +1937,5 @@ module.exports = {
   getUnitsdistributeById,
   getUnitByProjectId,
   getUnitDetailsById,
+  editUnitdetails,
 };

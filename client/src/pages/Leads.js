@@ -756,24 +756,7 @@ const combinedLeadSources = [
               )}
 
 
-                    <div>
-                <label htmlFor="">Visit Filter</label>
-                <select
-                  value={visitFilter}
-                  onChange={(e) => setVisitFilter(e.target.value)}
-                  className={`border rounded-2xl p-2 w-full ${
-                    visitFilter ? "bg-blue-500 text-white" : "bg-white"
-                  }`}
-                >
-                  <option value="">All visit</option>
-                  <option value="fresh">Fresh Visit</option>
-                  <option value="re-visit">Re-Visit</option>
-                  <option value="associative">Associative Visit</option>
-                  <option value="self">Self Visit</option>
-                </select>
-              </div>
-             
-              <div>
+                <div>
   <label htmlFor="" className=" fw-semibold text-[blue]">Visit Month Filter</label>
   <select
     value={visitmonthFilter}

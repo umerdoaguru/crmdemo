@@ -50,6 +50,7 @@ const {
   getUnitsdistributeById,
   getUnitByProjectId,
   getUnitDetailsById,
+  editUnitdetails,
 } = require("../controllers/UserController");
 const upload = require("../controllers/fileUploadController");
 const upload1 = require("../config/multerConfig"); // Import multer configuration
@@ -309,6 +310,7 @@ router.put("/edit-unit/:id", updateUnit);
 router.put('/updateUnitmanualy/:unit_id', updateUnitmanualy);
 router.get('/project-unit/:id',authenticateAdmin, getUnitByProjectId);
 router.get('/getUntitsDetailById/:id',authenticateAdmin, getUnitDetailsById);
+router.put('/editUnitdetailsinner/:id', editUnitdetails);
 
 router.get("/admin-unit-sold",authenticateAdmin, getEmployeeUnitSold);
 router.get("/admin-unit-sold/:id",authenticateAdmin, getEmployeeUnitSoldById);
