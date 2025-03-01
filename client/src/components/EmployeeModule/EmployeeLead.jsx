@@ -441,7 +441,6 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
 
 
               )}
-
 <div>
   <label htmlFor="" className=" fw-semibold text-[blue]">Visit Month Filter</label>
   <select
@@ -522,7 +521,6 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
          </select>
        </div>
       )}
-            
 
 <div>
                 <label htmlFor="">Unit Sold Filter</label>
