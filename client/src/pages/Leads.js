@@ -54,7 +54,7 @@ function Leads() {
   const [leadnotInterestedStatusFilter, setLeadnotInterestedStatusFilter] = useState("");
   const [meetingStatusFilter, setMeetingStatusFilter] = useState("");
   const [monthFilter, setMonthFilter] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc"); 
+  const [sortOrder, setSortOrder] = useState("desce"); 
   const [projects, setProjects] = useState([]);
   const [projectunit, setProjectUnit] = useState([]);
   const adminuser = useSelector((state) => state.auth.user);
@@ -316,6 +316,7 @@ const uniqueYears = [
       ...lead,
       createdTime: moment(lead.createdTime).format("YYYY-MM-DD"), // Format the createdTime
       actual_date: moment(lead.createdTime).format("YYYY-MM-DD"), // Format the createdTime
+
     });
     setShowPopup(true);
   };
@@ -975,7 +976,7 @@ const combinedLeadSources = [
   onClick={toggleSortOrder}
 >
   Assigned Date
-  <span>{sortOrder === "asc" ? "▲" : "▼" }</span>
+  <span className="text-blue-900 mx-2">{sortOrder === "desce" ? "▲" : "▼" }</span>
 </th>
                     <th className="px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm border-y-2 border-gray-300 text-left">
                     Action
