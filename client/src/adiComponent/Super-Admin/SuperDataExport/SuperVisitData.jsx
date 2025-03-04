@@ -36,12 +36,9 @@ const SuperVisitData = () => {
     "employeeId",
     "follow_up_status",
     "payment_mode",
-    "quotation",
-    "quotation_status",
     "reason",
     "registry",
-   
-    "subject",
+    "project_name",
     "visit",
     "visit_date",
     "d_closeDate",
@@ -108,7 +105,7 @@ const token = superadminuser.token;
 
     // Filter by selected employee
     if (selectedEmployee) {
-      filtered = filtered.filter((lead) => lead.employee_name === selectedEmployee);
+      filtered = filtered.filter((lead) => lead.assignedTo === selectedEmployee);
     }
 
     setFilteredLeads(filtered);
@@ -135,12 +132,9 @@ const token = superadminuser.token;
         employeeId: "Employee ID",
         follow_up_status: "Follow-up Status",
         payment_mode: "Payment Mode",
-        quotation: "Quotation",
-        quotation_status: "Quotation Status",
         reason: "Reason",
         registry: "Registry",
-      
-        subject: "Project",
+        project_name: "Project",
         visit: "Visit",
         visit_date: "Visit Date",
         d_closeDate: "Close Date",
@@ -332,6 +326,7 @@ const token = superadminuser.token;
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

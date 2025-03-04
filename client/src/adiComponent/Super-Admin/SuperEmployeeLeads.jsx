@@ -19,6 +19,7 @@ function SuperEmployeeLeads() {
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   // Pagination state
   const [currentPage, setCurrentPage] = useState(0);
   const [leadsPerPage, setLeadsPerPage] = useState(10);
@@ -149,6 +150,7 @@ const uniqueYears = [
       console.error("Error fetching employees:", error);
     }
   };
+
   const fetchProjects = async () => {
     try {
       const { data } = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/super-admin-all-project",
@@ -330,6 +332,13 @@ const uniqueYears = [
         (lead) => lead.unit_status === soldunitFilter    
       );
     }
+        // Filter by date range
+         if (filterDate) {
+          filtered = filtered.filter((lead) => {
+            const leadDate = moment(lead.createdTime).format("YYYY-MM-DD");
+            return leadDate === filterDate
+          });
+        }
   
     return filtered;
   };
@@ -337,11 +346,13 @@ const uniqueYears = [
   useEffect(() => {
     const filtered = applyFilters();
     setFilteredLeads(filtered);
+    setCurrentPage(0);
   }, [
     searchTerm,
     startDate,
     endDate,
     leads,
+    filterDate,
     leadSourceFilter,
     statusFilter,
     visitFilter,
@@ -489,7 +500,7 @@ const handleInputChangelead = (e) => {
 };
 
 const handleCreateClick = () => {
- 
+  setIsEditing(false);
   setCurrentLead({
     lead_no: "",
     assignedTo: "",
@@ -525,6 +536,17 @@ const saveChanges = async () => {
 
     try {
       setLoading(true)
+      if (isEditing) {
+        // Update existing lead
+        await axios.put(
+          `https://crmdemo.vimubds5.a2hosted.com/api/leads/${currentLead.lead_id}`,
+          leadData
+        );
+        
+        fetchLeads(); // Refresh the list
+        closePopup();
+      }
+      else {
         // Create new lead
         await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", leadData);
 
@@ -535,7 +557,7 @@ const saveChanges = async () => {
         window.open(whatsappLink, "_blank");
         fetchLeads();
         closePopup();
-     
+      }
       setLoading(false)
     } catch (error) {
       setLoading(false)
@@ -593,6 +615,7 @@ const closeModalLead = () => {
     const handleEditClick = (lead) => {
       console.log(lead);
       fetchProjectsUnit(lead.main_project_id)
+      setIsEditing(true);
       setCurrentLead({
         ...lead,
         createdTime: moment(lead.createdTime).format("YYYY-MM-DD"), // Format the createdTime
@@ -635,6 +658,10 @@ const closeModalLead = () => {
     const combinedLeadSources = [
       ...new Set([...hardCodedLeadSources, ...dynamicLeadSources])
     ];
+
+    const handleReset = () => {
+      window.location.reload();
+    };
 
   return (
     <>
@@ -926,6 +953,13 @@ const closeModalLead = () => {
                
                 </select>
               </div>
+
+              <div><button
+      onClick={handleReset}
+      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+    >
+      Reset Page
+    </button></div>
          
             
             </div>
@@ -1197,6 +1231,7 @@ const closeModalLead = () => {
               nextLabel={"Next"}
               breakLabel={"..."}
               pageCount={pageCount}
+              forcePage={currentPage}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={handlePageClick}

@@ -60,6 +60,7 @@ function DataExport() {
             'Authorization': `Bearer ${token}`
         }});
       setEmployee(response.data);
+      
     } catch (error) {
       console.error("Error fetching employee data:", error);
     }
@@ -113,6 +114,8 @@ function DataExport() {
   const visitCount = leads.filter((lead) =>
     ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
   ).length;
+
+  
 
   const soldUnits = employeesold.length;
 

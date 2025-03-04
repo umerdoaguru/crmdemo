@@ -29,11 +29,8 @@ function EmpLeadReport() {
     "employeeId",
     "follow_up_status",
     "payment_mode",
- 
     "reason",
     "registry",
-   
-    "subject",
     "visit",
     "visit_date",
     "d_closeDate",
@@ -125,8 +122,6 @@ function EmpLeadReport() {
     
       reason: "Reason",
       registry: "Registry",
-    
-      subject: "Project",
       visit: "Visit",
       visit_date: "Visit Date",
       d_closeDate: "Close Date",
@@ -289,6 +284,7 @@ function EmpLeadReport() {
               nextLabel={"Next"}
               breakLabel={"..."}
               pageCount={pageCount}
+forcePage={currentPage}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={handlePageClick}

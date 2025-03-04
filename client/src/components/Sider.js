@@ -57,7 +57,7 @@ const Sider = () => {
                 </h3>
               </Link>
             </li>
-
+            <hr className="w-full border-gray-400" />
 
             <li className={`xl:w-full ${getSidebarClass("/leads")}`}>
               <Link to="/leads" className="flex flex-col items-center py-3">

@@ -19,7 +19,7 @@ function Leads() {
     assignedTo: "",
     employeeId: "",
     employeephone: "",
-    createdTime: "", // Added here
+    createdTime: "", 
     name: "",
     phone: "",
     leadSource: "",
@@ -510,6 +510,7 @@ const uniqueYears = [
   useEffect(() => {
     const filtered = applyFilters();
     setFilteredLeads(filtered);
+    setCurrentPage(0);
   }, [
     searchTerm,
     startDate,
@@ -517,6 +518,7 @@ const uniqueYears = [
     leads,
     leadSourceFilter,
     statusFilter,
+    filterDate,
     visitFilter,
     dealFilter,
     leadStatusFilter,
@@ -593,6 +595,10 @@ const [dynamicLeadSources, setDynamicLeadSources] = useState([]);
 const combinedLeadSources = [
   ...new Set([...hardCodedLeadSources, ...dynamicLeadSources])
 ];
+
+const handleReset = () => {
+  window.location.reload();
+};
   
 
   return (
@@ -872,6 +878,13 @@ const combinedLeadSources = [
                
                 </select>
               </div>
+
+              <div><button
+      onClick={handleReset}
+      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+    >
+      Reset Page
+    </button></div>
             
      
             
@@ -1091,6 +1104,7 @@ const combinedLeadSources = [
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+          forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

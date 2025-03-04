@@ -36,7 +36,6 @@ const EmployeeCloseData = () => {
         "reason",
         "registry",
        
-        "subject",
         "visit",
         "visit_date",
         "d_closeDate",
@@ -310,6 +309,7 @@ const EmployeeCloseData = () => {
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

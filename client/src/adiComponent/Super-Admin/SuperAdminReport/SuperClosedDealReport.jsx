@@ -39,7 +39,7 @@ const SuperClosedDealReport = () => {
     "reason",
     "registry",
    
-    "subject",
+    "project_name",
     "visit",
     "visit_date",
     "d_closeDate",
@@ -154,7 +154,7 @@ const SuperClosedDealReport = () => {
       reason: "Reason",
       registry: "Registry",
       
-      subject: "Project",
+      project_name: "Project",
       visit: "Visit",
       visit: "Visit Date",
       d_closeDate: "Close Date",
@@ -339,6 +339,7 @@ const SuperClosedDealReport = () => {
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

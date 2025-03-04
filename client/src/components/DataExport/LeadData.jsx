@@ -36,12 +36,9 @@ function LeadData() {
     "employeeId",
     "follow_up_status",
     "payment_mode",
-    "quotation",
-    "quotation_status",
     "reason",
     "registry",
-   
-    "subject",
+    "project_name",
     "visit",
     "visit_date",
     "d_closeDate",
@@ -332,6 +329,7 @@ const downloadExcel = () => {
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

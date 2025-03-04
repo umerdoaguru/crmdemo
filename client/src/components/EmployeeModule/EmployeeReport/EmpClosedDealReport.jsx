@@ -38,8 +38,6 @@ const EmpClosedDealReport = () => {
   
     "reason",
     "registry",
-   
-    "subject",
     "visit", 
     "visit_date", 
     "d_closeDate",
@@ -140,7 +138,6 @@ const EmpClosedDealReport = () => {
         reason: "Reason",
         registry: "Registry",
       
-        subject: "Project",
         visit: "Visit",
         visit_date: "Visit Date",
         d_closeDate: "Close Date",
@@ -319,6 +316,7 @@ const EmpClosedDealReport = () => {
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

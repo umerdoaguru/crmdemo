@@ -77,12 +77,39 @@ const Superprojectshow = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  // const handleDelete = async (id) => {
 
+  //   const isConfirmed = window.confirm("Are you sure you want to delete this project?");
+  //   if (!isConfirmed) return;
+  //   try {
+  //     const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-project/${id}`);
+  //     cogoToast.success(data.message || "Project deleted successfully!");
+  //     setProjects((prev) => prev.filter((project) => project.main_project_id !== id));
+  //   } catch (error) {
+  //     console.error("Error deleting project:", error);
+  //     cogoToast.error("An error occurred while deleting the project.");
+  //   }
+  // };
+
+  const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
     if (!isConfirmed) return;
+  
     try {
-      const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-project/${id}`);
+      let response;
+      try {
+        response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-project/${id}`);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          const userConfirmed = window.confirm(error.response.data.message);
+          if (!userConfirmed) return;
+          response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-project/${id}?confirm=true`);
+        } else {
+          throw error;
+        }
+      }
+      
+      const { data } = response;
       cogoToast.success(data.message || "Project deleted successfully!");
       setProjects((prev) => prev.filter((project) => project.main_project_id !== id));
     } catch (error) {
@@ -90,7 +117,7 @@ const Superprojectshow = () => {
       cogoToast.error("An error occurred while deleting the project.");
     }
   };
-
+  
   const handleEdit = (project) => {
     setEditProject(project);
     setShowModal(true);

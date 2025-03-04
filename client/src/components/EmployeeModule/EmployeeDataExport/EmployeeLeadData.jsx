@@ -40,8 +40,6 @@ function EmployeeLeadData() {
       
         "reason",
         "registry",
-        
-        "subject",
         "visit",
         "visit_date",
         "d_closeDate",
@@ -119,7 +117,6 @@ function EmployeeLeadData() {
       reason: "Reason",
       registry: "Registry",
      
-      subject: "Project",
       visit: "Visit",
       visit_date: "Visit Date",
       d_closeDate: "Close Date",
@@ -299,6 +296,7 @@ function EmployeeLeadData() {
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

@@ -261,7 +261,18 @@ const UnitDetailDash = () => {
             <td className="px-6 py-4">{unit.unit_size}</td>
             <td className="px-6 py-4">{unit.base_price}</td>
             <td className="px-6 py-4">{unit.status}</td>
-            <button onClick={() => handleEdit(unit)} className="bg-green-600 text-white py-2 px-2 rounded-lg hover:bg-blue-700 transition mt-3">Edit Details</button>
+            {/* <button onClick={() => handleEdit(unit)} className="bg-green-600 text-white py-2 px-2 rounded-lg hover:bg-blue-700 transition mt-3">Edit Details</button> */}
+            <button 
+  onClick={() => handleEdit(unit)} 
+  className={`py-2 px-2 rounded-lg transition mt-3 ${
+    unit.status === "sold" 
+      ? "bg-gray-400 text-gray-700 cursor-not-allowed" 
+      : "bg-green-600 text-white hover:bg-blue-700"
+  }`} 
+  disabled={unit.status === "sold"}
+>
+  Edit Details
+</button>
             {/* <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
             <button onClick={() => handleEdit(unit)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
             <button onClick={() => handleDelete(unit.unit_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
@@ -285,6 +296,7 @@ const UnitDetailDash = () => {
         nextLabel={"Next"}
         breakLabel={"..."}
         pageCount={pageCount}
+forcePage={currentPage}
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}

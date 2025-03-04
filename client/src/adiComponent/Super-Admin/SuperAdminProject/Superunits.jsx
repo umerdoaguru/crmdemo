@@ -42,8 +42,11 @@ const Superunits = () => {
             'Authorization': `Bearer ${token}`
         }});
       if (response.data && response.data.data) {
-        setUnits(response.data.data); 
+        const reversedData = [...response.data.data].reverse();
+        setUnits(reversedData); 
         
+        const sources = reversedData.map((unit) => unit.unit_type).filter((source) => source);
+        setDynamicLeadSources(Array.from(new Set(sources)));
       } else {
         setUnits([]);
       }
@@ -126,21 +129,50 @@ const Superunits = () => {
     }
   };
 
+  // const handleDelete = async (id) => {
+  //   const isConfirmed = window.confirm("Are you sure you want to delete this project?");
+  //   if (!isConfirmed) return;
+  
+  //   try {
+  //     const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
+  //     cogoToast.success(data.message || "Unit deleted successfully!");
+  //     fetchUnits();
+  //     // Corrected filtering
+  //     setProjects((prev) => prev.filter((unit) => unit.unit_id !== id));
+  //   } catch (error) {
+  //     console.error("Error deleting unit:", error);
+  //     cogoToast.error("An error occurred while deleting the unit.");
+  //   }
+  // };
+
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
     if (!isConfirmed) return;
   
     try {
-      const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
+      let response;
+      try {
+        response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          const userConfirmed = window.confirm(error.response.data.message);
+          if (!userConfirmed) return;
+          response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}?confirm=true`);
+        } else {
+          throw error;
+        }
+      }
+      
+      const { data } = response;
       cogoToast.success(data.message || "Unit deleted successfully!");
       fetchUnits();
-      // Corrected filtering
       setProjects((prev) => prev.filter((unit) => unit.unit_id !== id));
     } catch (error) {
       console.error("Error deleting unit:", error);
       cogoToast.error("An error occurred while deleting the unit.");
     }
   };
+  
 
   const handlePageClick = (event) => {
     const selectedPage = event.selected;
@@ -155,6 +187,32 @@ const Superunits = () => {
   const offset = currentPage * itemsPerPage;
   const currentItems = units.slice(offset, offset + itemsPerPage);
   const pageCount = Math.ceil(units.length / itemsPerPage);
+
+    const hardCodedLeadSources = [
+      "1BHK",
+      "2BHK",
+      "3BHK",
+      "Bungalow",
+      "Commercial",
+      "Plot",
+      "Villa",
+      "Other"
+    ];
+    
+    const [dynamicLeadSources, setDynamicLeadSources] = useState([]);
+    
+    const combinedLeadSources = [
+      ...new Set([...hardCodedLeadSources, ...dynamicLeadSources])
+    ];
+  const [customLeadSource, setCustomLeadSource] = useState("");
+    const handleCustomLeadSourceChange = (e) => {
+      setCustomLeadSource(e.target.value);
+    };
+  
+    const unitTypeToSend =
+    unitData.unit_type === "Other" ? unitData.custom_unit_type : unitData.unit_type;
+  const payload = { ...unitData, unit_type: unitTypeToSend };
+  delete payload.custom_unit_type;
 
   return (
   
@@ -247,6 +305,7 @@ const Superunits = () => {
         nextLabel={"Next"}
         breakLabel={"..."}
         pageCount={pageCount}
+forcePage={currentPage}
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
@@ -292,7 +351,7 @@ const Superunits = () => {
           </div>
 
           {/* Unit Type */}
-          <div>
+          {/* <div>
             <label className="block text-gray-700 font-medium mb-1">Unit Type</label>
             <select
               name="unit_type"
@@ -311,23 +370,33 @@ const Superunits = () => {
               <option value="Villa">Villa</option>
               <option value="Other">Other</option>
             </select>
-          </div>
-
-          {/* Custom Unit Type */}
-          {unitData.unit_type === "Other" && (
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">Custom Unit Type</label>
-              <input
-                type="text"
-                name="custom_unit_type"
-                value={unitData.custom_unit_type}
-                onChange={handleChange}
-                placeholder="Enter custom unit type"
-                className="p-3 border rounded-lg w-full"
-                required
-              />
-            </div>
-          )}
+          </div> */}
+          <div>
+  <label className="block text-gray-700 font-medium mb-1">Unit Type</label>
+  <select
+    name="unit_type"
+    value={unitData.unit_type}
+    onChange={handleChange}
+    className="w-full p-2 border rounded"
+  >
+    <option value="">Select Unit Type</option>
+    {combinedLeadSources.map(source => (
+      <option key={source} value={source}>
+        {source}
+      </option>
+    ))}
+  </select>
+  {unitData.unit_type === "Other" && (
+    <input
+      type="text"
+      name="custom_unit_type"
+      value={unitData.custom_unit_type}
+      onChange={handleChange}
+      placeholder="Enter custom unit type"
+      className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
+    />
+  )}
+</div>
 
           {/* Unit Size */}
           <div>
