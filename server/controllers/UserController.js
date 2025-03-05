@@ -1406,23 +1406,54 @@ const editProject = (req, res) => {
   });
 };
 
-const deleteProject = (req, res) => {
+const deleteProject = async (req, res) => {
   const { id } = req.params;
 
-  const sql = "DELETE FROM projects WHERE main_project_id = ?";
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      console.error("Error deleting project:", err);
-      return res.status(500).json({ message: "Server error", error: err });
+  try {
+    // Check if the project is allocated in the leads table (i.e. it has a non-empty project_name)
+    const leadsResult = await new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM leads WHERE main_project_id = ? AND project_name <> ''",
+        [id],
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        }
+      );
+    });
+
+    // If the project is allocated and no confirmation flag is provided, ask for confirmation.
+    if (leadsResult.length > 0 && req.query.confirm !== 'true') {
+      return res.status(400).json({
+        message:
+          "This project is allocated. Are you sure you want to delete it? Click OK to confirm, or Cancel to abort."
+      });
     }
 
-    if (result.affectedRows > 0) {
+    // Proceed with deletion if confirmation is provided or no allocation found.
+    const deleteResult = await new Promise((resolve, reject) => {
+      db.query(
+        "DELETE FROM projects WHERE main_project_id = ?",
+        [id],
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        }
+      );
+    });
+
+    if (deleteResult.affectedRows > 0) {
       res.status(200).json({ message: "Project deleted successfully" });
     } else {
       res.status(404).json({ message: "Project not found" });
     }
-  });
+  } catch (err) {
+    console.error("Error deleting project:", err);
+    res.status(500).json({ message: "Server error", error: err });
+  }
 };
+
+
 
 const updateUnit = async (req, res) => {
   const unit_id = req.params.id;
@@ -1596,6 +1627,27 @@ const deleteUnit = async (req, res) => {
   const unit_id = req.params.id;
 
   try {
+    // First, check if the leads table has any record for this unit with data in both project_name and unit_type.
+    const leadsResult = await new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM leads WHERE unit_id = ? AND project_name <> '' AND unit_type <> ''",
+        [unit_id],
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        }
+      );
+    });
+
+    // If there are leads and the user hasn't confirmed deletion, return a confirmation message.
+    if (leadsResult.length > 0 && req.query.confirm !== 'true') {
+      return res.status(400).json({
+        message:
+          "This unit is allocated. Are you sure you want to delete it? Click OK to confirm, or Cancel to abort."
+      });
+    }
+
+    // Delete related data from unit_data table.
     await new Promise((resolve, reject) => {
       db.query("DELETE FROM unit_data WHERE unit_id = ?", [unit_id], (err, result) => {
         if (err) return reject(err);
@@ -1603,6 +1655,7 @@ const deleteUnit = async (req, res) => {
       });
     });
 
+    // Delete the unit from units table.
     const deleteResult = await new Promise((resolve, reject) => {
       db.query("DELETE FROM units WHERE unit_id = ?", [unit_id], (err, result) => {
         if (err) return reject(err);
@@ -1611,7 +1664,9 @@ const deleteUnit = async (req, res) => {
     });
 
     if (deleteResult.affectedRows > 0) {
-      res.status(200).json({ message: "Unit and unit Detaild data deleted successfully" });
+      res.status(200).json({
+        message: "Unit and its detailed data deleted successfully"
+      });
     } else {
       res.status(404).json({ message: "Unit not found" });
     }
@@ -1620,8 +1675,6 @@ const deleteUnit = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err });
   }
 };
-
-
 const getUnits = async (req, res) => {
   const { main_project_id, unit_type } = req.query;
 

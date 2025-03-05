@@ -9,6 +9,7 @@ import MainHeader from "../MainHeader";
 import Sider from "../Sider";
 import { useNavigate} from "react-router-dom";
 import { useSelector } from "react-redux";
+import cogoToast from "cogo-toast";
 
 
 const UnitDetailDash = () => {
@@ -165,6 +166,39 @@ const UnitDetailDash = () => {
     const currentItems = filteredUnits.slice(offset, offset + itemsPerPage);
     const pageCount = Math.ceil(filteredUnits.length / itemsPerPage);
 
+    const handleEdit = (unit) => {
+      setEditProject(unit); 
+      setShowModal(true);
+    };
+  
+    const handleUpdate = async () => {
+      if (!editProject.id) {
+        cogoToast.error("Unit ID is missing.");
+        return;
+      }
+    
+      try {
+        console.log("Updating unit:", editProject);
+        const { data } = await axios.put(
+          `https://crmdemo.vimubds5.a2hosted.com/api/editUnitdetailsinner/${editProject.id}`,
+          editProject
+        );
+        console.log("Updating unit with id:", editProject.id, editProject);
+        cogoToast.success(data.message || "Unit updated successfully!");
+    
+        setUnits((prev) =>
+          prev.map((unit) =>
+            unit.id === editProject.id ? { ...unit, ...editProject } : unit
+          )
+        );
+    
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error updating unit:", error);
+        cogoToast.error("An error occurred while updating the unit.");
+      }
+    };
+
   return (
   
     <>
@@ -215,6 +249,7 @@ const UnitDetailDash = () => {
         <th className="px-6 py-3 border-b border-gray-300 text-left">Unit Area</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Base Price</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Status</th>
+        <th className="px-6 py-3 border-b border-gray-300 text-left">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -226,6 +261,18 @@ const UnitDetailDash = () => {
             <td className="px-6 py-4">{unit.unit_size}</td>
             <td className="px-6 py-4">{unit.base_price}</td>
             <td className="px-6 py-4">{unit.status}</td>
+            {/* <button onClick={() => handleEdit(unit)} className="bg-green-600 text-white py-2 px-2 rounded-lg hover:bg-blue-700 transition mt-3">Edit Details</button> */}
+            <button 
+  onClick={() => handleEdit(unit)} 
+  className={`py-2 px-2 rounded-lg transition mt-3 ${
+    unit.status === "sold" 
+      ? "bg-gray-400 text-gray-700 cursor-not-allowed" 
+      : "bg-green-600 text-white hover:bg-blue-700"
+  }`} 
+  disabled={unit.status === "sold"}
+>
+  Edit Details
+</button>
             {/* <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
             <button onClick={() => handleEdit(unit)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
             <button onClick={() => handleDelete(unit.unit_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
@@ -249,6 +296,7 @@ const UnitDetailDash = () => {
         nextLabel={"Next"}
         breakLabel={"..."}
         pageCount={pageCount}
+forcePage={currentPage}
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
@@ -392,88 +440,64 @@ const UnitDetailDash = () => {
 
       
       {showModal && editProject && (
-        <div> </div>
-  // <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
-  //   <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-  //     <h2 className="text-xl font-semibold mb-4 text-gray-700">Edit Unit</h2>
-
-  //     {/* Unit Type */}
-  //     <div className="mb-3">
-  //       <label className="block text-gray-600 mb-1">Unit Type</label>
-  //       <input 
-  //         type="text" 
-  //         value={editProject.unit_type || ""} 
-  //         onChange={(e) => setEditProject({ ...editProject, unit_type: e.target.value })} 
-  //         className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-  //         placeholder="Enter unit type" 
-  //       />
-  //     </div>
-
-  //     {/* Unit Size */}
-  //     <div className="mb-3">
-  //       <label className="block text-gray-600 mb-1">Unit Area</label>
-  //       <input 
-  //         type="text" 
-  //         value={editProject.unit_size || ""} 
-  //         onChange={(e) => setEditProject({ ...editProject, unit_size: e.target.value })} 
-  //         className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-  //         placeholder="Enter unit size" 
-  //       />
-  //     </div>
-
-  //     {/* Total Units */}
-  //     <div className="mb-3">
-  //       <label className="block text-gray-600 mb-1">Total Units</label>
-  //       <input 
-  //         type="text" 
-  //         value={editProject.total_units || ""} 
-  //         onChange={(e) => setEditProject({ ...editProject, total_units: e.target.value })} 
-  //         className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-  //         placeholder="Enter total units" 
-  //       />
-  //     </div>
-
-  //     {/* Units Sold */}
-  //     {/* <div className="mb-3">
-  //       <label className="block text-gray-600 mb-1">Units Sold</label>
-  //       <input 
-  //         type="text" 
-  //         value={editProject.units_sold || ""} 
-  //         onChange={(e) => setEditProject({ ...editProject, units_sold: e.target.value })} 
-  //         className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-  //         placeholder="Enter units sold" 
-  //       />
-  //     </div> */}
-
-  //     {/* Base Price */}
-  //     <div className="mb-3">
-  //       <label className="block text-gray-600 mb-1">Base Price</label>
-  //       <input 
-  //         type="text" 
-  //         value={editProject.base_price || ""} 
-  //         onChange={(e) => setEditProject({ ...editProject, base_price: e.target.value })} 
-  //         className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-  //         placeholder="Enter base price" 
-  //       />
-  //     </div>
-
-  //     {/* Action Buttons */}
-  //     <div className="flex justify-end">
-  //       <button 
-  //         onClick={() => setShowModal(false)} 
-  //         className="mr-2 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
-  //       >
-  //         Cancel
-  //       </button>
-  //       <button 
-  //         onClick={handleUpdate} 
-  //         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-  //       >
-  //         Update
-  //       </button>
-  //     </div>
-  //   </div>
-  // </div>
+       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999]">
+       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+         <h2 className="text-xl font-semibold mb-4 text-gray-700">Edit Unit Details</h2>
+   
+         {/* Unit Type */}
+         <div className="mb-3">
+           <label className="block text-gray-600 mb-1">Unit Type</label>
+           <input 
+             type="text" 
+             value={editProject.unit_type || ""} 
+             onChange={(e) => setEditProject({ ...editProject, unit_type: e.target.value })} 
+             className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
+             placeholder="Enter unit type" 
+             disabled
+           />
+         </div>
+   
+         {/* Unit Size */}
+         <div className="mb-3">
+           <label className="block text-gray-600 mb-1">Unit Area</label>
+           <input 
+             type="text" 
+             value={editProject.unit_size || ""} 
+             onChange={(e) => setEditProject({ ...editProject, unit_size: e.target.value })} 
+             className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
+             placeholder="Enter unit size" 
+           />
+         </div>
+   
+         {/* Base Price */}
+         <div className="mb-3">
+           <label className="block text-gray-600 mb-1">Base Price</label>
+           <input 
+             type="text" 
+             value={editProject.base_price || ""} 
+             onChange={(e) => setEditProject({ ...editProject, base_price: e.target.value })} 
+             className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
+             placeholder="Enter base price" 
+           />
+         </div>
+   
+         {/* Action Buttons */}
+         <div className="flex justify-end">
+           <button 
+             onClick={() => setShowModal(false)} 
+             className="mr-2 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition"
+           >
+             Cancel
+           </button>
+           <button 
+             onClick={handleUpdate} 
+             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+           >
+             Update
+           </button>
+         </div>
+       </div>
+     </div>
 )}
 
     </div>

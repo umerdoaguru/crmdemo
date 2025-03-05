@@ -38,12 +38,9 @@ const VisitReport = () => {
     "employeeId",
     "follow_up_status",
     "payment_mode",
-    "quotation",
-    "quotation_status",
     "reason",
     "registry",
-   
-    "subject",
+    "project_name",
     "visit",
     "visit_date",
     "d_closeDate",
@@ -157,12 +154,9 @@ const VisitReport = () => {
       employeeId: "Employee ID",
       follow_up_status: "Follow-up Status",
       payment_mode: "Payment Mode",
-      quotation: "Quotation",
-      quotation_status: "Quotation Status",
       reason: "Reason",
       registry: "Registry",
-    
-      subject: "Project",
+      project_name: "Project",
       visit: "Visit",
       visit_date: "Visit Date",
       d_closeDate: "Close Date",
@@ -328,6 +322,7 @@ const VisitReport = () => {
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}

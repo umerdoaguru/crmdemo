@@ -229,6 +229,7 @@ function EmployeeLead() {
   useEffect(() => {
     const filtered = applyFilters();
     setFilteredLeads(filtered);
+    setCurrentPage(0);
   }, [
     searchTerm,
     filterDate,
@@ -279,6 +280,10 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
   };
   const toggleSortOrder = () => {
     setSortOrder((prevOrder) => (prevOrder === "desce" ? "asce" : "desce"));
+  };
+
+  const handleReset = () => {
+    window.location.reload();
   };
 
   return (
@@ -521,6 +526,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
          </select>
        </div>
       )}
+            
 
 <div>
                 <label htmlFor="">Unit Sold Filter</label>
@@ -536,6 +542,13 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
                
                 </select>
               </div>
+
+              <div className="mt-4"><button
+      onClick={handleReset}
+      className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+    >
+      Reset Page
+    </button></div>
             
             </div>
             
@@ -757,6 +770,7 @@ const pageCount = Math.ceil(filteredLeads.length / leadsPerPage);
               nextLabel={"Next"}
               breakLabel={"..."}
               pageCount={pageCount}
+              forcePage={currentPage}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={handlePageClick}

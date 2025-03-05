@@ -135,7 +135,9 @@ function SuperDataExport() {
   const employeeCount = employee.length;
  
 
-  const visitCount = visit.length;
+  const visitCount = leads.filter((lead) =>
+    ["fresh", "re-visit", "self", "associative"].includes(lead.visit)
+  ).length;
 
 
   const closedCount = leads.filter(

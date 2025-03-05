@@ -38,15 +38,22 @@ const Units = () => {
   const fetchUnits = async () => {
     if (!id) return;
     try {
-      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/getUnitsdistributeById/${id}`,
+      const response = await axios.get(
+        `https://crmdemo.vimubds5.a2hosted.com/api/getUnitsdistributeById/${id}`,
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }});
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.data && response.data.data) {
-        setUnits(response.data.data); 
-        
+
+        const reversedData = [...response.data.data].reverse();
+        setUnits(reversedData);
+  
+        const sources = reversedData.map((unit) => unit.unit_type).filter((source) => source);
+        setDynamicLeadSources(Array.from(new Set(sources)));
       } else {
         setUnits([]);
       }
@@ -55,6 +62,8 @@ const Units = () => {
       setUnits([]);
     }
   };
+  
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -141,15 +150,43 @@ const Units = () => {
     }
   };
 
+  // const handleDelete = async (id) => {
+  //   const isConfirmed = window.confirm("Are you sure you want to delete this project?");
+  //   if (!isConfirmed) return;
+  
+  //   try {
+  //     const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
+  //     cogoToast.success(data.message || "Unit deleted successfully!");
+  //     fetchUnits();
+  //     // Corrected filtering
+  //     setProjects((prev) => prev.filter((unit) => unit.unit_id !== id));
+  //   } catch (error) {
+  //     console.error("Error deleting unit:", error);
+  //     cogoToast.error("An error occurred while deleting the unit.");
+  //   }
+  // };
+
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this project?");
     if (!isConfirmed) return;
   
     try {
-      const { data } = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
+      let response;
+      try {
+        response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}`);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          const userConfirmed = window.confirm(error.response.data.message);
+          if (!userConfirmed) return;
+          response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/delete-unit/${id}?confirm=true`);
+        } else {
+          throw error;
+        }
+      }
+      
+      const { data } = response;
       cogoToast.success(data.message || "Unit deleted successfully!");
       fetchUnits();
-      // Corrected filtering
       setProjects((prev) => prev.filter((unit) => unit.unit_id !== id));
     } catch (error) {
       console.error("Error deleting unit:", error);
@@ -170,6 +207,32 @@ const Units = () => {
   const offset = currentPage * itemsPerPage;
   const currentItems = units.slice(offset, offset + itemsPerPage);
   const pageCount = Math.ceil(units.length / itemsPerPage);
+
+  const hardCodedLeadSources = [
+    "1BHK",
+    "2BHK",
+    "3BHK",
+    "Bungalow",
+    "Commercial",
+    "Plot",
+    "Villa",
+    "Other"
+  ];
+  
+  const [dynamicLeadSources, setDynamicLeadSources] = useState([]);
+  
+  const combinedLeadSources = [
+    ...new Set([...hardCodedLeadSources, ...dynamicLeadSources])
+  ];
+const [customLeadSource, setCustomLeadSource] = useState("");
+  const handleCustomLeadSourceChange = (e) => {
+    setCustomLeadSource(e.target.value);
+  };
+
+  const unitTypeToSend =
+  unitData.unit_type === "Other" ? unitData.custom_unit_type : unitData.unit_type;
+const payload = { ...unitData, unit_type: unitTypeToSend };
+delete payload.custom_unit_type;
 
   return (
   
@@ -213,8 +276,6 @@ const Units = () => {
         <th className="px-6 py-3 border-b border-gray-300 text-left">Unit Type</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Unit Area</th>
         <th className="px-6 py-3 border-b border-gray-300 text-left">Total Units</th>
-        {/* <th className="px-6 py-3 border-b border-gray-300 text-left">Units Sold</th> */}
-        {/* <th className="px-6 py-3 border-b border-gray-300 text-left">Available</th> */}
         <th className="px-6 py-3 border-b border-gray-300 text-left">Base Price</th>
         <th className="px-6 py-3 border-b-2 border-gray-300">Action</th>
         <th className="px-6 py-3 border-b-2 border-gray-300">Units Detail</th>
@@ -229,12 +290,15 @@ const Units = () => {
             <td className="px-6 py-4">{unit.unit_type}</td>
             <td className="px-6 py-4">{unit.unit_size} sqft</td>
             <td className="px-6 py-4">{unit.total_units}</td>
-            {/* <td className="px-6 py-4">{unit.units_sold}</td> */}
-            {/* <td className="px-6 py-4 font-semibold"> {unit.total_units - unit.units_sold}</td> */}
             <td className="px-6 py-4 font-semibold"> {unit.base_price}</td>
             <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
             <button onClick={() => handleEdit(unit)} className="mr-2 text-blue-600 hover:text-blue-800"><FaEdit /></button>
-            <button onClick={() => handleDelete(unit.unit_id)} className="text-red-600 hover:text-red-800"><FaTrash /></button>
+            <button 
+  onClick={() => handleDelete(unit.unit_id, unit.unit_type, unit.project_name)} 
+  className="text-red-600 hover:text-red-800"
+>
+  <FaTrash />
+</button>
             </td>
             <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
               <Link to={`/admin-unit-Detail-Dash/${unit.unit_id}`} className="inline-block">
@@ -262,6 +326,7 @@ const Units = () => {
         nextLabel={"Next"}
         breakLabel={"..."}
         pageCount={pageCount}
+forcePage={currentPage}
         marginPagesDisplayed={2}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
@@ -308,28 +373,35 @@ const Units = () => {
 
           {/* Unit Type */}
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Unit Type</label>
-            <select
-              name="unit_type"
-              value={unitData.unit_type}
-              onChange={handleChange}
-              className="p-3 border rounded-lg w-full"
-              required
-            >
-              <option value="">Select Unit Type</option>
-              <option value="1BHK">1BHK</option>
-              <option value="2BHK">2BHK</option>
-              <option value="3BHK">3BHK</option>
-              <option value="Bungalow">Bungalow</option>
-              <option value="Commercial">Commercial</option>
-              <option value="Plot">Plot</option>
-              <option value="Villa">Villa</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+  <label className="block text-gray-700 font-medium mb-1">Unit Type</label>
+  <select
+    name="unit_type"
+    value={unitData.unit_type}
+    onChange={handleChange}
+    className="w-full p-2 border rounded"
+  >
+    <option value="">Select Unit Type</option>
+    {combinedLeadSources.map(source => (
+      <option key={source} value={source}>
+        {source}
+      </option>
+    ))}
+  </select>
+  {unitData.unit_type === "Other" && (
+    <input
+      type="text"
+      name="custom_unit_type"
+      value={unitData.custom_unit_type}
+      onChange={handleChange}
+      placeholder="Enter custom unit type"
+      className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
+    />
+  )}
+</div>
+
 
           {/* Custom Unit Type */}
-          {unitData.unit_type === "Other" && (
+          {/* {unitData.unit_type === "Other" && (
             <div>
               <label className="block text-gray-700 font-medium mb-1">Custom Unit Type</label>
               <input
@@ -342,7 +414,7 @@ const Units = () => {
                 required
               />
             </div>
-          )}
+          )} */}
 
           {/* Unit Size */}
           <div>
@@ -462,18 +534,6 @@ const Units = () => {
           placeholder="Enter total units" 
         />
       </div>
-
-      {/* Units Sold */}
-      {/* <div className="mb-3">
-        <label className="block text-gray-600 mb-1">Units Sold</label>
-        <input 
-          type="text" 
-          value={editProject.units_sold || ""} 
-          onChange={(e) => setEditProject({ ...editProject, units_sold: e.target.value })} 
-          className="border p-2 w-full rounded focus:ring focus:ring-blue-300" 
-          placeholder="Enter units sold" 
-        />
-      </div> */}
 
       {/* Base Price */}
       <div className="mb-3">

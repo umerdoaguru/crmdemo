@@ -252,12 +252,12 @@ fetchFollowUp();
                     <p className="m-0">{lead.leadSource}</p>
                   </div>
                 </div>
-                <div>
+                {/* <div>
                   <label className="text-info">Project</label>
                   <div className="p-2 bg-gray-100 rounded">
-                    <p className="m-0">{lead.subject}</p>
+                    <p className="m-0">{lead.project_name}</p>
                   </div>
-                </div>
+                </div> */}
                 <div>
                   <label className="text-info">Lead Status</label>
                   <div className="p-2 bg-gray-100 rounded">

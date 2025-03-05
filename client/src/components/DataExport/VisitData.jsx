@@ -37,12 +37,9 @@ const VisitData = () => {
     "employeeId",
     "follow_up_status",
     "payment_mode",
-    "quotation",
-    "quotation_status",
     "reason",
     "registry",
-   
-    "subject",
+    "project_name",
     "visit",
     "visit_date",
     "d_closeDate",
@@ -62,7 +59,7 @@ const token = adminuser.token;
   const fetchLeads = async () => {
     try {
       const response = await axios.get(
-        `https://crmdemo.vimubds5.a2hosted.com/api/leadst`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/leads`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -82,7 +79,14 @@ const token = adminuser.token;
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
+      );
+      
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -134,8 +138,7 @@ const token = adminuser.token;
       quotation_status: "Quotation Status",
       reason: "Reason",
       registry: "Registry",
-    
-      subject: "Project",
+      project_name: "Project",
       visit: "Visit",
       visit_date: "Visit Date",
       d_closeDate: "Close Date",
@@ -325,6 +328,7 @@ const token = adminuser.token;
           nextLabel={"Next"}
           breakLabel={"..."}
           pageCount={pageCount}
+forcePage={currentPage}
           marginPagesDisplayed={2}
           pageRangeDisplayed={3}
           onPageChange={handlePageClick}
